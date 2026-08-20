@@ -1,7 +1,7 @@
 # 📘 OOP USING JAVA — COMPLETE HANDBOOK
 ### Course Code 105303 | Syllabus-wise arranged | 3-0-0-3
 
-> Yeh handbook tumhare pehle wale OOPS notes + syllabus ke saare missing topics ko jodkar bana hai, poore syllabus ke order mein. Jo tumhare paas already tha (Class, Object, Method, Constructor, Inheritance, Polymorphism, Abstraction, Interface, Encapsulation) usko clean karke sahi jagah pe fit kiya hai, aur jo missing tha wo naya likha hai same style mein.
+
 
 ---
 
