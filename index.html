@@ -8,264 +8,230 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Liquid Glass palette — soft aurora gradient behind frosted glass panels */
-  --bg-a:#0a1128;
-  --bg-b:#1b1145;
-  --bg-c:#3a1c5e;
-  --bg-d:#0d2b3e;
-  --glass-fill: rgba(255,255,255,0.06);
-  --glass-fill-strong: rgba(255,255,255,0.10);
-  --glass-border: rgba(255,255,255,0.16);
-  --glass-border-strong: rgba(255,255,255,0.28);
-  --glass-highlight: rgba(255,255,255,0.35);
-  --text:#F1F3FB;
-  --text-dim:#B7BEDA;
-  --text-faint:#7D85AC;
-  --accent:#FFB454;
-  --accent-2:#7FE0D6;
-  --pink:#FF8FC6;
-  --blue:#8DC7FF;
-  --green:#B8E986;
-  --red:#FF8A8A;
+  --bg:#060714;
+  --bg-2:#0a0c1d;
+  --surface:rgba(255,255,255,.055);
+  --surface-2:rgba(255,255,255,.09);
+  --border:rgba(255,255,255,.13);
+  --border-soft:rgba(255,255,255,.08);
+  --text:#EDF1FF;
+  --text-dim:#A6B0D6;
+  --text-faint:#6C7599;
+  --accent:#8FA6FF;
+  --accent-dim:rgba(143,166,255,.35);
+  --teal:#5FE8D0;
+  --pink:#FF8FD4;
+  --blue:#7DD3FC;
+  --green:#9CF0A8;
+  --red:#FF8398;
   --radius:18px;
-  --radius-sm:12px;
-  --font-display:'Space Grotesk',sans-serif;
-  --font-body:'Inter',sans-serif;
-  --font-code:'JetBrains Mono',monospace;
-  --blur: 22px;
+  --font-display:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
+  --font-body:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;
+  --font-code:'JetBrains Mono',ui-monospace,'SF Mono',monospace;
+  --glass-blur:34px;
+  --spring:cubic-bezier(.16,1,.3,1);
+  --hairline-top:inset 0 1px 0 rgba(255,255,255,.14);
+  --hairline-bottom:inset 0 -1px 0 rgba(0,0,0,.22);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{
-  min-height:100vh;
+  background:
+    radial-gradient(ellipse 90% 60% at 15% -10%, rgba(143,166,255,.16), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 110% 10%, rgba(95,232,208,.13), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 120%, rgba(255,143,212,.10), transparent 60%),
+    var(--bg);
   color:var(--text);
   font-family:var(--font-body);
   line-height:1.65;
   overflow-x:hidden;
-  background:
-    radial-gradient(1000px 700px at 8% 0%, rgba(255,150,90,0.16), transparent 55%),
-    radial-gradient(900px 700px at 95% 10%, rgba(127,224,214,0.14), transparent 55%),
-    radial-gradient(1100px 900px at 50% 100%, rgba(150,90,255,0.20), transparent 55%),
-    linear-gradient(160deg, var(--bg-a), var(--bg-b) 45%, var(--bg-c) 75%, var(--bg-d));
-  background-attachment:fixed;
+  min-height:100vh;
   position:relative;
-}
-/* floating blurred color blobs for the liquid-glass backdrop */
-body::before, body::after{
-  content:"";
-  position:fixed;
-  border-radius:50%;
-  filter:blur(70px);
-  z-index:0;
-  pointer-events:none;
-  opacity:.55;
-}
-body::before{
-  width:520px;height:520px;top:-140px;left:-120px;
-  background:radial-gradient(circle, rgba(255,180,84,.5), transparent 70%);
-  animation:float1 22s ease-in-out infinite;
 }
 body::after{
-  width:640px;height:640px;bottom:-200px;right:-160px;
-  background:radial-gradient(circle, rgba(127,224,214,.4), transparent 70%);
-  animation:float2 26s ease-in-out infinite;
+  content:"";position:fixed;inset:0;z-index:2;pointer-events:none;
+  opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-@keyframes float1{ 0%,100%{transform:translate(0,0);} 50%{transform:translate(60px,50px);} }
-@keyframes float2{ 0%,100%{transform:translate(0,0);} 50%{transform:translate(-50px,-40px);} }
-
-::selection{background:var(--accent);color:#181022;}
+::selection{background:var(--accent);color:#060714;}
 ::-webkit-scrollbar{width:10px;height:10px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,.18);border-radius:6px;background-clip:padding-box;}
-::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.3);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;background-clip:padding-box;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent-dim);}
 
-/* ============ Reusable Glass Surface ============ */
-.glass{
-  background:var(--glass-fill);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
-  backdrop-filter: blur(var(--blur)) saturate(160%);
-  border:1px solid var(--glass-border);
-  border-radius:var(--radius);
-  box-shadow:
-    0 8px 32px rgba(0,0,0,.35),
-    inset 0 1px 0 rgba(255,255,255,.18),
-    inset 0 0 0 1px rgba(255,255,255,.02);
-  position:relative;
-  overflow:hidden;
-}
-.glass::before{
-  /* top glossy sheen — the "liquid" highlight streak */
-  content:"";
-  position:absolute; top:0; left:0; right:0; height:60%;
-  background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,0) 100%);
-  pointer-events:none;
-}
+/* ============ AMBIENT BACKGROUND ORBS ============ */
+.bg-orb{position:fixed;border-radius:50%;filter:blur(95px);pointer-events:none;z-index:0;}
+.bg-orb-1{width:560px;height:560px;top:-180px;left:-140px;background:radial-gradient(circle,rgba(143,166,255,.5),transparent 70%);animation:orbFloat1 24s ease-in-out infinite;}
+.bg-orb-2{width:620px;height:620px;bottom:-220px;right:-180px;background:radial-gradient(circle,rgba(95,232,208,.42),transparent 70%);animation:orbFloat2 28s ease-in-out infinite;}
+.bg-orb-3{width:460px;height:460px;top:38%;left:55%;background:radial-gradient(circle,rgba(255,143,212,.32),transparent 70%);animation:orbFloat3 32s ease-in-out infinite;}
+.bg-orb-4{width:380px;height:380px;top:65%;left:5%;background:radial-gradient(circle,rgba(125,211,252,.30),transparent 70%);animation:orbFloat1 20s ease-in-out infinite reverse;}
+@keyframes orbFloat1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(60px,-70px) scale(1.12);}}
+@keyframes orbFloat2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-70px,50px) scale(.92);}}
+@keyframes orbFloat3{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(40px,35px) scale(1.08);}66%{transform:translate(-35px,-25px) scale(.9);}}
 
 /* ============ BOOT SCREEN ============ */
 #boot{
   position:fixed;inset:0;z-index:9999;
+  background:radial-gradient(ellipse 80% 60% at 50% 30%, rgba(143,166,255,.14), transparent 60%), #05060f;
   display:flex;align-items:center;justify-content:center;
   transition:opacity .6s ease, visibility .6s ease;
-  background:
-    radial-gradient(900px 700px at 50% 40%, rgba(150,90,255,.25), transparent 60%),
-    linear-gradient(160deg, var(--bg-a), var(--bg-b) 60%, var(--bg-c));
 }
 #boot.hide{opacity:0;visibility:hidden;pointer-events:none;}
 .boot-box{
   width:min(560px,86vw);
+  background:rgba(255,255,255,.07);
+  backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  border:1px solid var(--border);
   border-radius:20px;
+  box-shadow:0 30px 90px rgba(0,0,0,.55), var(--hairline-top), var(--hairline-bottom);
   overflow:hidden;
+  animation:bootPop .5s var(--spring);
 }
+@keyframes bootPop{from{opacity:0;transform:scale(.94) translateY(10px);}to{opacity:1;transform:scale(1) translateY(0);}}
 .boot-bar{
-  display:flex;gap:7px;padding:14px 16px;
-  background:rgba(255,255,255,.08);
-  border-bottom:1px solid var(--glass-border);
+  display:flex;gap:7px;padding:12px 14px;background:rgba(255,255,255,.04);
+  border-bottom:1px solid var(--border-soft);
 }
-.dot{width:11px;height:11px;border-radius:50%;box-shadow:0 1px 2px rgba(0,0,0,.3);}
-.dot.r{background:var(--red);} .dot.y{background:var(--accent);} .dot.g{background:var(--accent-2);}
-.boot-body{padding:24px 22px;font-family:var(--font-code);font-size:13px;color:var(--green);min-height:190px;}
+.dot{width:11px;height:11px;border-radius:50%;box-shadow:0 0 8px currentColor, inset 0 1px 1px rgba(255,255,255,.55), inset 0 -1px 1px rgba(0,0,0,.2);}
+.dot.r{background:radial-gradient(circle at 35% 30%, #ffb3ba, var(--red));color:var(--red);}
+.dot.y{background:radial-gradient(circle at 35% 30%, #ffe3ae, var(--accent));color:var(--accent);}
+.dot.g{background:radial-gradient(circle at 35% 30%, #c2fbef, var(--teal));color:var(--teal);}
+.boot-body{padding:22px 20px;font-family:var(--font-code);font-size:13px;color:var(--green);min-height:190px;}
 .boot-line{opacity:0;animation:bootIn .25s forwards;white-space:pre;}
-.boot-cursor{display:inline-block;width:8px;height:14px;background:var(--accent);vertical-align:-2px;animation:blink 1s step-end infinite;border-radius:2px;}
+.boot-cursor{display:inline-block;width:8px;height:14px;background:var(--accent);vertical-align:-2px;animation:blink 1s step-end infinite;box-shadow:0 0 8px var(--accent);}
 @keyframes bootIn{to{opacity:1;}}
 @keyframes blink{50%{opacity:0;}}
-.boot-progress-track{height:4px;margin:0 22px 20px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;}
-.boot-progress-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 0 10px rgba(255,180,84,.7);transition:width 1.6s cubic-bezier(.22,1,.36,1);}
 
 /* ============ LAYOUT ============ */
 #app{display:none;min-height:100vh;position:relative;z-index:1;}
 #app.ready{display:flex;}
 
+/* progress bar */
 #progress-bar{
   position:fixed;top:0;left:0;height:3px;
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  box-shadow:0 0 12px rgba(255,180,84,.7);
+  background:linear-gradient(90deg,var(--accent),var(--teal),var(--pink));
+  background-size:200% 100%;
+  animation:shimmer 4s linear infinite;
   z-index:500;transition:width .5s ease;width:0%;
+  box-shadow:0 0 12px var(--accent);
 }
+@keyframes shimmer{0%{background-position:0% 0;}100%{background-position:200% 0;}}
 
-/* ---------- Sidebar (glass panel) ---------- */
+/* ---------- Sidebar ---------- */
 #sidebar{
   width:320px;flex-shrink:0;height:100vh;position:sticky;top:0;
-  margin:14px 0 14px 14px;
-  border-radius:22px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  border-right:1px solid var(--border-soft);
+  box-shadow:var(--hairline-top);
   display:flex;flex-direction:column;
   overflow:hidden;
-  background:var(--glass-fill);
-  -webkit-backdrop-filter: blur(var(--blur)) saturate(160%);
-  backdrop-filter: blur(var(--blur)) saturate(160%);
-  border:1px solid var(--glass-border);
-  box-shadow:0 8px 40px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18);
 }
 .sidebar-head{
-  padding:22px 20px 16px;border-bottom:1px solid var(--glass-border);
-  position:relative;
-}
-.sidebar-head::after{
-  content:"";position:absolute;top:0;left:0;right:0;height:50%;
-  background:linear-gradient(180deg, rgba(255,255,255,.12), transparent);
-  pointer-events:none;
+  padding:22px 20px 16px;border-bottom:1px solid var(--border-soft);
 }
 .sidebar-head .tag{
   font-family:var(--font-code);font-size:11px;color:var(--accent);
-  letter-spacing:.08em;text-transform:uppercase;position:relative;
+  letter-spacing:.08em;text-transform:uppercase;
 }
 .sidebar-head h1{
-  font-family:var(--font-display);font-size:20px;font-weight:700;margin-top:6px;line-height:1.25;position:relative;
+  font-family:var(--font-display);font-size:20px;font-weight:700;margin-top:6px;line-height:1.25;
+  background:linear-gradient(120deg,var(--text),var(--accent) 70%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
 }
-.sidebar-head .sub{color:var(--text-dim);font-size:12.5px;margin-top:6px;position:relative;}
-.xp-wrap{margin-top:14px;position:relative;}
-.xp-track{height:7px;background:rgba(0,0,0,.25);border-radius:6px;overflow:hidden;border:1px solid var(--glass-border);}
-.xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .6s ease;box-shadow:0 0 10px rgba(255,180,84,.6);}
+.sidebar-head .sub{color:var(--text-dim);font-size:12.5px;margin-top:6px;}
+.xp-wrap{margin-top:14px;}
+.xp-track{height:7px;background:rgba(255,255,255,.06);border-radius:5px;overflow:hidden;border:1px solid var(--border-soft);}
+.xp-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--teal));background-size:200% 100%;transition:width .6s ease;box-shadow:0 0 10px var(--accent-dim);animation:shimmer 3s linear infinite;}
 .xp-label{font-size:11px;color:var(--text-faint);margin-top:6px;font-family:var(--font-code);}
-.xp-fill.pulse{animation:xpPulse .6s ease;}
-@keyframes xpPulse{0%{filter:brightness(1);}40%{filter:brightness(1.6);}100%{filter:brightness(1);}}
-.reset-btn{
-  margin-top:12px;background:transparent;border:1px solid var(--glass-border);color:var(--text-faint);
-  font-family:var(--font-code);font-size:10.5px;padding:6px 10px;border-radius:8px;cursor:pointer;
-  transition:all .2s;position:relative;
-}
-.reset-btn:hover{color:var(--text);border-color:var(--glass-border-strong);background:rgba(255,255,255,.06);}
 
-.search-wrap{padding:14px 20px;border-bottom:1px solid var(--glass-border);}
+.search-wrap{padding:14px 20px;border-bottom:1px solid var(--border-soft);}
 #search{
-  width:100%;padding:10px 14px;background:rgba(0,0,0,.18);border:1px solid var(--glass-border);
+  width:100%;padding:10px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);
   border-radius:12px;color:var(--text);font-size:13px;font-family:var(--font-body);
-  outline:none;transition:border-color .2s,background .2s;
+  outline:none;transition:border-color .2s,box-shadow .2s,background .2s;
 }
-#search:focus{border-color:var(--glass-border-strong);background:rgba(0,0,0,.28);}
+#search:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(143,166,255,.15);background:rgba(255,255,255,.08);}
 #search::placeholder{color:var(--text-faint);}
 
 #unit-list{flex:1;overflow-y:auto;padding:10px 12px 30px;}
-.unit-block{margin-bottom:6px;border-radius:14px;overflow:hidden;}
+.unit-block{margin-bottom:6px;border-radius:12px;overflow:hidden;}
 .unit-toggle{
   width:100%;display:flex;align-items:center;gap:10px;
   background:transparent;border:none;color:var(--text);
   padding:11px 10px;cursor:pointer;text-align:left;border-radius:12px;
   font-family:var(--font-body);transition:background .2s;
 }
-.unit-toggle:hover{background:rgba(255,255,255,.08);}
+.unit-toggle:hover{background:rgba(255,255,255,.06);}
 .unit-toggle .num{
   font-family:var(--font-code);font-size:11px;color:var(--accent);
-  background:rgba(255,180,84,.15);border:1px solid rgba(255,180,84,.35);
+  background:rgba(143,166,255,.14);border:1px solid var(--accent-dim);
   width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .unit-toggle .label{flex:1;}
 .unit-toggle .name{font-size:13.5px;font-weight:600;display:block;}
 .unit-toggle .hrs{font-size:10.5px;color:var(--text-faint);font-family:var(--font-code);}
 .unit-toggle .chev{color:var(--text-faint);transition:transform .25s;font-size:11px;}
-.unit-block.open .chev{transform:rotate(90deg);}
+.unit-block.open .chev{transform:rotate(90deg);color:var(--accent);}
 .topic-list{max-height:0;overflow:hidden;transition:max-height .35s ease;padding-left:8px;}
 .unit-block.open .topic-list{max-height:1200px;}
 .topic-link{
   display:flex;align-items:center;gap:9px;
   padding:8px 10px 8px 34px;font-size:12.8px;color:var(--text-dim);
-  cursor:pointer;border-radius:10px;transition:background .15s,color .15s;
+  cursor:pointer;border-radius:10px;transition:background .2s,color .2s;
   border-left:2px solid transparent;
 }
-.topic-link:hover{background:rgba(255,255,255,.08);color:var(--text);}
-.topic-link.active{background:rgba(255,255,255,.12);color:var(--accent);border-left-color:var(--accent);font-weight:600;}
+.topic-link:hover{background:rgba(255,255,255,.06);color:var(--text);}
+.topic-link.active{background:rgba(143,166,255,.12);color:var(--accent);border-left-color:var(--accent);font-weight:600;}
 .topic-link .check{
   width:14px;height:14px;border-radius:50%;border:1.5px solid var(--text-faint);flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;font-size:9px;transition:all .25s;
 }
-.topic-link.done .check{background:var(--accent-2);border-color:var(--accent-2);color:#0d2b3e;}
-.topic-link .check.pop{animation:checkPop .45s cubic-bezier(.34,1.56,.64,1);}
-@keyframes checkPop{0%{transform:scale(0.4) rotate(-20deg);opacity:0;}60%{transform:scale(1.35) rotate(6deg);opacity:1;}100%{transform:scale(1) rotate(0);}}
-/* Staggered entrance for topic links when a unit opens */
-.unit-block.open .topic-link{ animation:linkIn .35s ease both; }
-.unit-block.open .topic-link:nth-child(1){animation-delay:.02s;}
-.unit-block.open .topic-link:nth-child(2){animation-delay:.05s;}
-.unit-block.open .topic-link:nth-child(3){animation-delay:.08s;}
-.unit-block.open .topic-link:nth-child(4){animation-delay:.11s;}
-.unit-block.open .topic-link:nth-child(5){animation-delay:.14s;}
-.unit-block.open .topic-link:nth-child(6){animation-delay:.17s;}
-.unit-block.open .topic-link:nth-child(7){animation-delay:.20s;}
-.unit-block.open .topic-link:nth-child(8){animation-delay:.23s;}
-.unit-block.open .topic-link:nth-child(9){animation-delay:.26s;}
-.unit-block.open .topic-link:nth-child(10){animation-delay:.29s;}
-.unit-block.open .topic-link:nth-child(11){animation-delay:.32s;}
-.unit-block.open .topic-link:nth-child(12){animation-delay:.35s;}
-@keyframes linkIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:translateX(0);}}
-.unit-toggle .chev{color:var(--text-faint);transition:transform .3s cubic-bezier(.34,1.56,.64,1);font-size:11px;}
+.topic-link.done .check{background:var(--teal);border-color:var(--teal);color:#060714;box-shadow:0 0 8px rgba(95,232,208,.6);}
+
+.sidebar-foot{padding:14px 20px 18px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:10px;}
+.contribute-link{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:12px;
+  padding:9px 12px;color:var(--text-dim);text-decoration:none;font-size:11.5px;line-height:1.35;
+  transition:border-color .3s var(--spring),background .3s var(--spring),color .3s var(--spring),transform .3s var(--spring);
+}
+.contribute-link svg{flex-shrink:0;opacity:.8;transition:opacity .3s;}
+.contribute-link:hover{border-color:var(--accent);color:var(--text);background:rgba(143,166,255,.1);transform:translateY(-1px);}
+.contribute-link:hover svg{opacity:1;}
+.contribute-link:active{transform:translateY(0) scale(.98);}
+.save-status{display:flex;align-items:center;gap:7px;font-size:11px;color:var(--text-faint);font-family:var(--font-code);}
+.save-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);box-shadow:0 0 6px var(--teal);animation:savePulse 2.6s ease-in-out infinite;flex-shrink:0;}
+@keyframes savePulse{0%,100%{opacity:.5;transform:scale(.85);}50%{opacity:1;transform:scale(1.15);}}
+.save-status{transition:color .3s var(--spring);}
+.save-status.flash{color:var(--teal);}
+.save-status.flash .save-dot{animation:none;opacity:1;transform:scale(1.3);}
+.reset-btn{
+  align-self:flex-start;background:transparent;border:1px solid var(--border-soft);color:var(--text-faint);
+  font-family:var(--font-body);font-size:11.5px;padding:6px 12px;border-radius:20px;cursor:pointer;
+  transition:border-color .25s var(--spring),color .25s var(--spring),background .25s var(--spring);
+}
+.reset-btn:hover{border-color:var(--red);color:var(--red);background:rgba(255,131,152,.08);}
+.reset-btn:active{transform:scale(.96);}
 
 /* ---------- Main ---------- */
-#main{flex:1;min-width:0;position:relative;}
+#main{flex:1;min-width:0;position:relative;z-index:1;}
 #mobile-bar{display:none;}
 .content-wrap{max-width:880px;margin:0 auto;padding:56px 48px 120px;}
 .crumb{font-family:var(--font-code);font-size:12px;color:var(--text-faint);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .crumb .u{color:var(--accent);}
 
-#topic-body{opacity:0;transform:translateY(14px) scale(.985);filter:blur(6px);transition:opacity .5s cubic-bezier(.22,1,.36,1),transform .5s cubic-bezier(.22,1,.36,1),filter .5s ease;}
-#topic-body.show{opacity:1;transform:translateY(0) scale(1);filter:blur(0);}
+#topic-body{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease;}
+#topic-body.show{opacity:1;transform:translateY(0);}
 
-.topic-eyebrow{font-family:var(--font-code);font-size:12px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
-.topic-title{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);font-weight:700;margin-bottom:14px;line-height:1.15;
-  background:linear-gradient(120deg, var(--text), var(--accent-2) 120%);
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-}
+.topic-eyebrow{font-family:var(--font-code);font-size:12px;color:var(--teal);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.topic-title{font-family:var(--font-display);font-size:clamp(28px,4vw,40px);font-weight:700;margin-bottom:14px;line-height:1.15;}
 .topic-hook{font-size:16.5px;color:var(--text-dim);margin-bottom:34px;max-width:640px;}
 
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease;}
-.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal{opacity:0;transform:translateY(22px) scale(.985);filter:blur(4px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1),filter .7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0) scale(1);filter:blur(0);}
 
 /* Section blocks */
 .block{margin-bottom:34px;}
@@ -279,109 +245,139 @@ body::after{
 .block li{margin-bottom:7px;font-size:14.8px;color:var(--text);}
 .block li::marker{color:var(--accent);}
 
-/* Glass cards for analogy / hinglish / keypoints / breakdown / diagram / quiz */
-.analogy, .hinglish, .keypoints, .breakdown, .diagram, .mini-quiz{
-  background:var(--glass-fill);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  backdrop-filter: blur(16px) saturate(150%);
-  border:1px solid var(--glass-border);
-  border-radius:var(--radius-sm);
-  padding:16px 18px;
-  margin:14px 0;
-  position:relative;
-  overflow:hidden;
-  box-shadow:0 6px 24px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.14);
+/* ELI5 analogy card — glass with liquid gradient sheen */
+.analogy{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(143,166,255,.12),rgba(95,232,208,.07));
+  backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  border:1px solid var(--border);border-left:3px solid var(--accent);
+  border-radius:14px;padding:16px 18px;margin:14px 0;
 }
-.analogy::before, .hinglish::before, .keypoints::before, .breakdown::before, .diagram::before, .mini-quiz::before{
-  content:"";position:absolute;top:0;left:0;right:0;height:55%;
-  background:linear-gradient(180deg, rgba(255,255,255,.10), transparent);
-  pointer-events:none;
+.analogy .lbl{font-family:var(--font-code);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-weight:600;}
+.analogy p{margin:0;font-size:14.5px;color:var(--text);}
+
+/* Hinglish/Note box -> repurposed as glass "note" callout */
+.hinglish{
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  border:1px solid var(--border);border-radius:14px;
+  padding:14px 18px;margin:14px 0;border-left:3px solid var(--pink);
 }
-.analogy{border-left:3px solid var(--accent);}
-.hinglish{border-left:3px solid var(--pink);}
+.hinglish .lbl{font-family:var(--font-code);font-size:11px;color:var(--pink);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-weight:600;}
+.hinglish p{margin:0;font-size:14.5px;color:var(--text-dim);}
 
-.analogy .lbl{font-family:var(--font-code);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-weight:600;position:relative;}
-.analogy p{margin:0;font-size:14.5px;color:var(--text);position:relative;}
+/* Key points card */
+.keypoints{
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin:14px 0;
+}
+.keypoints .lbl{font-family:var(--font-code);font-size:11px;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:600;}
 
-.hinglish .lbl{font-family:var(--font-code);font-size:11px;color:var(--pink);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-weight:600;position:relative;}
-.hinglish p{margin:0;font-size:14.5px;color:var(--text-dim);position:relative;}
-
-.keypoints .lbl{font-family:var(--font-code);font-size:11px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:600;position:relative;}
-
-/* Code editor block — frosted glass terminal */
+/* Code editor block — dark glass "window" */
 .editor{
-  background:rgba(8,10,22,0.55);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  backdrop-filter: blur(18px) saturate(140%);
-  border:1px solid var(--glass-border);
-  border-radius:var(--radius-sm);
-  overflow:hidden;margin:16px 0;
-  box-shadow:0 14px 34px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.1);
+  position:relative;
+  background:rgba(3,5,14,.6);
+  backdrop-filter:blur(24px) saturate(140%);
+  -webkit-backdrop-filter:blur(24px) saturate(140%);
+  border:1px solid var(--border);border-radius:14px;
+  overflow:hidden;margin:16px 0;box-shadow:0 14px 40px rgba(0,0,0,.4), var(--hairline-top);
 }
-.editor-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(255,255,255,.05);border-bottom:1px solid var(--glass-border);}
+.editor-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid var(--border-soft);}
 .editor-bar .dot{width:10px;height:10px;}
 .editor-bar .fname{margin-left:8px;font-family:var(--font-code);font-size:11.5px;color:var(--text-faint);}
 .editor pre{margin:0;padding:16px 18px;overflow-x:auto;font-family:var(--font-code);font-size:13px;line-height:1.7;}
 .editor code{font-family:var(--font-code);}
 .tok-kw{color:var(--pink);} .tok-str{color:var(--green);} .tok-com{color:var(--text-faint);font-style:italic;}
-.tok-type{color:var(--blue);} .tok-num{color:var(--accent);} .tok-ann{color:var(--accent-2);}
+.tok-type{color:var(--blue);} .tok-num{color:var(--accent);} .tok-ann{color:var(--teal);}
 
 /* Breakdown callout under code */
-.breakdown .lbl{font-family:var(--font-code);font-size:11px;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:600;position:relative;}
-.breakdown .row{display:flex;gap:10px;margin-bottom:8px;font-size:13.8px;position:relative;}
+.breakdown{
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  border:1px solid var(--border);border-radius:14px;padding:14px 18px;margin:0 0 14px;
+}
+.breakdown .lbl{font-family:var(--font-code);font-size:11px;color:var(--blue);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:600;}
+.breakdown .row{display:flex;gap:10px;margin-bottom:8px;font-size:13.8px;}
 .breakdown .row:last-child{margin-bottom:0;}
-.breakdown .k{font-family:var(--font-code);color:var(--accent);white-space:nowrap;font-weight:600;background:rgba(255,180,84,.12);padding:1px 7px;border-radius:6px;height:fit-content;border:1px solid rgba(255,180,84,.25);}
+.breakdown .k{font-family:var(--font-code);color:var(--accent);white-space:nowrap;font-weight:600;background:rgba(143,166,255,.12);padding:1px 7px;border-radius:6px;height:fit-content;}
 .breakdown .v{color:var(--text-dim);}
 
 /* Diagram box */
-.diagram{padding:22px;overflow-x:auto;}
-.diagram-title{font-family:var(--font-code);font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;position:relative;}
-.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;font-family:var(--font-code);font-size:13px;position:relative;}
-.flow-node{
-  background:rgba(255,255,255,.07);border:1px solid var(--glass-border);border-radius:10px;
-  padding:10px 16px;color:var(--text);white-space:nowrap;
-  backdrop-filter: blur(6px);
+.diagram{
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  border:1px solid var(--border);border-radius:14px;
+  padding:22px;margin:16px 0;overflow-x:auto;
 }
-.flow-node.acc{border-color:rgba(255,180,84,.5);color:var(--accent);background:rgba(255,180,84,.08);}
-.flow-node.teal{border-color:rgba(127,224,214,.5);color:var(--accent-2);background:rgba(127,224,214,.08);}
+.diagram-title{font-family:var(--font-code);font-size:11px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;}
+.flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;font-family:var(--font-code);font-size:13px;}
+.flow-node{
+  background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:10px;
+  padding:10px 16px;color:var(--text);white-space:nowrap;
+}
+.flow-node.acc{border-color:var(--accent);color:var(--accent);box-shadow:0 0 16px rgba(143,166,255,.18);}
+.flow-node.teal{border-color:var(--teal);color:var(--teal);box-shadow:0 0 16px rgba(95,232,208,.18);}
 .flow-arrow{color:var(--text-faint);padding:0 10px;font-size:16px;}
 .flow-col{display:flex;flex-direction:column;gap:8px;}
-.flow-down{display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;}
+.flow-down{display:flex;flex-direction:column;align-items:center;gap:2px;}
 .flow-down .flow-arrow{padding:2px 0;}
 
 /* table */
-table.tbl{width:100%;border-collapse:separate;border-spacing:0;margin:14px 0;font-size:13.8px;
-  background:var(--glass-fill); border:1px solid var(--glass-border); border-radius:var(--radius-sm); overflow:hidden;
-  backdrop-filter: blur(14px);
-}
-table.tbl th{background:rgba(255,255,255,.08);color:var(--accent);text-align:left;padding:10px 12px;font-family:var(--font-code);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--glass-border);}
-table.tbl td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.06);color:var(--text-dim);}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0;border-radius:14px;}
+.table-scroll table.tbl{margin:0;min-width:420px;}
+table.tbl{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.8px;border-radius:14px;overflow:hidden;}
+table.tbl th{background:rgba(255,255,255,.07);color:var(--accent);text-align:left;padding:10px 12px;font-family:var(--font-code);font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border-soft);}
+table.tbl td{padding:10px 12px;border-bottom:1px solid var(--border-soft);color:var(--text-dim);background:rgba(255,255,255,.02);}
 table.tbl tr:last-child td{border-bottom:none;}
 table.tbl td:first-child{color:var(--text);font-weight:500;}
 
-/* quiz-check mini */
-.mini-quiz{margin:20px 0;}
-.mini-quiz .lbl{font-family:var(--font-code);font-size:11px;color:var(--accent-2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:600;position:relative;}
-.mini-quiz .q{font-size:14.5px;margin-bottom:10px;position:relative;}
-.mini-quiz .opt{
-  display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);border:1px solid var(--glass-border);
-  color:var(--text);padding:9px 12px;border-radius:10px;margin-bottom:7px;cursor:pointer;font-size:13.5px;
-  font-family:var(--font-body);transition:border-color .15s,background .15s;position:relative;
+/* real life card */
+.reallife{
+  display:flex;gap:14px;align-items:flex-start;background:rgba(255,255,255,.05);
+  backdrop-filter:blur(var(--glass-blur));
+  border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin:14px 0;
 }
-.mini-quiz .opt:hover{border-color:var(--glass-border-strong);background:rgba(255,255,255,.09);}
-.mini-quiz .opt.correct{border-color:var(--accent-2);background:rgba(127,224,214,.14);color:var(--accent-2);}
-.mini-quiz .opt.wrong{border-color:var(--red);background:rgba(255,138,138,.1);color:var(--red);}
-.mini-quiz .fb{font-size:13px;color:var(--text-dim);margin-top:6px;display:none;position:relative;}
+.reallife .emoji{font-size:26px;line-height:1;}
+.reallife .lbl{font-family:var(--font-code);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;font-weight:600;}
+
+/* quiz-check mini */
+.mini-quiz{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(95,232,208,.10),rgba(143,166,255,.07));
+  backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(160%);
+  border:1px solid var(--border);border-radius:16px;padding:16px 18px;margin:20px 0;
+}
+.mini-quiz .lbl{font-family:var(--font-code);font-size:11px;color:var(--teal);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;font-weight:600;}
+.mini-quiz .q{font-size:14.5px;margin-bottom:10px;}
+.mini-quiz .opt{
+  position:relative;overflow:hidden;
+  display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);border:1px solid var(--border);
+  color:var(--text);padding:10px 14px;border-radius:11px;margin-bottom:7px;cursor:pointer;font-size:13.5px;
+  font-family:var(--font-body);transition:border-color .25s var(--spring),background .25s var(--spring),transform .25s var(--spring);
+}
+.mini-quiz .opt:hover{border-color:var(--text-faint);background:rgba(255,255,255,.08);transform:translateX(2px);}
+.mini-quiz .opt:active{transform:scale(.985);}
+.mini-quiz .opt.correct{border-color:var(--teal);background:rgba(95,232,208,.12);color:var(--teal);box-shadow:0 0 16px rgba(95,232,208,.18);}
+.mini-quiz .opt.wrong{border-color:var(--red);background:rgba(255,131,152,.10);color:var(--red);}
+.mini-quiz .fb{font-size:13px;color:var(--text-dim);margin-top:6px;display:none;}
 .mini-quiz .fb.show{display:block;}
 
 /* nav buttons bottom */
-.topic-nav{display:flex;justify-content:space-between;gap:16px;margin-top:50px;padding-top:26px;border-top:1px solid var(--glass-border);}
+.topic-nav{display:flex;justify-content:space-between;gap:16px;margin-top:50px;padding-top:26px;border-top:1px solid var(--border-soft);}
 .nav-btn{
-  flex:1;background:var(--glass-fill);border:1px solid var(--glass-border);border-radius:var(--radius-sm);
-  padding:14px 18px;cursor:pointer;text-align:left;transition:border-color .2s,transform .2s,background .2s;color:var(--text);
-  backdrop-filter: blur(14px);
+  position:relative;overflow:hidden;
+  flex:1;background:rgba(255,255,255,.05);backdrop-filter:blur(var(--glass-blur));border:1px solid var(--border);border-radius:14px;
+  padding:14px 18px;cursor:pointer;text-align:left;transition:border-color .35s var(--spring),transform .35s var(--spring),background .35s var(--spring),box-shadow .35s var(--spring);color:var(--text);
 }
-.nav-btn:hover{border-color:var(--glass-border-strong);transform:translateY(-2px);background:rgba(255,255,255,.1);}
+.nav-btn:hover{border-color:var(--accent);transform:translateY(-3px);background:rgba(255,255,255,.08);box-shadow:0 12px 30px rgba(0,0,0,.3);}
+.nav-btn:active{transform:translateY(-1px) scale(.985);}
 .nav-btn.next{text-align:right;}
 .nav-btn .dir{font-family:var(--font-code);font-size:10.5px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;}
 .nav-btn .ttl{font-size:14px;font-weight:600;margin-top:4px;}
@@ -391,86 +387,78 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 .hero{padding:70px 0 40px;}
 .hero-eyebrow{font-family:var(--font-code);font-size:12.5px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:18px;}
 .hero h1{font-family:var(--font-display);font-size:clamp(34px,5.2vw,56px);font-weight:700;line-height:1.08;margin-bottom:20px;}
-.hero h1 span{
-  background:linear-gradient(120deg, var(--accent), var(--pink), var(--accent));
-  background-size:200% auto;
-  -webkit-background-clip:text; background-clip:text; color:transparent;
-  animation:shineText 4s linear infinite;
-}
-@keyframes shineText{0%{background-position:0% 50%;}100%{background-position:200% 50%;}}
-
-/* Continue-where-you-left-off card */
-.continue-card{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  background:linear-gradient(120deg, rgba(255,180,84,.14), rgba(127,224,214,.10));
-  border:1px solid var(--glass-border-strong);border-radius:16px;padding:18px 22px;margin-bottom:28px;
-  -webkit-backdrop-filter: blur(18px) saturate(150%); backdrop-filter: blur(18px) saturate(150%);
-  box-shadow:0 10px 30px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.18);
-  cursor:pointer; transition:transform .25s ease, box-shadow .25s ease;
-}
-.continue-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.22);}
-.continue-card .cc-label{font-family:var(--font-code);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
-.continue-card .cc-title{font-family:var(--font-display);font-weight:600;font-size:16px;}
-.continue-card .cc-arrow{font-family:var(--font-code);font-size:20px;color:var(--accent-2);transition:transform .25s;}
-.continue-card:hover .cc-arrow{transform:translateX(6px);}
-
-/* Ripple effect for clickable glass buttons */
-.opt, .nav-btn, .unit-card, .continue-card{position:relative;overflow:hidden;}
-.ripple{
-  position:absolute;border-radius:50%;background:rgba(255,255,255,.35);
-  transform:scale(0);animation:rippleAnim .6s ease-out forwards;pointer-events:none;
-}
-@keyframes rippleAnim{to{transform:scale(3.2);opacity:0;}}
-
-/* Unit card tilt (JS sets --rx/--ry) */
-.unit-card{ transform: perspective(800px) rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg)) translateY(0); }
-.unit-card:hover{ transform: perspective(800px) rotateX(var(--ry,0deg)) rotateY(var(--rx,0deg)) translateY(-5px); }
+.hero h1 span{background:linear-gradient(120deg,var(--accent),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .hero p.lead{font-size:17px;color:var(--text-dim);max-width:600px;margin-bottom:34px;}
 .unit-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:20px;}
 .unit-card{
-  background:var(--glass-fill);
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  backdrop-filter: blur(18px) saturate(150%);
-  border:1px solid var(--glass-border);border-radius:16px;padding:20px;
-  cursor:pointer;transition:transform .25s,border-color .25s,box-shadow .25s;position:relative;overflow:hidden;
-  box-shadow:0 8px 26px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.16);
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+  border:1px solid var(--border);border-radius:16px;padding:20px;
+  box-shadow:var(--hairline-top);
+  cursor:pointer;transition:transform .4s var(--spring),border-color .4s var(--spring),box-shadow .4s var(--spring);position:relative;overflow:hidden;
 }
-.unit-card::before{content:"";position:absolute;top:0;left:0;right:0;height:55%;background:linear-gradient(180deg, rgba(255,255,255,.14), transparent);pointer-events:none;}
-.unit-card:hover{transform:translateY(-5px);border-color:var(--glass-border-strong);box-shadow:0 16px 40px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.2);}
-.unit-card .n{font-family:var(--font-code);color:var(--accent);font-size:12px;margin-bottom:8px;position:relative;}
-.unit-card .t{font-family:var(--font-display);font-size:17px;font-weight:600;margin-bottom:6px;position:relative;}
-.unit-card .d{font-size:12.5px;color:var(--text-faint);position:relative;}
+.unit-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 20px 45px rgba(0,0,0,.35),0 0 0 1px rgba(143,166,255,.2),var(--hairline-top);}
+.unit-card:active{transform:translateY(-2px) scale(.99);}
+.unit-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--teal),var(--pink));transform:scaleX(0);transform-origin:left;transition:transform .35s;}
+.unit-card:hover::before{transform:scaleX(1);}
+.unit-card .n{font-family:var(--font-code);color:var(--accent);font-size:12px;margin-bottom:8px;}
+.unit-card .t{font-family:var(--font-display);font-size:17px;font-weight:600;margin-bottom:6px;}
+.unit-card .d{font-size:12.5px;color:var(--text-faint);}
 
 /* mobile */
 .menu-btn{display:none;}
-#overlay{display:none;}
 @media(max-width:900px){
-  #sidebar{position:fixed;left:0;top:0;z-index:400;transform:translateX(-110%);transition:transform .35s ease;margin:10px;height:calc(100vh - 20px);}
+  #sidebar{position:fixed;left:0;top:0;z-index:400;transform:translateX(-100%);transition:transform .35s cubic-bezier(.2,.7,.3,1);box-shadow:0 0 60px rgba(0,0,0,.5);}
   #sidebar.open{transform:translateX(0);}
   #mobile-bar{
-    display:flex;align-items:center;gap:12px;padding:14px 18px;position:sticky;top:0;z-index:100;
-    background:var(--glass-fill);
-    -webkit-backdrop-filter: blur(18px) saturate(150%);
-    backdrop-filter: blur(18px) saturate(150%);
-    border-bottom:1px solid var(--glass-border);
+    display:flex;align-items:center;gap:12px;padding:14px 18px;
+    background:rgba(255,255,255,.05);backdrop-filter:blur(var(--glass-blur));
+    border-bottom:1px solid var(--border-soft);position:sticky;top:0;z-index:100;
   }
-  .menu-btn{display:flex;background:rgba(255,255,255,.08);border:1px solid var(--glass-border);color:var(--text);width:36px;height:36px;border-radius:10px;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
+  .menu-btn{display:flex;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:10px;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
   .content-wrap{padding:32px 20px 90px;}
-  #overlay.show{display:block;position:fixed;inset:0;background:rgba(5,6,16,.6);z-index:390;}
-  /* Make the sidebar's own glass more opaque on mobile so it stays legible
-     even though it's rendered above the (already blurred) page backdrop */
-  #sidebar{background:rgba(20,17,40,0.82);}
-  #sidebar .unit-toggle:hover, #sidebar .topic-link:hover{background:rgba(255,255,255,.10);}
+  #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:390;}
+  #overlay.show{display:block;}
+  .bg-orb{display:none;}
+}
+@media (prefers-reduced-motion: reduce){
+  .bg-orb, .xp-fill, #progress-bar, .boot-line, .boot-cursor{animation:none !important;}
+  .reveal{transition:opacity .3s ease;filter:none;transform:none;}
+}
+@media(max-width:480px){
+  .content-wrap{padding:22px 16px 80px;}
+  .hero{padding:44px 0 26px;}
+  .hero h1{font-size:clamp(24px,7.5vw,32px);}
+  .hero p.lead{font-size:14.5px;}
+  .topic-title{font-size:clamp(21px,7vw,26px);}
+  .topic-hook{font-size:14.5px;margin-bottom:24px;}
+  .block h3{font-size:16.5px;}
+  .unit-cards{grid-template-columns:1fr;}
+  .breakdown .row{flex-direction:column;gap:4px;}
+  table.tbl, .table-scroll table.tbl{font-size:12.5px;}
+  table.tbl th, table.tbl td{padding:8px 9px;}
+  .sidebar-head h1{font-size:18px;}
+  .flow{gap:0;}
+  .flow-node{padding:8px 12px;font-size:12px;}
+  .editor pre{font-size:12px;padding:14px;}
+  .topic-nav{flex-direction:column;}
+  .nav-btn.next{text-align:left;}
+  .contribute-link{font-size:11px;}
 }
 </style>
 </head>
 <body>
 
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+<div class="bg-orb bg-orb-4"></div>
+
 <div id="boot">
   <div class="boot-box">
     <div class="boot-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div></div>
     <div class="boot-body" id="boot-lines"></div>
-    <div class="boot-progress-track"><div class="boot-progress-fill" id="bootFill"></div></div>
   </div>
 </div>
 
@@ -487,12 +475,19 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
         <div class="xp-track"><div class="xp-fill" id="xpFill"></div></div>
         <div class="xp-label" id="xpLabel">0 / 47 topics done</div>
       </div>
-      <button id="resetProgress" class="reset-btn" title="Clear saved progress">↺ Reset progress</button>
     </div>
     <div class="search-wrap">
       <input id="search" type="text" placeholder="Search a topic... (e.g. constructor)">
     </div>
     <nav id="unit-list"></nav>
+    <div class="sidebar-foot">
+      <a class="contribute-link" href="https://github.com/01keshav/OOPs/tree/main" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>Found a bug or missing topic? Open a PR</span>
+      </a>
+      <div class="save-status" id="saveStatus"><span class="save-dot"></span><span id="saveStatusText">Progress saved on this device</span></div>
+      <button class="reset-btn" id="resetBtn" type="button">Reset progress</button>
+    </div>
   </aside>
 
   <main id="main">
@@ -510,8 +505,8 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 <template id="tpl-home">
   <div class="hero reveal">
     <div class="hero-eyebrow">// welcome</div>
-    <h1>Learn Java OOP<br></h1>
-    <p class="lead">The entire syllabus, in one place — every class, object, and keyword explained in plain English with code and real-life examples. Click any topic in the sidebar and start learning.</p>
+    <h1>Learn OOP in JAVA<br></h1>
+    <p class="lead">The whole syllabus, in one place — every class, object, and keyword explained in plain English, with code and a real-life example for each. Click any topic in the sidebar and start learning.</p>
   </div>
   <div class="unit-cards reveal" id="homeCards"></div>
 </template>
@@ -520,40 +515,40 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 <template id="tpl-u1-t1">
 <div class="topic-eyebrow">Unit 1 · Topic 1</div>
 <h1 class="topic-title">History of Java &amp; Buzzwords</h1>
-<p class="topic-hook">Where Java came from, who made it, and the "buzzwords" that show up in every interview.</p>
+<p class="topic-hook">Where Java came from, who built it, and the "buzzwords" that show up in almost every interview.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5 — Simple Explanation</h3>
-  <p>Java is a programming language created by <b>James Gosling</b> and his team at Sun Microsystems, released in <b>1995</b>. It was originally called <b>"Oak"</b> (named after an oak tree outside Gosling's office), later renamed to "Java" — inspired by Java coffee!</p>
-  <p>It was originally built to control smart electronic devices (like TVs, remotes) as part of the "Green Project." Later, when the internet took off, Java turned out to be perfect for internet applications because it can <b>run on any computer</b> — Windows, Mac, or Linux.</p>
+  <p>Java is a programming language created by <b>James Gosling</b> and his team in <b>1995</b> at Sun Microsystems. It was originally called <b>"Oak"</b> (named after a tree), and was later renamed "Java" — inspired by Java coffee!</p>
+  <p>It was originally built to control smart electronic devices (like TVs and remotes), as part of a project called the "Green Project." Later, when the internet took off, Java turned out to be perfect for internet applications, because it <b>can run on any computer</b> — Windows, Mac, or Linux.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Think of Java as a "universal remote." Just like a universal remote works with any TV brand, code written in Java can run on any computer/OS — as long as that computer has a "Java Player" (JVM) installed.</p>
+    <p>Think of Java as a "universal remote." Just like a universal remote works with any TV brand, code written in Java runs on any computer or OS — as long as that computer has a "Java Player" (the JVM) installed.</p>
   </div>
-  <p>In <b>2010</b>, Oracle Corporation acquired Sun Microsystems — Java is now owned by Oracle.</p>
+  <p>In <b>2010</b>, Oracle Corporation acquired Sun Microsystems — so Java is now owned by Oracle.</p>
 </div>
 
 <div class="block reveal">
   <h3><span class="ico">⚡</span> Java Buzzwords (Exam Favorite!)</h3>
-  <p>These are the 12 features that make Java special. Frequently asked in exams and interviews both.</p>
+  <p>These are the 12 features that make Java special. They come up a lot in both exams and interviews.</p>
   <table class="tbl">
     <tr><th>Buzzword</th><th>What It Means</th></tr>
-    <tr><td>Simple</td><td>Easy syntax, no complex pointers like C++, automatic memory management</td></tr>
+    <tr><td>Simple</td><td>Easy syntax, not as complex as C++, automatic memory management</td></tr>
     <tr><td>Object-Oriented</td><td>Everything is thought of as an object</td></tr>
-    <tr><td>Platform Independent</td><td>Write once, run anywhere — the famous "WORA"</td></tr>
-    <tr><td>Secure</td><td>No pointers, runs safely inside the JVM sandbox</td></tr>
-    <tr><td>Robust</td><td>Strong — memory is managed automatically, errors are handled gracefully</td></tr>
-    <tr><td>Multithreaded</td><td>Can run multiple tasks at the same time</td></tr>
-    <tr><td>Architecture Neutral</td><td>Bytecode isn't tied to any specific CPU type</td></tr>
+    <tr><td>Platform Independent</td><td>Write it once, run it anywhere — "Write Once, Run Anywhere" (WORA)</td></tr>
+    <tr><td>Secure</td><td>No pointers, runs inside a safe environment within the JVM</td></tr>
+    <tr><td>Robust</td><td>Strong — memory is managed automatically, errors get handled gracefully</td></tr>
+    <tr><td>Multithreaded</td><td>Can do multiple tasks at the same time</td></tr>
+    <tr><td>Architecture Neutral</td><td>Bytecode isn't tied to any one CPU type</td></tr>
     <tr><td>Portable</td><td>The same bytecode can be carried to any device</td></tr>
     <tr><td>High Performance</td><td>Runs fast thanks to the JIT (Just-In-Time) compiler</td></tr>
-    <tr><td>Distributed</td><td>Can work over networks (internet applications)</td></tr>
+    <tr><td>Distributed</td><td>Can work over a network (internet apps)</td></tr>
     <tr><td>Dynamic</td><td>Can load new classes at runtime</td></tr>
-    <tr><td>Interpreted</td><td>The JVM interprets bytecode</td></tr>
+    <tr><td>Interpreted</td><td>The JVM interprets bytecode line by line</td></tr>
   </table>
   <div class="hinglish">
-    <div class="lbl">💬 Easy Way To Remember</div>
-    <p>The most important buzzword is <b>"Write Once, Run Anywhere"</b> — matlab tum apna Java code EK baar likho, aur woh Windows, Mac, Linux — sab jagah bina change kiye chal jaayega. Yehi Java ki sabse badi taaqat hai.</p>
+    <div class="lbl">💬 How to Remember It</div>
+    <p>The most important buzzword is <b>"Write Once, Run Anywhere"</b> — meaning: you write your Java code ONE time, and it runs everywhere — Windows, Mac, Linux — without any changes. This is Java's biggest strength.</p>
   </div>
 </div>
 
@@ -570,15 +565,15 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 <template id="tpl-u1-t2">
 <div class="topic-eyebrow">Unit 1 · Topic 2</div>
 <h1 class="topic-title">Procedural vs Object-Oriented Programming</h1>
-<p class="topic-hook">Java is "Object-Oriented" — but what does that actually mean, and how is it different from the old style (Procedural)?</p>
+<p class="topic-hook">Java is "Object-Oriented" — but what does that actually mean, and how is it different from the older style (Procedural)?</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5 — Simple Explanation</h3>
-  <p>In <b>Procedural Programming</b> (like C), a program is written as a list of steps/functions — do this first, then that. Data and functions are kept separate, and any function can access any data (like an open house anyone can walk into).</p>
-  <p>In <b>Object-Oriented Programming (OOP)</b> (like Java), we bundle data and the functions that work on that data into one "object" — like a locked box that only allows entry through authorized doors.</p>
+  <p><b>Procedural Programming</b> (like the C language) writes a program as a list of steps/functions — do this first, then do that. Data and functions stay separate, and any function can access any data (like an open house that anyone can walk into).</p>
+  <p><b>Object-Oriented Programming (OOP)</b> (like Java) bundles data together with the functions that work on it, inside an "object" — like a sealed box that you can only enter through authorized doors.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Procedural = an open kitchen where anyone can touch anything. OOP = a proper restaurant where each section (kitchen, billing, storage) has its own job and its own access — organized and secure.</p>
+    <p>Procedural = A roadside food stall where everything happens in one open kitchen, and anyone can touch anything. OOP = A restaurant where every section (kitchen, billing, storage) has its own job and its own access — organized and secure.</p>
   </div>
 </div>
 
@@ -589,7 +584,7 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
     <tr><td>Program built from</td><td>Functions</td><td>Objects</td></tr>
     <tr><td>Data &amp; Functions</td><td>Separate</td><td>Bundled together (Encapsulation)</td></tr>
     <tr><td>Approach</td><td>Top-down</td><td>Bottom-up</td></tr>
-    <tr><td>Security</td><td>Low (global data, anyone can access)</td><td>High (private data, controlled access)</td></tr>
+    <tr><td>Security</td><td>Low (global data, anyone can access it)</td><td>High (private data, controlled access)</td></tr>
     <tr><td>Code Reuse</td><td>Limited</td><td>High (via Inheritance)</td></tr>
     <tr><td>Real World Modeling</td><td>Difficult</td><td>Natural — like Student, Car, BankAccount</td></tr>
   </table>
@@ -598,20 +593,20 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 <div class="block reveal">
   <h3><span class="ico">🎯</span> Need &amp; Advantages of OOP</h3>
   <div class="keypoints">
-    <div class="lbl">Why do we need OOP?</div>
+    <div class="lbl">Why does OOP matter?</div>
     <ul>
-      <li>Real-world things (Car, Student, Employee) naturally look like "objects" — so writing code becomes easier</li>
-      <li>Managing large software becomes easier (complexity goes down)</li>
-      <li><b>Reusability</b> — with Inheritance, code written once can be reused again and again</li>
-      <li><b>Security</b> — with Encapsulation, we can hide data</li>
-      <li>Maintaining and extending code becomes easier</li>
+      <li>Real-world things (Car, Student, Employee) naturally look like "objects" — which makes writing code easier</li>
+      <li>Makes managing large software easier (less complexity)</li>
+      <li><b>Reusability</b> — code written once can be reused again and again through Inheritance</li>
+      <li><b>Security</b> — Encapsulation lets you hide data</li>
+      <li>Easier to maintain and extend</li>
     </ul>
   </div>
 </div>
 
 <div class="mini-quiz reveal" data-quiz>
   <div class="lbl">🎯 Quick Check</div>
-  <div class="q">Bundling data and functions together in OOP is called?</div>
+  <div class="q">What's it called when data and functions are bundled together in OOP?</div>
   <button class="opt" data-correct="false">Inheritance</button>
   <button class="opt" data-correct="true">Encapsulation</button>
   <button class="opt" data-correct="false">Polymorphism</button>
@@ -622,23 +617,23 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 <template id="tpl-u1-t3">
 <div class="topic-eyebrow">Unit 1 · Topic 3</div>
 <h1 class="topic-title">JDK vs JRE vs JVM</h1>
-<p class="topic-hook">These 3 acronyms confuse everyone the most — after this topic, you won't be confused again.</p>
+<p class="topic-hook">These three sets of letters (JDK, JRE, JVM) confuse people more than anything else — after this topic, you'll never mix them up again.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5 — Simple Explanation</h3>
-  <p>Imagine you need to bake a cake and eat it:</p>
+  <p>Imagine you need to both bake a cake and eat it:</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p><b>JVM</b> = your <b>mouth + stomach</b> that eats and digests the cake (actual execution). <b>JRE</b> = <b>plate + cutlery + your mouth-stomach</b> — the whole setup needed to eat the cake. <b>JDK</b> = <b>full kitchen + ingredients + plate + cutlery + mouth-stomach</b> — the whole setup for both MAKING and eating the cake.</p>
+    <p><b>JVM</b> = your <b>mouth + stomach</b>, which eats and digests the cake (the actual execution). <b>JRE</b> = <b>plate + cutlery + your mouth-stomach</b> — the complete setup needed to eat the cake. <b>JDK</b> = <b>the whole kitchen + ingredients + plate + cutlery + mouth-stomach</b> — the complete setup for both BAKING and eating the cake.</p>
   </div>
 </div>
 
 <div class="diagram reveal">
   <div class="diagram-title">Containment Diagram</div>
   <div class="flow-down">
-    <div class="flow-node acc" style="width:100%;text-align:center;">JDK — Java Development Kit (full set: write + compile + run)</div>
+    <div class="flow-node acc" style="width:100%;text-align:center;">JDK — Java Development Kit (the full set: write + compile + run)</div>
     <div class="flow-arrow">⌄ contains</div>
-    <div class="flow-node teal" style="width:80%;text-align:center;">JRE — Java Runtime Environment (only for running)</div>
+    <div class="flow-node teal" style="width:80%;text-align:center;">JRE — Java Runtime Environment (only for running programs)</div>
     <div class="flow-arrow">⌄ contains</div>
     <div class="flow-node" style="width:60%;text-align:center;">JVM — Java Virtual Machine (actually executes the bytecode)</div>
   </div>
@@ -647,19 +642,19 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 <div class="block reveal">
   <table class="tbl">
     <tr><th>Term</th><th>Full Form</th><th>What It Does</th></tr>
-    <tr><td>JVM</td><td>Java Virtual Machine</td><td><b>Actually runs</b> the bytecode (.class file). Each OS has its own JVM, but the bytecode is the same everywhere — this is exactly what makes WORA possible.</td></tr>
-    <tr><td>JRE</td><td>Java Runtime Environment</td><td>JVM + core libraries. Only needed to <b>run</b> a Java program (not for developers — end users only need this).</td></tr>
-    <tr><td>JDK</td><td>Java Development Kit</td><td>JRE + compiler (<code>javac</code>) + debugging tools. Needed to <b>write and compile</b> Java programs — developers install this.</td></tr>
+    <tr><td>JVM</td><td>Java Virtual Machine</td><td><b>Actually runs</b> the bytecode (.class file). Every OS has its own JVM, but the bytecode is the same for all of them — this is what makes WORA (Write Once Run Anywhere) possible.</td></tr>
+    <tr><td>JRE</td><td>Java Runtime Environment</td><td>JVM + core libraries. Needed only to <b>run</b> a Java program (not for developers — this is enough for an end user).</td></tr>
+    <tr><td>JDK</td><td>Java Development Kit</td><td>JRE + compiler (<code>javac</code>) + debugging tools. Needed to <b>write and compile</b> Java programs — this is what a developer installs.</td></tr>
   </table>
   <div class="keypoints">
     <div class="lbl">🔑 Exam Line</div>
-    <p style="font-size:14.5px;color:var(--text);">JDK ⊃ JRE ⊃ JVM — meaning JDK is the biggest set, containing JRE, which in turn contains JVM.</p>
+    <p style="font-size:14.5px;color:var(--text);">JDK ⊃ JRE ⊃ JVM — meaning JDK is the biggest set, containing JRE, and JRE contains JVM.</p>
   </div>
 </div>
 
 <div class="mini-quiz reveal" data-quiz>
   <div class="lbl">🎯 Quick Check</div>
-  <div class="q">Who actually runs the program?</div>
+  <div class="q">What actually runs the program?</div>
   <button class="opt" data-correct="false">JDK</button>
   <button class="opt" data-correct="false">JRE</button>
   <button class="opt" data-correct="true">JVM</button>
@@ -670,14 +665,14 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 <template id="tpl-u1-t4">
 <div class="topic-eyebrow">Unit 1 · Topic 4</div>
 <h1 class="topic-title">Data Types &amp; Variables</h1>
-<p class="topic-hook">The "containers" that hold data — and how we name them.</p>
+<p class="topic-hook">The "containers" used to store data — and how we name them.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5 — Simple Explanation</h3>
-  <p>A data type tells us <b>what kind of data</b> we're storing — a number, a decimal, a letter, or true/false. A variable is a <b>named box</b> where that data is kept.</p>
+  <p>A data type tells us <b>what kind of data</b> we're storing — a number, a decimal, a letter, or true/false. A variable is a <b>named box</b> that holds that data.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Imagine your kitchen has different sized containers — small ones for spices (int), big ones for flour (double), one just for yes/no chits (boolean). Each container has its name written on it (variable name).</p>
+    <p>Imagine your kitchen has containers of different sizes — a small one for spices (int), a big one for flour (double), and one just for yes/no notes (boolean). Each container has its own label written on it (the variable name).</p>
   </div>
 </div>
 
@@ -688,17 +683,17 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
     <div class="flow-arrow">⌄</div>
   </div>
   <table class="tbl" style="margin-top:6px;">
-    <tr><th>Primitive (8 types — actual value is stored)</th><th>Size</th></tr>
+    <tr><th>Primitive (8 types — stores the actual value)</th><th>Size</th></tr>
     <tr><td><code>byte</code></td><td>1 byte</td></tr>
     <tr><td><code>short</code></td><td>2 bytes</td></tr>
-    <tr><td><code>int</code></td><td>4 bytes — the most commonly used</td></tr>
+    <tr><td><code>int</code></td><td>4 bytes — used the most</td></tr>
     <tr><td><code>long</code></td><td>8 bytes</td></tr>
     <tr><td><code>float</code></td><td>4 bytes — decimal</td></tr>
     <tr><td><code>double</code></td><td>8 bytes — decimal (more precise)</td></tr>
     <tr><td><code>char</code></td><td>2 bytes — a single character</td></tr>
     <tr><td><code>boolean</code></td><td>true / false</td></tr>
   </table>
-  <p style="margin-top:12px;font-size:13.8px;color:var(--text-dim);"><b>Non-Primitive (Reference types)</b> — like <code>String</code>, <code>Array</code>, <code>Class</code> objects — these store a <b>memory address</b> instead of the actual value.</p>
+  <p style="margin-top:12px;font-size:13.8px;color:var(--text-dim);"><b>Non-Primitive (Reference types)</b> — like <code>String</code>, <code>Array</code>, and <code>Class</code> objects — these don't store the actual value, but rather its <b>memory address</b>.</p>
 </div>
 
 <div class="editor reveal">
@@ -711,18 +706,18 @@ String name = "Keshav";    </code></pre>
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Line-by-Line Breakdown</div>
-  <div class="row"><span class="k">int age = 20</span><span class="v">— <code>int</code> is the data type (whole number), <code>age</code> is the variable name, <code>20</code> is its value</span></div>
+  <div class="row"><span class="k">int age = 20</span><span class="v">— <code>int</code> is the data type (whole number), <code>age</code> is the variable's name, <code>20</code> is its value</span></div>
   <div class="row"><span class="k">double marks</span><span class="v">— for storing decimal numbers (like 89.5)</span></div>
-  <div class="row"><span class="k">char grade</span><span class="v">— exactly ONE character, always in single quotes <code>'A'</code></span></div>
+  <div class="row"><span class="k">char grade</span><span class="v">— just ONE character, always in single quotes <code>'A'</code></span></div>
   <div class="row"><span class="k">boolean isPassed</span><span class="v">— can only be 2 values: <code>true</code> or <code>false</code></span></div>
-  <div class="row"><span class="k">String name</span><span class="v">— for storing text/words, always in double quotes <code>"..."</code> — this is a reference type (NOT primitive)</span></div>
+  <div class="row"><span class="k">String name</span><span class="v">— for storing text/words, always in double quotes <code>"..."</code> — this is a reference type (not Primitive!)</span></div>
 </div>
 
 <div class="block reveal">
   <h3><span class="ico">📦</span> Types of Variables</h3>
   <ul>
-    <li><b>Local Variable</b> — declared inside a method, usable only within that method</li>
-    <li><b>Instance Variable</b> — inside a class, outside any method — each object gets its own copy</li>
+    <li><b>Local Variable</b> — declared inside a method, can only be used within that method</li>
+    <li><b>Instance Variable</b> — inside the class, outside any method — each object gets its own copy</li>
     <li><b>Static Variable</b> — declared with the <code>static</code> keyword, <b>shared</b> across all objects (covered in detail in Unit 2)</li>
   </ul>
 </div>
@@ -731,7 +726,7 @@ String name = "Keshav";    </code></pre>
 <template id="tpl-u1-t5">
 <div class="topic-eyebrow">Unit 1 · Topic 5</div>
 <h1 class="topic-title">Operators</h1>
-<p class="topic-hook">Symbols for working between two values — adding, subtracting, comparing, and more.</p>
+<p class="topic-hook">Symbols that operate on two values — adding, subtracting, comparing, and much more.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5 — Simple Explanation</h3>
@@ -741,12 +736,12 @@ String name = "Keshav";    </code></pre>
 <div class="block reveal">
   <table class="tbl">
     <tr><th>Type</th><th>Operators</th><th>Example</th></tr>
-    <tr><td>Arithmetic</td><td><code>+ - * / %</code></td><td><code>a + b</code> (add), <code>a % b</code> (remainder left over)</td></tr>
+    <tr><td>Arithmetic</td><td><code>+ - * / %</code></td><td><code>a + b</code> (adding), <code>a % b</code> (remainder — what's left over)</td></tr>
     <tr><td>Relational</td><td><code>== != &gt; &lt; &gt;= &lt;=</code></td><td><code>a &gt; b</code> → gives true/false (comparison)</td></tr>
     <tr><td>Logical</td><td><code>&amp;&amp; || !</code></td><td><code>a &gt; 5 &amp;&amp; b &lt; 10</code> → both must be true (AND)</td></tr>
     <tr><td>Assignment</td><td><code>= += -= *= /=</code></td><td><code>a += 5</code> means <code>a = a + 5</code></td></tr>
-    <tr><td>Unary</td><td><code>++ -- !</code></td><td><code>a++</code> → increase a's value by 1</td></tr>
-    <tr><td>Ternary</td><td><code>? :</code></td><td><code>a &gt; b ? a : b</code> → if true, a, else b</td></tr>
+    <tr><td>Unary</td><td><code>++ -- !</code></td><td><code>a++</code> → increase the value of a by 1</td></tr>
+    <tr><td>Ternary</td><td><code>? :</code></td><td><code>a &gt; b ? a : b</code> → if true then a, otherwise b</td></tr>
   </table>
 </div>
 
@@ -754,28 +749,28 @@ String name = "Keshav";    </code></pre>
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">Operators.java</span></div>
   <pre><code data-lang="java">int a = 10, b = 3;
 System.out.println(a + b);   // 13
-System.out.println(a % b);   // 1  (10 divided by 3 leaves a remainder of 1)
+System.out.println(a % b);   // 1  (divide 10 by 3, remainder is 1)
 System.out.println(a > b);   // true
 int max = (a > b) ? a : b;   // ternary -> max = 10</code></pre>
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">a % b</span><span class="v">The "Modulus" operator — gives whatever is LEFT OVER after division. 10 ÷ 3 = 3 times, 1 left over → answer is 1</span></div>
-  <div class="row"><span class="k">a &gt; b ? a : b</span><span class="v">Ternary operator — "if the condition is true, first value; else, second value" — a one-line if-else</span></div>
+  <div class="row"><span class="k">a % b</span><span class="v">The "Modulus" operator — gives what's LEFT OVER after division. 10 ÷ 3 = 3 times, 1 left over → answer 1</span></div>
+  <div class="row"><span class="k">a &gt; b ? a : b</span><span class="v">The ternary operator — "if the condition is true, use the first value, otherwise the second" — a one-line if-else</span></div>
 </div>
 </template>
 
 <template id="tpl-u1-t6">
 <div class="topic-eyebrow">Unit 1 · Topic 6</div>
 <h1 class="topic-title">Control Structures</h1>
-<p class="topic-hook">Let the program make decisions (if-else), and repeat tasks (loops).</p>
+<p class="topic-hook">Let the program make decisions (if-else) and repeat tasks (loops).</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p><b>Selection</b> (if-else, switch) = letting the program make a <b>decision</b>. <b>Loop</b> (for, while) = repeating a task <b>again and again</b>, without writing it repeatedly.</p>
+  <p><b>Selection</b> (if-else, switch) = letting the program make a <b>decision</b>. <b>Loop</b> (for, while) = repeating a task <b>again and again</b>, without writing it out every time.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>if-else = "If it's raining, take an umbrella, else don't." Loop = "Keep eating until the plate is empty" — the same thing happens in programs too.</p>
+    <p>if-else = "If it's raining, take an umbrella, otherwise don't." Loop = "Keep eating until the plate is empty" — a program does exactly the same kind of thing.</p>
   </div>
 </div>
 
@@ -800,14 +795,14 @@ for (int i = 0; i < 5; i++) {
     System.out.println(i);
 }
 
-// while loop -> runs as long as the condition is true
+// while loop -> runs while the condition is true
 int i = 0;
 while (i < 5) {
     System.out.println(i);
     i++;
 }
 
-// do-while -> runs once first, THEN checks the condition
+// do-while -> runs once first, then checks the condition
 int j = 0;
 do {
     System.out.println(j);
@@ -816,9 +811,9 @@ do {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown — for loop</div>
-  <div class="row"><span class="k">int i = 0</span><span class="v">Starting point — the counter <code>i</code> begins at 0</span></div>
+  <div class="row"><span class="k">int i = 0</span><span class="v">Starting point — start the counter <code>i</code> at 0</span></div>
   <div class="row"><span class="k">i &lt; 5</span><span class="v">Condition — the loop keeps running as long as this is true</span></div>
-  <div class="row"><span class="k">i++</span><span class="v">At the end of every loop iteration, <code>i</code>'s value increases by 1</span></div>
+  <div class="row"><span class="k">i++</span><span class="v">At the end of every loop iteration, increase <code>i</code> by 1</span></div>
 </div>
 </template>
 
@@ -829,7 +824,7 @@ do {
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>When you write Java code, the computer doesn't understand it directly. It first needs to be <b>compiled</b> (translated) into bytecode, and then the JVM <b>runs</b> it.</p>
+  <p>When you write Java code, the computer can't understand it directly. It first needs to be <b>compiled</b> (translated) into bytecode, and then the JVM <b>runs</b> it.</p>
 </div>
 
 <div class="editor reveal">
@@ -841,34 +836,34 @@ do {
 }</code></pre>
 </div>
 <div class="breakdown reveal">
-  <div class="lbl">🔍 What Every Word Means</div>
+  <div class="lbl">🔍 What Each Word Means</div>
   <div class="row"><span class="k">public class HelloWorld</span><span class="v">We're creating a <b>class</b> named <code>HelloWorld</code>. This name must match the FILE name (<code>HelloWorld.java</code>)</span></div>
   <div class="row"><span class="k">public static void main(String[] args)</span><span class="v">This is the <b>main method</b> — the program's "entry gate." The JVM looks for this method first and starts execution right here</span></div>
-  <div class="row"><span class="k">System.out.println(...)</span><span class="v">Prints text to the screen (and also adds a new line)</span></div>
+  <div class="row"><span class="k">System.out.println(...)</span><span class="v">Prints text to the screen (and adds a new line too)</span></div>
 </div>
 
 <div class="diagram reveal">
   <div class="diagram-title">Compilation → Execution Flow</div>
   <div class="flow-down">
-    <div class="flow-node">HelloWorld.java (source code — humans can read it)</div>
+    <div class="flow-node">HelloWorld.java (source code — human-readable)</div>
     <div class="flow-arrow">⌄ javac HelloWorld.java (compile)</div>
-    <div class="flow-node acc">HelloWorld.class (bytecode — JVM understands it)</div>
+    <div class="flow-node acc">HelloWorld.class (bytecode — the JVM understands this)</div>
     <div class="flow-arrow">⌄ java HelloWorld (run)</div>
-    <div class="flow-node teal">JVM executes it</div>
+    <div class="flow-node teal">The JVM executes it</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node">Output appears on console</div>
+    <div class="flow-node">Output appears on the console</div>
   </div>
 </div>
 
 <div class="editor reveal">
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">terminal</span></div>
-  <pre><code data-lang="bash">javac HelloWorld.java     # .java -> .class (bytecode)
-java HelloWorld           # JVM runs the bytecode</code></pre>
+  <pre><code data-lang="bash">javac HelloWorld.java     # turns .java into .class (bytecode)
+java HelloWorld           # the JVM runs the bytecode</code></pre>
 </div>
 
 <div class="keypoints reveal">
   <div class="lbl">🔑 Exam Line</div>
-  <p style="font-size:14.5px;">Java is <b>both compiled and interpreted</b> — source code is first compiled into bytecode, then the JVM interprets/runs that bytecode. This is exactly what makes "Write Once, Run Anywhere" possible.</p>
+  <p style="font-size:14.5px;">Java is <b>both compiled and interpreted</b> — the source code is first compiled into bytecode, and then the JVM interprets/runs that bytecode. This is exactly what makes "Write Once, Run Anywhere" possible.</p>
 </div>
 
 <div class="mini-quiz reveal" data-quiz>
@@ -880,25 +875,26 @@ java HelloWorld           # JVM runs the bytecode</code></pre>
   <div class="fb"></div>
 </div>
 </template>
+
 <!-- ============ UNIT 2 TEMPLATES ============ -->
 <template id="tpl-u2-t1">
 <div class="topic-eyebrow">Unit 2 · Topic 1</div>
 <h1 class="topic-title">Class — The Blueprint</h1>
-<p class="topic-hook">The first and most important building block of OOP. Everything starts here.</p>
+<p class="topic-hook">The very first and most important building block of OOP. Everything starts right here.</p>
 
 <div class="block reveal">
-  <h3><span class="ico">🧠</span> ELI5 — What is a Class?</h3>
-  <p>A class is a <b>blueprint / design</b> that describes what an object will look like and what it can do. A class itself isn't a real thing — it's just a plan.</p>
+  <h3><span class="ico">🧠</span> ELI5 — What Is a Class?</h3>
+  <p>A class is a <b>blueprint / design / plan</b> that describes what an object will look like and what it will be able to do. A class itself isn't a real thing — it's just a plan.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Class = a house's <b>blueprint</b> that an architect draws. A blueprint doesn't mean you can live in it — a blueprint just shows the design. When an actual house is BUILT from that blueprint, that's an "Object."</p>
+    <p>Class = the <b>blueprint of a house</b> that an architect draws up. A blueprint alone doesn't give you a house to live in — it just shows the design. When an actual house gets BUILT from that blueprint, that's called an "Object."</p>
   </div>
   <div class="keypoints">
     <div class="lbl">Key Points</div>
     <ul>
       <li>A class <b>doesn't take up memory</b> — because it's just a design</li>
       <li>It's a <b>user-defined data type</b> (like int, double — but one you create yourself)</li>
-      <li>It's a blueprint/template for creating objects</li>
+      <li>It's the blueprint/template for creating objects</li>
       <li>Helps with data hiding and code reusability</li>
     </ul>
   </div>
@@ -909,11 +905,11 @@ java HelloWorld           # JVM runs the bytecode</code></pre>
   <div class="editor">
     <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">syntax</span></div>
     <pre><code data-lang="java">class ClassName {
-    // Attributes — these store state
+    // Attributes (data) — these store state
     dataType attribute1;
     dataType attribute2;
 
-    // Methods — these define behavior
+    // Methods (functions) — these define behavior
     returnType methodName(parameters) {
         // method body
     }
@@ -942,8 +938,8 @@ java HelloWorld           # JVM runs the bytecode</code></pre>
   <div class="breakdown">
     <div class="lbl">🔍 What's Happening Here?</div>
     <div class="row"><span class="k">class Student</span><span class="v">We're creating a new blueprint named "Student"</span></div>
-    <div class="row"><span class="k">int id; String name; double marks;</span><span class="v">These are the Student's "attributes/properties" — every student will have their own id, name, and marks</span></div>
-    <div class="row"><span class="k">void display()</span><span class="v">This is a "method" — a "behavior/action" that Student can perform (printing its own details)</span></div>
+    <div class="row"><span class="k">int id; String name; double marks;</span><span class="v">These are Student's "attributes/properties" — every student will have their own id, name, and marks</span></div>
+    <div class="row"><span class="k">void display()</span><span class="v">This is a "method" — a "behavior" Student can perform (printing its own details)</span></div>
   </div>
 </div>
 
@@ -960,7 +956,7 @@ java HelloWorld           # JVM runs the bytecode</code></pre>
 
 <div class="keypoints reveal">
   <div class="lbl">🔑 The Most Important Thing to Remember</div>
-  <p style="font-size:14.5px;">A class is just a template. <b>No memory is allocated until an object is created.</b> Memory is only allocated when you write: <code>Student s1 = new Student();</code></p>
+  <p style="font-size:14.5px;">A class is just a template. <b>Memory is NOT allocated until an object is created.</b> Memory is only allocated when you write: <code>Student s1 = new Student();</code></p>
 </div>
 
 <div class="mini-quiz reveal" data-quiz>
@@ -978,19 +974,19 @@ java HelloWorld           # JVM runs the bytecode</code></pre>
 <p class="topic-hook">How a class's blueprint becomes real in the world — meet the Object.</p>
 
 <div class="block reveal">
-  <h3><span class="ico">🧠</span> ELI5 — What is an Object?</h3>
-  <p>An object is a <b>real-world entity</b> that is an <b>instance (actual copy)</b> of a class. It has both <b>state</b> (data) and <b>behavior</b> (methods).</p>
+  <h3><span class="ico">🧠</span> ELI5 — What Is an Object?</h3>
+  <p>An object is a <b>real-world entity</b> that's an <b>instance (actual copy)</b> of a class. It has both <b>state</b> (data) and <b>behavior</b> (methods).</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Class = a mobile phone's <b>design/model</b> (like "iPhone 15"). Objects = the actual phones that you, your friend, and the shop have — each has its own color, storage, battery percentage (its own data), but they all follow the same design.</p>
+    <p>Class = the <b>design/model</b> of a phone (like "iPhone 15"). Objects = the actual phones — yours, your friend's, and the ones in the shop — each with its own color, storage, and battery percentage (its own data), but all following the same design.</p>
   </div>
   <div class="keypoints">
     <div class="lbl">Key Points</div>
     <ul>
       <li>An object is <b>created from a class</b></li>
       <li>It <b>occupies memory</b> (on the heap)</li>
-      <li>Each object has <b>its own copy</b> of data</li>
-      <li>Objects can interact by calling methods</li>
+      <li>Each object has its <b>own copy</b> of the data</li>
+      <li>Objects can <b>interact</b> by calling methods</li>
       <li>You can create <b>multiple objects</b> from the same class</li>
     </ul>
   </div>
@@ -1004,9 +1000,9 @@ java HelloWorld           # JVM runs the bytecode</code></pre>
   </div>
   <div class="breakdown">
     <div class="lbl">🔍 What Each Part Means</div>
-    <div class="row"><span class="k">ClassName</span><span class="v">Which blueprint to create the object from</span></div>
-    <div class="row"><span class="k">objectName</span><span class="v">The name given to the object (reference variable)</span></div>
-    <div class="row"><span class="k">new</span><span class="v">This keyword tells the JVM: "make room in memory (on the heap), create a new object"</span></div>
+    <div class="row"><span class="k">ClassName</span><span class="v">Which blueprint to build the object from</span></div>
+    <div class="row"><span class="k">objectName</span><span class="v">The name given to the object (a reference variable)</span></div>
+    <div class="row"><span class="k">new</span><span class="v">This keyword tells the JVM: "make space in memory (on the heap), create a new object"</span></div>
     <div class="row"><span class="k">ClassName()</span><span class="v">This is calling the Constructor (next topic!) — it initializes the object</span></div>
   </div>
 </div>
@@ -1038,8 +1034,8 @@ public class Main {
 }</code></pre>
   </div>
   <div class="breakdown">
-    <div class="lbl">🔍 Notice</div>
-    <div class="row"><span class="k">s1 and s2</span><span class="v">Both are created from the SAME class (Student), but their data is completely different — this is the "each object has its own copy" point</span></div>
+    <div class="lbl">🔍 Notice This</div>
+    <div class="row"><span class="k">s1 and s2</span><span class="v">Both are built from the SAME class (Student), but each has DIFFERENT data — this is the "each object has its own copy" idea</span></div>
     <div class="row"><span class="k">s1.display()</span><span class="v">Using the dot (.) operator to call the object's method</span></div>
   </div>
 </div>
@@ -1059,7 +1055,7 @@ public class Main {
 <div class="mini-quiz reveal" data-quiz>
   <div class="lbl">🎯 Quick Check</div>
   <div class="q">What does the <code>new</code> keyword do?</div>
-  <button class="opt" data-correct="false">Defines the class</button>
+  <button class="opt" data-correct="false">Defines a class</button>
   <button class="opt" data-correct="true">Allocates memory and creates a new object</button>
   <button class="opt" data-correct="false">Calls a method</button>
   <div class="fb"></div>
@@ -1068,21 +1064,21 @@ public class Main {
 
 <template id="tpl-u2-t3">
 <div class="topic-eyebrow">Unit 2 · Topic 3</div>
-<h1 class="topic-title">Methods — Blocks That Do Work</h1>
-<p class="topic-hook">What an object can do — that's defined by Methods.</p>
+<h1 class="topic-title">Methods — Blocks That Do the Work</h1>
+<p class="topic-hook">What an object can do — that's what a Method defines.</p>
 
 <div class="block reveal">
-  <h3><span class="ico">🧠</span> ELI5 — What is a Method?</h3>
+  <h3><span class="ico">🧠</span> ELI5 — What Is a Method?</h3>
   <p>A method is a <b>block of code</b> that performs a specific task. It's defined inside a class and represents an object's "behavior."</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Think of a TV remote. Each button (method) does a specific job — Volume Up only increases volume, the Channel button only changes the channel. Each button has its own specific function — methods work the same way.</p>
+    <p>Think of a TV remote. Every button (method) does one specific job — the Volume Up button only raises the volume, the Channel button only changes the channel. Every button has its own specific function — methods work the same way.</p>
   </div>
   <div class="keypoints">
     <div class="lbl">Key Points</div>
     <ul>
       <li>A method is a function that's <b>part of a class</b></li>
-      <li>It can access/modify the class's data (attributes)</li>
+      <li>Can access and modify the class's data (attributes)</li>
       <li>Makes code <b>modular and reusable</b></li>
       <li>Can <b>return</b> a value, or return nothing at all (<code>void</code>)</li>
     </ul>
@@ -1111,7 +1107,7 @@ public class Main {
 public class Main {
     public static void main(String[] args) {
         Calculator c = new Calculator();
-        int result = c.add(10, 20);       // gets back a return value
+        int result = c.add(10, 20);       // gets the return value back
         System.out.println("Sum = " + result);
         c.showMessage();                   // void method, returns nothing
     }
@@ -1119,23 +1115,23 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">int add(int a, int b)</span><span class="v"><code>int</code> is the return type (this method will give back a number). <code>a, b</code> are parameters — data the method needs to do its job</span></div>
+  <div class="row"><span class="k">int add(int a, int b)</span><span class="v"><code>int</code> is the return type (this method will return a number). <code>a, b</code> are parameters — the data the method needs to do its job</span></div>
   <div class="row"><span class="k">return sum;</span><span class="v">Sends the calculated value back to wherever the method was called from</span></div>
-  <div class="row"><span class="k">void showMessage()</span><span class="v"><code>void</code> means this method returns NOTHING, it just does its job</span></div>
+  <div class="row"><span class="k">void showMessage()</span><span class="v"><code>void</code> means this method won't return ANYTHING, it'll just do its job</span></div>
 </div>
 
 <div class="diagram reveal">
   <div class="diagram-title">How a Method Works</div>
   <div class="flow">
     <div class="flow-node acc">Object</div><div class="flow-arrow">→ calls →</div>
-    <div class="flow-node teal">Method (performs task)</div><div class="flow-arrow">→</div>
+    <div class="flow-node teal">Method (performs the task)</div><div class="flow-arrow">→</div>
     <div class="flow-node">Result / Output</div>
   </div>
 </div>
 
 <div class="mini-quiz reveal" data-quiz>
   <div class="lbl">🎯 Quick Check</div>
-  <div class="q">If a method returns nothing, what do we write as the return type?</div>
+  <div class="q">If a method doesn't return anything, what do we write as the return type?</div>
   <button class="opt" data-correct="false">null</button>
   <button class="opt" data-correct="true">void</button>
   <button class="opt" data-correct="false">empty</button>
@@ -1146,11 +1142,11 @@ public class Main {
 <template id="tpl-u2-t4">
 <div class="topic-eyebrow">Unit 2 · Topic 4</div>
 <h1 class="topic-title">Array of Objects</h1>
-<p class="topic-hook">Storing not just one, but many objects together.</p>
+<p class="topic-hook">Storing not just one, but many objects at once.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Just like we make arrays of numbers with <code>int[]</code>, we can store <b>multiple objects</b> of a class in one array.</p>
+  <p>Just like we build an array of numbers with <code>int[]</code>, we can store <b>multiple objects</b> of a class in an array too.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
     <p>A classroom has 30 students — each student is a "Student object." To handle the whole class, you can create a <code>Student[]</code> array that stores all 30 students together.</p>
@@ -1180,12 +1176,12 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">new Student[3]</span><span class="v">This only creates 3 EMPTY slots (references), all currently <code>null</code></span></div>
-  <div class="row"><span class="k">students[0] = new Student(...)</span><span class="v">Each slot has to be individually filled with a new object</span></div>
+  <div class="row"><span class="k">new Student[3]</span><span class="v">This just creates 3 EMPTY slots (references) — all currently <code>null</code></span></div>
+  <div class="row"><span class="k">students[0] = new Student(...)</span><span class="v">Each slot has to be filled individually with a new object</span></div>
 </div>
 <div class="hinglish reveal">
   <div class="lbl">💬 Warning</div>
-  <p>Agar kisi index ko <code>new Student()</code> se initialize kiye bina use karoge, toh <b>NullPointerException</b> aayega — yeh Java ki sabse common error hai, dhyaan rakhna!</p>
+  <p>If you use an index without initializing it with <code>new Student()</code> first, you'll get a <b>NullPointerException</b> — this is Java's most common error, so watch out for it!</p>
 </div>
 </template>
 
@@ -1195,21 +1191,21 @@ public class Main {
 <p class="topic-hook">When an object is created, who sets its initial values? Meet the Constructor.</p>
 
 <div class="block reveal">
-  <h3><span class="ico">🧠</span> ELI5 — What is a Constructor?</h3>
-  <p>A constructor is a <b>special method</b> that has the <b>same name as the class</b>, and gets <b>automatically called</b> the moment an object is created — to set up the object's initial values.</p>
+  <h3><span class="ico">🧠</span> ELI5 — What Is a Constructor?</h3>
+  <p>A constructor is a <b>special method</b> that has <b>the same name as the class</b>, and gets <b>called automatically</b> the moment an object is created — to set the object's initial values.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>When you sign up for an account on any website (Instagram, or anywhere), it immediately asks for your name, email, password, and the moment the account is created, all of this gets set up. This "setup process" is exactly like a Constructor.</p>
+    <p>When you create an account on any website (Instagram, or anything else), you're immediately asked for your name, email, and password, and all of that gets set the moment the account is created. This "setup process" is exactly like a Constructor.</p>
   </div>
   <div class="keypoints">
     <div class="lbl">Key Points</div>
     <ul>
       <li>A constructor's name is <b>the same as the class name</b></li>
-      <li>It has <b>NO return type</b> — not even <code>void</code></li>
+      <li>It has <b>no return type</b> — not even <code>void</code></li>
       <li>Gets called <b>automatically</b> when an object is created</li>
-      <li>Initializes the object's data</li>
+      <li><b>Initializes</b> the object's data</li>
       <li>A class can have <b>multiple constructors</b> (Constructor Overloading)</li>
-      <li>If you don't write any constructor yourself, Java gives you a <b>default constructor</b></li>
+      <li>If you don't write a constructor yourself, Java automatically provides a <b>default constructor</b></li>
     </ul>
   </div>
 </div>
@@ -1239,9 +1235,9 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">Student(int id, String name)</span><span class="v">This is the Constructor — notice, the name is "Student" (same as the class), and no return type is written</span></div>
-  <div class="row"><span class="k">this.id = id</span><span class="v"><code>this.id</code> = the object's own property (instance variable), <code>id</code> (right side) = what came in as a parameter. <code>this</code> tells them apart</span></div>
-  <div class="row"><span class="k">new Student(101, "Aman")</span><span class="v">The moment this line runs, the Constructor is automatically called, and id=101, name="Aman" get set</span></div>
+  <div class="row"><span class="k">Student(int id, String name)</span><span class="v">This is the Constructor — notice the name is "Student" (matching the class name), and no return type is written</span></div>
+  <div class="row"><span class="k">this.id = id</span><span class="v"><code>this.id</code> = the object's own id (instance variable), <code>id</code> (right side) = what came in as the parameter. <code>this</code> tells them apart</span></div>
+  <div class="row"><span class="k">new Student(101, "Aman")</span><span class="v">The moment this line runs, the Constructor is called automatically and sets id=101, name="Aman"</span></div>
 </div>
 
 <div class="diagram reveal">
@@ -1249,20 +1245,20 @@ public class Main {
   <div class="flow-down">
     <div class="flow-node acc">new Student(101, "Aman")</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node">Constructor gets called</div>
+    <div class="flow-node">The constructor gets called</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node">Object gets created</div>
+    <div class="flow-node">The object is created</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node teal">Data gets initialized</div>
+    <div class="flow-node teal">The data gets initialized</div>
   </div>
 </div>
 
 <div class="block reveal">
   <h3><span class="ico">🧩</span> Types of Constructors</h3>
   <ul>
-    <li><b>Default Constructor</b> (no-arg) — no parameters; Java provides one automatically if you don't write any</li>
-    <li><b>Parameterized Constructor</b> — takes parameters to set initial values</li>
-    <li><b>Copy Constructor</b> — copies data from one object into a new object (in Java you have to write this manually, unlike C++ where it's built-in)</li>
+    <li><b>Default Constructor</b> (no-arg) — has no parameters; Java provides one automatically if you don't write your own</li>
+    <li><b>Parameterized Constructor</b> — takes parameters to set the initial values</li>
+    <li><b>Copy Constructor</b> — copies one object's data into another new object (in Java you have to write this manually — it isn't built in like in C++)</li>
   </ul>
   <div class="editor">
     <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">CopyConstructor.java</span></div>
@@ -1279,10 +1275,10 @@ public class Main {
 
 <div class="mini-quiz reveal" data-quiz>
   <div class="lbl">🎯 Quick Check</div>
-  <div class="q">What is the return type of a constructor?</div>
+  <div class="q">What is a constructor's return type?</div>
   <button class="opt" data-correct="false">void</button>
   <button class="opt" data-correct="false">int</button>
-  <button class="opt" data-correct="true">There is no return type at all</button>
+  <button class="opt" data-correct="true">It has no return type at all</button>
   <div class="fb"></div>
 </div>
 </template>
@@ -1294,9 +1290,9 @@ public class Main {
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Binding means: "when you call a method, how does the JVM know WHICH method body to run?" — depending on when this decision is made, there are 2 types.</p>
+  <p>Binding means: "when you call a method, how does the JVM know WHICH method body to run?" There are 2 types, based on when this decision gets made.</p>
   <table class="tbl">
-    <tr><th>Type</th><th>When it's decided</th><th>Example</th></tr>
+    <tr><th>Type</th><th>When It's Decided</th><th>Example</th></tr>
     <tr><td>Static Binding (Early)</td><td>Compile Time</td><td><code>static</code>, <code>private</code>, <code>final</code> methods, Overloading</td></tr>
     <tr><td>Dynamic Binding (Late)</td><td>Run Time</td><td>Method Overriding (parent reference → child object)</td></tr>
   </table>
@@ -1311,22 +1307,22 @@ Animal a = new Dog();
 a.sound();   // "Dog barks" -> decided at RUNTIME = Dynamic Binding</code></pre>
 </div>
 <div class="hinglish reveal">
-  <div class="lbl">💬 Easy Way To Remember</div>
-  <p>Overloading = pata compile time pe hi chal jaata hai kaunsa method chalega (Static Binding). Overriding = JVM runtime par <b>actual object</b> ko dekhta hai (reference type ko nahi!) aur decide karta hai — isliye Dynamic Binding.</p>
+  <div class="lbl">💬 Simple Way to Remember</div>
+  <p>Overloading = which method will run is already known at compile time (Static Binding). Overriding = the JVM looks at the <b>actual object</b> at runtime (not the reference type!) and decides — that's why it's Dynamic Binding.</p>
 </div>
 </template>
 
 <template id="tpl-u2-t7">
 <div class="topic-eyebrow">Unit 2 · Topic 7</div>
 <h1 class="topic-title">Static Members</h1>
-<p class="topic-hook">Members that belong to the class, not the object — shared by everyone.</p>
+<p class="topic-hook">Members that belong to the whole class, not to any one object — SHARED across all of them.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>The <code>static</code> keyword means this member belongs to <b>the class, not any object</b>. All objects share a single copy.</p>
+  <p>The <code>static</code> keyword means: this member belongs <b>to the class, not to an object</b>. All objects share the exact same copy.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>A college's name ("GEC Jehanabad") is SAME for all its students — this is like "static" (a property of the whole college). But each student's roll number is different — this is like "instance" (non-static).</p>
+    <p>A college's name ("GEC Jehanabad") is the SAME for every student — that's like "static" (a property of the whole college). But every student's roll number is different — that's like "instance" (non-static).</p>
   </div>
 </div>
 
@@ -1345,8 +1341,8 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">static int count</span><span class="v">There's just ONE <code>count</code> variable shared by all Counter objects — it increases every time a new object is created</span></div>
-  <div class="row"><span class="k">Counter.count</span><span class="v">To access a static member, we use the Class name — no object needed</span></div>
+  <div class="row"><span class="k">static int count</span><span class="v">There's just one <code>count</code> variable that every Counter object shares — it increases every time a new object is created</span></div>
+  <div class="row"><span class="k">Counter.count</span><span class="v">Static members are accessed using the class name — no object is needed</span></div>
 </div>
 
 <div class="diagram reveal">
@@ -1364,14 +1360,14 @@ public class Main {
 <template id="tpl-u2-t8">
 <div class="topic-eyebrow">Unit 2 · Topic 8</div>
 <h1 class="topic-title">Access Modifiers</h1>
-<p class="topic-hook">Who can access what — controlled by Access Modifiers.</p>
+<p class="topic-hook">Who can access what — that's what Access Modifiers control.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Access Modifiers are like "permission levels" — they decide who can view/use which data or method.</p>
+  <p>Access Modifiers are like "permission levels" — they decide who can see or use which data/method.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p><code>private</code> = your personal diary (only you can read it). <code>public</code> = your public Instagram post (everyone can see it). <code>protected</code> = a family group chat visible only to family members.</p>
+    <p><code>private</code> = your personal diary (only you can read it). <code>public</code> = your public Instagram post (everyone can see it). <code>protected</code> = a family group chat that only family members can see.</p>
   </div>
 </div>
 
@@ -1397,15 +1393,15 @@ public class Main {
 <template id="tpl-u2-t9">
 <div class="topic-eyebrow">Unit 2 · Topic 9</div>
 <h1 class="topic-title">this Keyword</h1>
-<p class="topic-hook">Java's way of saying "myself".</p>
+<p class="topic-hook">Java's way of saying "myself."</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>The <code>this</code> keyword always refers to the <b>current object</b> — meaning "this particular object we're currently working on."</p>
+  <p>The <code>this</code> keyword always refers to the <b>current object</b> — meaning "the object currently being worked on."</p>
   <div class="keypoints">
     <div class="lbl">4 Uses of "this"</div>
     <ul>
-      <li>Referring to the current object's instance variable (when a parameter and a variable have the same name)</li>
+      <li>Referring to the current object's instance variable (when a parameter and a variable share the same name)</li>
       <li>Calling another constructor in the same class (<code>this(...)</code>)</li>
       <li>Passing the current object into another method</li>
       <li>Returning the current object</li>
@@ -1418,7 +1414,7 @@ public class Main {
   <pre><code data-lang="java">class Student {
     int id; String name;
     Student(int id, String name) {
-        this.id = id;         // this.id = object's variable, id = parameter
+        this.id = id;         // this.id = the object's variable, id = the parameter
         this.name = name;
     }
     Student() {
@@ -1428,7 +1424,7 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">this.id = id</span><span class="v">Left side <code>this.id</code> = the object's own property. Right side <code>id</code> = what came in as a parameter. Same names cause confusion, so we use <code>this</code> to clarify</span></div>
+  <div class="row"><span class="k">this.id = id</span><span class="v">Left side <code>this.id</code> = the object's own property. Right side <code>id</code> = what came in as the parameter. Sharing the same name causes confusion, so we use <code>this</code> to make it clear</span></div>
   <div class="row"><span class="k">this(0, "Unknown")</span><span class="v">This lets one constructor call another constructor (constructor chaining)</span></div>
 </div>
 </template>
@@ -1436,45 +1432,45 @@ public class Main {
 <template id="tpl-u2-t10">
 <div class="topic-eyebrow">Unit 2 · Topic 10</div>
 <h1 class="topic-title">Garbage Collection &amp; finalize()</h1>
-<p class="topic-hook">How Java cleans up after itself — without you saying a word.</p>
+<p class="topic-hook">How Java cleans up after itself — without you having to say a word.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>In C/C++, you have to manually free memory. Java doesn't work that way — when an object is <b>no longer being used</b> (no variable points to it anymore), Java <b>automatically</b> cleans up its memory. This process is called <b>Garbage Collection (GC)</b>.</p>
+  <p>In C/C++, you have to free memory manually. Java doesn't work that way — when an object <b>isn't being used at all</b> (no variable points to it anymore), Java <b>automatically</b> cleans up its memory. This process is called <b>Garbage Collection (GC)</b>.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Imagine a robot cleaner that keeps moving around your house on its own, and picks up and throws away anything nobody's using anymore (lying around uselessly) — without you telling it to. That's exactly what the Garbage Collector does.</p>
+    <p>Imagine a robot cleaner that runs on its own and picks up anything lying around unused in the house and throws it away — without asking you. That's exactly what the Garbage Collector does.</p>
   </div>
 </div>
 
 <div class="editor reveal">
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">GCDemo.java</span></div>
   <pre><code data-lang="java">Student s1 = new Student();
-s1 = null;   // now nothing refers to the old Student object
-             // -> it becomes eligible for Garbage Collection</code></pre>
+s1 = null;   // nothing refers to the old Student object anymore
+             // -> it has become "eligible" for Garbage Collection</code></pre>
 </div>
 <div class="keypoints reveal">
   <div class="lbl">Key Points</div>
   <ul>
-    <li>GC runs automatically in the background — no manual "free()" needed</li>
-    <li>You can "request" GC with <code>System.gc()</code>, but it's <b>not guaranteed</b> to run immediately</li>
-    <li><code>finalize()</code> — called by GC just before an object is destroyed (for cleanup) — but it's deprecated in Java 9+, no longer recommended</li>
+    <li>GC runs automatically in the background — you never have to write a manual "free()"</li>
+    <li>You can "request" GC with <code>System.gc()</code>, but there's <b>no guarantee</b> it will run right away</li>
+    <li><code>finalize()</code> — GC calls this before destroying an object (for cleanup) — but it's deprecated since Java 9+ and shouldn't be used anymore</li>
   </ul>
 </div>
 <div class="hinglish reveal">
-  <div class="lbl">💬 Fayda</div>
-  <p>Yeh Java ka bada advantage hai C/C++ ke against — memory leak ka risk kaafi kam ho jaata hai kyunki manually kuch bhool jaane ka chance nahi rehta.</p>
+  <div class="lbl">💬 The Advantage</div>
+  <p>This is a big advantage Java has over C/C++ — the risk of memory leaks drops a lot, because there's no chance of forgetting to free something manually.</p>
 </div>
 </template>
 
 <template id="tpl-u2-t11">
 <div class="topic-eyebrow">Unit 2 · Topic 11</div>
 <h1 class="topic-title">Nested &amp; Inner Classes</h1>
-<p class="topic-hook">A class inside a class — when and why do we use it?</p>
+<p class="topic-hook">A class inside another class — when and why do we use this?</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Java allows defining one class inside another. We use this when a class is only meant to be used in one place — it improves organization and encapsulation.</p>
+  <p>In Java, you're allowed to define a class inside another class. This is used when a class is only ever going to be used in one place — it improves organization and encapsulation.</p>
 </div>
 
 <div class="diagram reveal">
@@ -1487,7 +1483,7 @@ s1 = null;   // now nothing refers to the old Student object
     <li>Static Nested Class — doesn't need an outer object</li>
     <li>Member Inner Class — needs an outer object</li>
     <li>Local Inner Class — inside a method</li>
-    <li>Anonymous Inner Class — no name, one-time use</li>
+    <li>Anonymous Inner Class — no name, used once</li>
   </ul>
 </div>
 
@@ -1509,10 +1505,10 @@ s1 = null;   // now nothing refers to the old Student object
 public class Main {
     public static void main(String[] args) {
         Outer o = new Outer();
-        Outer.Inner in = o.new Inner();   // outer object IS needed
+        Outer.Inner in = o.new Inner();   // outer object IS NEEDED
         in.show();
 
-        Outer.StaticNested sn = new Outer.StaticNested();  // outer object NOT needed
+        Outer.StaticNested sn = new Outer.StaticNested();  // outer object is NOT needed
         sn.display();
     }
 }</code></pre>
@@ -1522,49 +1518,49 @@ public class Main {
 <template id="tpl-u2-t12">
 <div class="topic-eyebrow">Unit 2 · Topic 12</div>
 <h1 class="topic-title">String Class</h1>
-<p class="topic-hook">The most commonly used class — the story behind String.</p>
+<p class="topic-hook">The most-used class of all — the inside story of String.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p><code>String</code> is a class (not a primitive type!) that stores a sequence of characters. The most important thing: Java Strings are <b>immutable</b> — once created, they never change. Any "change" actually creates a NEW String object.</p>
+  <p><code>String</code> is a class (not a primitive type!) that stores a sequence of characters. The most important thing to know: Java Strings are <b>immutable</b> — once created, they never change. Any "change" actually creates a NEW String object.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Think of a printed poster — you can't edit it, once printed it's fixed. To change something, you'd have to print a new poster. The same thing happens with Strings — "changing" them creates a NEW object.</p>
+    <p>Think of a printed poster — you can't edit it, it's fixed once printed. If you want a change, you'll need to print a new poster. The same thing happens with String — "changing" it creates a NEW object.</p>
   </div>
 </div>
 
 <div class="editor reveal">
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">StringDemo.java</span></div>
-  <pre><code data-lang="java">String s1 = "hello";              // literal -> stored in String Pool
-String s2 = new String("hello");  // new -> separate object on heap
+  <pre><code data-lang="java">String s1 = "hello";              // literal -> stored in the String Pool
+String s2 = new String("hello");  // new -> a separate object on the heap
 
 System.out.println(s1 == s2);          // false (different memory)
-System.out.println(s1.equals(s2));     // true  (content is the same)</code></pre>
+System.out.println(s1.equals(s2));     // true  (the content is the same)</code></pre>
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">==</span><span class="v">Compares MEMORY ADDRESS (reference) — checks whether both are the SAME object</span></div>
-  <div class="row"><span class="k">.equals()</span><span class="v">Compares CONTENT (actual value) — always the CORRECT way to compare Strings</span></div>
+  <div class="row"><span class="k">==</span><span class="v">Compares the MEMORY ADDRESS (reference) — checks whether both are the same object</span></div>
+  <div class="row"><span class="k">.equals()</span><span class="v">Compares the CONTENT (actual value) — this is always the CORRECT way to compare Strings</span></div>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Method</th><th>What It Does</th></tr>
-  <tr><td><code>length()</code></td><td>Length (how many characters)</td></tr>
-  <tr><td><code>charAt(i)</code></td><td>The character at index i</td></tr>
-  <tr><td><code>substring(a,b)</code></td><td>Extract a part</td></tr>
-  <tr><td><code>toUpperCase()/toLowerCase()</code></td><td>Change case</td></tr>
-  <tr><td><code>trim()</code></td><td>Remove leading/trailing spaces</td></tr>
-  <tr><td><code>split(regex)</code></td><td>Break into an array</td></tr>
+  <tr><td><code>length()</code></td><td>length (how many characters)</td></tr>
+  <tr><td><code>charAt(i)</code></td><td>the character at index i</td></tr>
+  <tr><td><code>substring(a,b)</code></td><td>extracts a portion</td></tr>
+  <tr><td><code>toUpperCase()/toLowerCase()</code></td><td>changes the case</td></tr>
+  <tr><td><code>trim()</code></td><td>removes leading/trailing spaces</td></tr>
+  <tr><td><code>split(regex)</code></td><td>splits into an array</td></tr>
 </table>
 
 <div class="hinglish reveal">
   <div class="lbl">💬 Common Confusion</div>
-  <p><code>s1.concat("world")</code> likhne se <code>s1</code> KHUD change nahi hota — ek naya String banta hai. Agar assign nahi karoge (<code>s1 = s1.concat("world")</code>), toh original <code>s1</code> waisi ki waisi rahegi.</p>
+  <p>Writing <code>s1.concat("world")</code> does NOT change <code>s1</code> itself — it creates a new String. If you don't assign it back (<code>s1 = s1.concat("world")</code>), the original <code>s1</code> stays exactly the same.</p>
 </div>
 
 <div class="block reveal">
   <h3><span class="ico">⚡</span> Bonus: StringBuilder (Mutable Alternative)</h3>
-  <p>When you need lots of changes/concatenation (like inside a loop), use <code>StringBuilder</code> — it modifies the SAME object instead of creating a new one every time:</p>
+  <p>When you need to make a lot of changes/concatenations (like inside a loop), use <code>StringBuilder</code> — it modifies the SAME object instead of creating a new one every time:</p>
   <div class="editor">
     <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">SB.java</span></div>
     <pre><code data-lang="java">StringBuilder sb = new StringBuilder("Hello");
@@ -1581,27 +1577,28 @@ System.out.println(sb);  // Hello Java</code></pre>
   <div class="fb"></div>
 </div>
 </template>
+
 <!-- ============ UNIT 3 TEMPLATES ============ -->
 <template id="tpl-u3-t1">
 <div class="topic-eyebrow">Unit 3 · Topic 1</div>
-<h1 class="topic-title">Inheritance — Getting Properties From Parents</h1>
-<p class="topic-hook">How does one class "inherit" (receive) features from another class?</p>
+<h1 class="topic-title">Inheritance — Properties You Get From Your Parents</h1>
+<p class="topic-hook">How one class "inherits" features from another class.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
   <p>Inheritance is a mechanism where a NEW class (<b>child/subclass</b>) automatically gets the properties and behaviors (fields and methods) of an EXISTING class (<b>parent/superclass</b>).</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Just like you "inherit" (receive) properties like eye color, height from your parents without creating them yourself — similarly, the Dog class "inherits" the eat() method and color property from the Animal class without rewriting them.</p>
+    <p>Just like you "inherit" traits such as eye color and height from your parents without creating them yourself — the Dog class similarly "inherits" the eat() method and the color property from the Animal class, without writing them again.</p>
   </div>
   <div class="keypoints">
     <div class="lbl">Key Points</div>
     <ul>
-      <li>The class whose members are inherited is called the <b>superclass</b> (parent)</li>
+      <li>The class whose members get inherited is called the <b>superclass</b> (parent)</li>
       <li>The class that inherits is called the <b>subclass</b> (child)</li>
-      <li>The subclass can also add its own members on top of the inherited ones</li>
+      <li>A subclass can also add its own members, on top of the inherited ones</li>
       <li>Improves code reusability and extensibility</li>
-      <li>Java does <b>NOT support multiple inheritance</b> with classes (but does with interfaces)</li>
+      <li>Java does <b>NOT support multiple inheritance</b> with classes (but it does through interfaces)</li>
     </ul>
   </div>
 </div>
@@ -1644,14 +1641,14 @@ public class Main {
 
 <div class="keypoints reveal">
   <div class="lbl">🔑 Exam Line — Remember This</div>
-  <p style="font-size:14.5px;">Use the <code>extends</code> keyword. <b>Private members are NOT inherited.</b> <b>Constructors are never inherited.</b> Inheritance represents an IS-A relationship ("Dog IS-A Animal").</p>
+  <p style="font-size:14.5px;">Use the <code>extends</code> keyword. <b>Private members do NOT get inherited.</b> <b>Constructors are never inherited.</b> Inheritance represents an IS-A relationship ("Dog IS-A Animal").</p>
 </div>
 </template>
 
 <template id="tpl-u3-t2">
 <div class="topic-eyebrow">Unit 3 · Topic 2</div>
 <h1 class="topic-title">Types of Inheritance</h1>
-<p class="topic-hook">The different "shapes" of inheritance — single, multilevel, hierarchical.</p>
+<p class="topic-hook">The different "shapes" inheritance can take — single, multilevel, hierarchical.</p>
 
 <div class="diagram reveal">
   <div class="diagram-title">Single vs Multilevel vs Hierarchical</div>
@@ -1665,10 +1662,10 @@ public class Main {
 
 <div class="block reveal">
   <h3><span class="ico">🚫</span> Multiple Inheritance (with Classes) — NOT Allowed</h3>
-  <p>In Java, a class cannot extend two classes at once (<code>class C extends A, B</code> ❌ compile error). This avoids the "Diamond Problem" — if both A and B had the same method, it would create confusion about which one to use.</p>
+  <p>In Java, a class CANNOT extend two classes at once (<code>class C extends A, B</code> ❌ compile error). This avoids the "Diamond Problem" — if both A and B had the same method, there'd be confusion about which one to use.</p>
   <div class="hinglish">
     <div class="lbl">💬 Solution</div>
-    <p>Java solves this problem using <b>Interfaces</b> — a class CAN implement MULTIPLE interfaces (detailed in the Interface topic below).</p>
+    <p>Java solves this problem with <b>Interfaces</b> — a class can implement MULTIPLE interfaces (covered in detail in the Interface topic later in this unit).</p>
   </div>
 </div>
 </template>
@@ -1676,7 +1673,7 @@ public class Main {
 <template id="tpl-u3-t3">
 <div class="topic-eyebrow">Unit 3 · Topic 3</div>
 <h1 class="topic-title">super Keyword &amp; Member Access Rules</h1>
-<p class="topic-hook">How does a child class "call back" to its parent class?</p>
+<p class="topic-hook">How a child class "calls back" to its parent class.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
@@ -1686,7 +1683,7 @@ public class Main {
     <ul>
       <li>Accessing the parent's instance variable (when the child has a variable with the same name)</li>
       <li>Calling the parent's method (especially when the child has overridden it)</li>
-      <li>Calling the parent's constructor — <code>super(...)</code> — must always be the <b>FIRST line</b> of the child's constructor</li>
+      <li>Calling the parent's constructor — <code>super(...)</code> — this must always be the <b>FIRST line</b> in the child's constructor</li>
     </ul>
   </div>
 </div>
@@ -1714,45 +1711,45 @@ class Dog extends Animal {
   <table class="tbl">
     <tr><th>Parent Member</th><th>Does the Child Get It?</th></tr>
     <tr><td><code>public</code> / <code>protected</code></td><td>✅ Yes</td></tr>
-    <tr><td>default (package)</td><td>✅ only within the same package</td></tr>
-    <tr><td><code>private</code></td><td>❌ No (it exists in memory, but isn't directly accessible)</td></tr>
+    <tr><td>default (package)</td><td>✅ same package only</td></tr>
+    <tr><td><code>private</code></td><td>❌ No (it exists in memory, but there's no direct access)</td></tr>
     <tr><td>Constructors</td><td>❌ Never</td></tr>
-    <tr><td><code>static</code> members</td><td>✅ Accessed via class name</td></tr>
+    <tr><td><code>static</code> members</td><td>✅ Accessed via the class name</td></tr>
   </table>
 </div>
 </template>
 
 <template id="tpl-u3-t4">
 <div class="topic-eyebrow">Unit 3 · Topic 4</div>
-<h1 class="topic-title">final — Preventing Inheritance</h1>
+<h1 class="topic-title">final — Blocking Inheritance</h1>
 <p class="topic-hook">Sometimes we DON'T want a class or method to be extended/overridden any further.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>The <code>final</code> keyword means <b>"this is the last stop, nothing more."</b> It's used in 3 places:</p>
+  <p>The <code>final</code> keyword means <b>"this is the last stop, nothing further"</b>. It's used in 3 places:</p>
   <ul>
     <li><code>final class</code> → nobody can extend it</li>
     <li><code>final method</code> → no child class can override it</li>
-    <li><code>final variable</code> → becomes a CONSTANT, its value can't change once set</li>
+    <li><code>final variable</code> → this becomes a CONSTANT — once its value is set, it can never change</li>
   </ul>
 </div>
 
 <div class="editor reveal">
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">Final.java</span></div>
-  <pre><code data-lang="java">final class Vehicle {          // cannot be extended
+  <pre><code data-lang="java">final class Vehicle {          // can't extend this
     // ...
 }
 // class Car extends Vehicle { }   ❌ Compile Error!
 
 class Bike {
-    final void start() {       // cannot be overridden
+    final void start() {       // can't override this
         System.out.println("Bike started");
     }
 }</code></pre>
 </div>
 <div class="hinglish reveal">
-  <div class="lbl">💬 Easy Way To Remember</div>
-  <p><code>final</code> = "yahin last hai, aage badhna mana hai" — chahe class ho, method ho, ya variable, hamesha "no more change/extension" ka matlab hota hai.</p>
+  <div class="lbl">💬 How to Remember It</div>
+  <p><code>final</code> = "this is the last stop, no going further" — whether it's a class, a method, or a variable, it always means "no more change/extension."</p>
 </div>
 </template>
 
@@ -1763,10 +1760,10 @@ class Bike {
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Polymorphism means "many forms" — one interface (like a method name) can be used in different ways. In Java, this happens in 2 ways: <b>Overloading</b> (compile-time) and <b>Overriding</b> (run-time, next topic).</p>
+  <p>Polymorphism means "many forms" — the same interface (like a method name) can be used in different ways. In Java, this happens in 2 ways: <b>Overloading</b> (compile-time) and <b>Overriding</b> (run-time, next topic).</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Imagine saying "print" — if it's a photo, the printer prints a photo; if it's a document, it prints a document. SAME "print" command, but the result depends on the data. This is exactly Overloading!</p>
+    <p>Imagine you say "print" — if it's a photo, the printer prints a photo; if it's a document, it prints a document. The SAME "print" command, but the result depends on the data. That's Overloading!</p>
   </div>
 </div>
 
@@ -1774,8 +1771,8 @@ class Bike {
   <h3><span class="ico">📐</span> Method Overloading — Rules</h3>
   <ul>
     <li>Happens within the SAME class</li>
-    <li>SAME method name, but DIFFERENT parameters (number, type, or order)</li>
-    <li>The compiler decides which method runs — resolved at <b>Compile Time</b></li>
+    <li>SAME method name, but DIFFERENT parameters (in number, type, or order)</li>
+    <li>The compiler itself decides which method will run — it's resolved at <b>Compile Time</b></li>
   </ul>
 </div>
 
@@ -1819,11 +1816,11 @@ public class Main {
 <template id="tpl-u3-t6">
 <div class="topic-eyebrow">Unit 3 · Topic 6</div>
 <h1 class="topic-title">Polymorphism (Part 2) — Method Overriding</h1>
-<p class="topic-hook">When a child class REDEFINES its parent's method with its own version.</p>
+<p class="topic-hook">When a child class REDEFINES a parent's method in its own way.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Overriding happens when a child class redefines a method from its parent with the <b>SAME name and SAME parameters</b> — but gives it its own behavior. This is decided at <b>runtime</b>, based on the <b>actual object</b>.</p>
+  <p>Overriding happens when a child class redefines its parent class's method with the <b>SAME name and SAME parameters</b> — but gives it its own behavior. It's decided at <b>runtime</b> which version runs, based on the <b>actual object</b>.</p>
 </div>
 
 <div class="editor reveal">
@@ -1837,22 +1834,22 @@ class Dog extends Animal {
 }
 public class Main {
     public static void main(String[] args) {
-        Animal a = new Dog();   // Reference of Animal, Object of Dog
+        Animal a = new Dog();   // Reference type is Animal, object is Dog
         a.sound();               // Output: "Dog barks"
     }
 }</code></pre>
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 The Most Important Point</div>
-  <div class="row"><span class="k">Animal a = new Dog()</span><span class="v">Reference TYPE is Animal, but the actual OBJECT is Dog</span></div>
-  <div class="row"><span class="k">a.sound()</span><span class="v">The JVM ignores the reference type and runs the actual object's (Dog's) method — that's why "Dog barks" prints, not "Animal makes sound"!</span></div>
-  <div class="row"><span class="k">@Override</span><span class="v">This is an annotation that tells the compiler "I'm overriding a method" — if there's a spelling mistake or wrong signature, the compiler will throw an error immediately. Good practice to always write this</span></div>
+  <div class="row"><span class="k">Animal a = new Dog()</span><span class="v">The reference TYPE is Animal, but the actual OBJECT is Dog</span></div>
+  <div class="row"><span class="k">a.sound()</span><span class="v">The JVM IGNORES the reference type and runs the method of the actual object (Dog) — that's why "Dog barks" gets printed, not "Animal makes sound"!</span></div>
+  <div class="row"><span class="k">@Override</span><span class="v">This is an annotation that tells the compiler "I'm overriding this" — if the spelling or signature is wrong, the compiler will immediately throw an error. It's good practice to write it</span></div>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Feature</th><th>Overloading</th><th>Overriding</th></tr>
-  <tr><td>When decided</td><td>Compile-time</td><td>Run-time</td></tr>
-  <tr><td>Where it happens</td><td>Same class</td><td>Different classes (Inheritance)</td></tr>
+  <tr><td>When It's Decided</td><td>Compile-time</td><td>Run-time</td></tr>
+  <tr><td>Where It Happens</td><td>Same class</td><td>Different classes (Inheritance)</td></tr>
   <tr><td>Parameters</td><td>Must be different</td><td>Must be the same</td></tr>
   <tr><td>Binding</td><td>Static</td><td>Dynamic</td></tr>
 </table>
@@ -1860,7 +1857,7 @@ public class Main {
 <div class="keypoints reveal">
   <div class="lbl">🔑 Rules for Overriding</div>
   <ul>
-    <li>Method name, return type (or covariant), and parameters must match exactly</li>
+    <li>Method name, return type, and parameters must match exactly</li>
     <li>The access modifier can't be MORE restrictive than the parent's</li>
     <li><code>private</code>, <code>static</code>, and <code>final</code> methods CANNOT be overridden</li>
   </ul>
@@ -1868,8 +1865,8 @@ public class Main {
 
 <div class="mini-quiz reveal" data-quiz>
   <div class="lbl">🎯 Quick Check</div>
-  <div class="q">In <code>Animal a = new Dog();</code>, which method runs when we call <code>a.sound()</code>?</div>
-  <button class="opt" data-correct="false">Animal's sound() (based on reference type)</button>
+  <div class="q">In <code>Animal a = new Dog();</code>, which method runs when you call <code>a.sound()</code>?</div>
+  <button class="opt" data-correct="false">Animal's sound() (based on the reference type)</button>
   <button class="opt" data-correct="true">Dog's sound() (based on the actual object)</button>
   <div class="fb"></div>
 </div>
@@ -1878,26 +1875,26 @@ public class Main {
 <template id="tpl-u3-t7">
 <div class="topic-eyebrow">Unit 3 · Topic 7</div>
 <h1 class="topic-title">Abstraction &amp; Abstract Classes</h1>
-<p class="topic-hook">Show "WHAT happens", hide "HOW it happens."</p>
+<p class="topic-hook">Show WHAT happens, hide HOW it happens.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Abstraction means <b>hiding implementation details</b> and showing only the essential features.</p>
+  <p>Abstraction means <b>hiding the implementation details</b> and showing only the essential features.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>When you drive a car, you just need to know the steering, accelerator, brake (WHAT the car does). You don't need to know exactly what's happening inside the engine (HOW). That's exactly Abstraction!</p>
+    <p>When you drive a car, you just need to know the steering, accelerator, and brake (WHAT the car does). You don't need to know exactly what's happening inside the engine (HOW). That's Abstraction!</p>
   </div>
 </div>
 
 <div class="block reveal">
   <h3><span class="ico">🏗️</span> Abstract Class</h3>
-  <p>A class whose object <b>CANNOT be created</b>. It can have 2 kinds of methods:</p>
+  <p>A class whose <b>object CANNOT be created</b>. It can contain 2 kinds of methods:</p>
   <ul>
-    <li><b>Abstract methods</b> — without a body, just a declaration (the child MUST implement it)</li>
+    <li><b>Abstract methods</b> — no body, just a declaration (the child MUST implement it)</li>
     <li><b>Concrete methods</b> — a normal method, with a body</li>
   </ul>
   <table class="tbl">
-    <tr><th>What's Allowed in an Abstract Class?</th><th>Allowed?</th></tr>
+    <tr><th>What's Allowed Inside an Abstract Class?</th><th>Allowed?</th></tr>
     <tr><td>Abstract Methods</td><td>✅</td></tr>
     <tr><td>Concrete Methods</td><td>✅</td></tr>
     <tr><td>Constructors</td><td>✅</td></tr>
@@ -1916,20 +1913,20 @@ public class Main {
     }
 }
 class Circle extends Shape {
-    void draw() { System.out.println("Drawing Circle"); }   // implementation is required
+    void draw() { System.out.println("Drawing Circle"); }   // had to implement it
 }</code></pre>
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">abstract void draw();</span><span class="v">No body (just ends with a semicolon) — meaning "every child class must define this on its own"</span></div>
-  <div class="row"><span class="k">class Circle extends Shape</span><span class="v">Circle is extending Shape, so it's COMPULSORY for Circle to implement <code>draw()</code> — otherwise Circle would need to be declared abstract too</span></div>
+  <div class="row"><span class="k">abstract void draw();</span><span class="v">There's no body (it just ends with a semicolon) — meaning "every child class must define this itself"</span></div>
+  <div class="row"><span class="k">class Circle extends Shape</span><span class="v">Circle extends Shape, so it's COMPULSORY for Circle to implement <code>draw()</code> — otherwise Circle would also have to be made abstract</span></div>
 </div>
 
 <div class="keypoints reveal">
   <div class="lbl">🔑 Important Notes</div>
   <ul>
-    <li>You <b>CANNOT</b> create an object of an abstract class — <code>new Shape()</code> ❌ gives an error</li>
-    <li>If a class extends an abstract class, it MUST implement all abstract methods (or itself be declared abstract)</li>
+    <li>You <b>CANNOT</b> create an object of an abstract class — <code>new Shape()</code> ❌ will error out</li>
+    <li>If a class extends an abstract class, it MUST implement ALL its abstract methods (or become abstract itself)</li>
   </ul>
 </div>
 </template>
@@ -1941,17 +1938,17 @@ class Circle extends Shape {
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>An interface is a <b>blueprint of a class</b> — a "contract" that says which methods a class must implement, without saying HOW to implement them. It only contains abstract methods (public + abstract by default) and constants.</p>
+  <p>An interface is a <b>blueprint of a class</b> — a "contract" that says which methods a class must implement, but doesn't say HOW to do it. It only contains abstract methods (public + abstract by default) and constants.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Think of a job contract — "the employee must show up, must hit targets" — this EXPECTS certain things, but exactly HOW the employee does it is up to them. An interface is exactly this kind of contract.</p>
+    <p>Think of a job contract — "the employee must show up and hit their targets" — it sets EXPECTATIONS, but exactly how they get there is up to the employee. An interface is exactly that kind of contract.</p>
   </div>
 </div>
 
 <div class="editor reveal">
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">Animal.java</span></div>
   <pre><code data-lang="java">interface Animal {
-    void sound();     // public and abstract by default
+    void sound();     // default: public and abstract
 }
 class Dog implements Animal {
     public void sound() { System.out.println("Dog barks"); }
@@ -1965,14 +1962,14 @@ class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">interface Animal</span><span class="v">We use the <code>interface</code> keyword instead of <code>class</code></span></div>
-  <div class="row"><span class="k">class Dog implements Animal</span><span class="v">A class doesn't "extend" an interface, it <code>implements</code> it — and it's COMPULSORY to define all its abstract methods</span></div>
+  <div class="row"><span class="k">interface Animal</span><span class="v">The <code>interface</code> keyword is used instead of <code>class</code></span></div>
+  <div class="row"><span class="k">class Dog implements Animal</span><span class="v">A class doesn't "extend" an interface, it <code>implements</code> it — and it's COMPULSORY to define ALL of its abstract methods</span></div>
 </div>
 
 <div class="block reveal">
   <h3><span class="ico">⚡</span> Modern Java Interface Methods (Java 8+)</h3>
   <table class="tbl">
-    <tr><th>Type</th><th>Has a body?</th><th>Since</th></tr>
+    <tr><th>Type</th><th>Has a Body?</th><th>Since</th></tr>
     <tr><td>Abstract Method</td><td>No</td><td>Always</td></tr>
     <tr><td>Default Method</td><td>Yes</td><td>Java 8</td></tr>
     <tr><td>Static Method</td><td>Yes</td><td>Java 8</td></tr>
@@ -1988,7 +1985,7 @@ class Main {
 }
 class Car implements Vehicle {
     public void start() { System.out.println("Car Started"); }
-    // stop() doesn't need to be overridden -> the default is used
+    // no need to override stop() -> the default will be used
 }</code></pre>
   </div>
 </div>
@@ -2011,18 +2008,18 @@ class MyTask implements Runnable2, Serializable2 {
 <template id="tpl-u3-t9">
 <div class="topic-eyebrow">Unit 3 · Topic 9</div>
 <h1 class="topic-title">Interface vs Abstract Class</h1>
-<p class="topic-hook">Both give us "abstraction" — but when should we use which?</p>
+<p class="topic-hook">Both give you "abstraction" — but when should you use which one?</p>
 
 <table class="tbl reveal">
   <tr><th>Feature</th><th>Abstract Class</th><th>Interface</th></tr>
   <tr><td>Keyword</td><td><code>abstract</code></td><td><code>interface</code></td></tr>
-  <tr><td>Methods</td><td>Abstract + Concrete</td><td>Only abstract (default/static too from Java 8+)</td></tr>
-  <tr><td>Instance Variables</td><td>✅</td><td>❌ (only constants)</td></tr>
+  <tr><td>Methods</td><td>Abstract + Concrete</td><td>Abstract only (default/static too, in Java 8+)</td></tr>
+  <tr><td>Instance Variables</td><td>✅</td><td>❌ (constants only)</td></tr>
   <tr><td>Constructor</td><td>✅</td><td>❌</td></tr>
-  <tr><td>Multiple Inheritance</td><td>❌ (only extends one class)</td><td>✅ (implements many interfaces)</td></tr>
+  <tr><td>Multiple Inheritance</td><td>❌ (can only extend one class)</td><td>✅ (can implement many interfaces)</td></tr>
   <tr><td>Object Creation</td><td>❌</td><td>❌</td></tr>
-  <tr><td>State (Data)</td><td>Can maintain</td><td>Cannot</td></tr>
-  <tr><td>Use Case</td><td>Needs common implementation + state</td><td>Just defining a contract/behavior</td></tr>
+  <tr><td>State (Data)</td><td>Can maintain it</td><td>No</td></tr>
+  <tr><td>Use Case</td><td>Need common implementation + state</td><td>Just need to define a contract/behavior</td></tr>
 </table>
 
 <div class="diagram reveal">
@@ -2030,18 +2027,18 @@ class MyTask implements Runnable2, Serializable2 {
   <div class="flow-down">
     <div class="flow-node acc">Need common implementation + state?</div>
     <div class="flow-arrow">⌄ Yes</div>
-    <div class="flow-node teal">Use Abstract Class</div>
+    <div class="flow-node teal">Use an Abstract Class</div>
   </div>
   <div class="flow-down" style="margin-top:10px;">
     <div class="flow-node acc">Need multiple behaviors implemented?</div>
     <div class="flow-arrow">⌄ Yes</div>
-    <div class="flow-node teal">Use Interface</div>
+    <div class="flow-node teal">Use an Interface</div>
   </div>
 </div>
 
 <div class="block reveal">
   <h3><span class="ico">🔥</span> Bonus — Functional Interface &amp; Lambda (Java 8)</h3>
-  <p>An interface with <b>exactly ONE abstract method</b> is called a "Functional Interface." A short way to implement it is called a <b>Lambda Expression</b>.</p>
+  <p>An interface with <b>only ONE abstract method</b> is called a "Functional Interface." We use a <b>Lambda Expression</b> to implement it in a compact way.</p>
   <div class="editor">
     <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">Lambda.java</span></div>
     <pre><code data-lang="java">@FunctionalInterface
@@ -2056,8 +2053,8 @@ public class Test {
 }</code></pre>
   </div>
   <div class="hinglish">
-    <div class="lbl">💬 Simple Samjho</div>
-    <p><code>(msg) -> System.out.println(msg)</code> — yeh ek chhota tarika hai method likhne ka, bina poori class banaye. <code>-></code> ko "goes to" padho: "msg goes to System.out.println(msg)".</p>
+    <div class="lbl">💬 The Simple Way to Understand It</div>
+    <p><code>(msg) -> System.out.println(msg)</code> — this is a compact way of writing a method, without creating a whole class. Read <code>-></code> as "goes to": "msg goes to System.out.println(msg)."</p>
   </div>
 </div>
 </template>
@@ -2069,13 +2066,13 @@ public class Test {
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p><b>IS-A</b> (Inheritance) = "this IS a type of that" → <code>Dog IS-A Animal</code>. <b>HAS-A</b> (Composition) = "this contains another thing inside it" → <code>Car HAS-A Engine</code>.</p>
+  <p><b>IS-A</b> (Inheritance) = "this IS A type of that thing" → <code>Dog IS-A Animal</code>. <b>HAS-A</b> (Composition) = "this HAS another thing inside it" → <code>Car HAS-A Engine</code>.</p>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Aspect</th><th>IS-A (Inheritance)</th><th>HAS-A (Composition)</th></tr>
   <tr><td>Keyword</td><td><code>extends</code></td><td>Holding an object as a field</td></tr>
-  <tr><td>Coupling</td><td>Tight</td><td>Loose</td></tr>
+  <tr><td>Coupling</td><td>Tight (more tightly linked)</td><td>Loose (less tightly linked)</td></tr>
   <tr><td>Flexibility</td><td>Less</td><td>More</td></tr>
 </table>
 
@@ -2101,14 +2098,14 @@ class Car {
 <template id="tpl-u3-t11">
 <div class="topic-eyebrow">Unit 3 · Topic 11</div>
 <h1 class="topic-title">Encapsulation</h1>
-<p class="topic-hook">Keeping data in a safe "box" — the fourth pillar of OOP.</p>
+<p class="topic-hook">Keeping data in a secure "box" — the fourth pillar of OOP.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Encapsulation means wrapping data (variables) and code (methods) into ONE unit, and <b>protecting data from direct access</b>.</p>
+  <p>Encapsulation means wrapping data (variables) and code (methods) into ONE unit, and <b>protecting the data from direct access</b>.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Think of a medicine capsule — you don't eat the medicine inside directly, you take the whole capsule (in a controlled way). Similarly, we don't access a class's data directly, we go through "getter/setter" methods.</p>
+    <p>Think of a medicine capsule — you don't eat the medicine inside it directly, you take the whole capsule (in a controlled way). Similarly, we don't access a class's data directly, we go through "getter/setter" methods.</p>
   </div>
   <div class="keypoints">
     <div class="lbl">Key Points</div>
@@ -2124,7 +2121,7 @@ class Car {
 <div class="editor reveal">
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">Student.java</span></div>
   <pre><code data-lang="java">class Student {
-    private int id;         // private -> no direct outside access
+    private int id;         // private -> no direct access from outside
     private String name;
 
     public int getId() { return id; }              // GETTER
@@ -2136,8 +2133,8 @@ class Car {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">private int id</span><span class="v">No one from outside can write <code>obj.id = 5</code> directly — it will give a compile error</span></div>
-  <div class="row"><span class="k">getId() / setId()</span><span class="v">These are "public gates" — the ONLY controlled way to read or set id (you could even add validation in the setter, like "id can't be negative")</span></div>
+  <div class="row"><span class="k">private int id</span><span class="v">No one outside can directly write <code>obj.id = 5</code> — it'll cause a compile error</span></div>
+  <div class="row"><span class="k">getId() / setId()</span><span class="v">These are "public gates" — you read or set id through them in a controlled way (you can even add validation inside the setter, like "id can't be negative")</span></div>
 </div>
 
 <div class="diagram reveal">
@@ -2152,22 +2149,22 @@ class Car {
 </div>
 
 <div class="keypoints reveal">
-  <div class="lbl">🔑 Remember</div>
-  <p style="font-size:14.5px;">Make variables private → Provide public getter/setter → Access/modify data only through methods.</p>
+  <div class="lbl">🔑 Remember This</div>
+  <p style="font-size:14.5px;">Make variables private → provide public getters/setters → access/modify data only through those methods.</p>
 </div>
 </template>
 
 <template id="tpl-u3-t12">
 <div class="topic-eyebrow">Unit 3 · Topic 12</div>
 <h1 class="topic-title">Packages &amp; CLASSPATH</h1>
-<p class="topic-hook">Organizing classes into folders — essential for large projects.</p>
+<p class="topic-hook">Organizing classes into folders — essential for big projects.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>A package is a <b>folder/namespace</b> that groups related classes — avoids naming conflicts and improves organization.</p>
+  <p>A package is a <b>folder/namespace</b> that groups related classes together — it avoids naming conflicts and improves organization.</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Just like you organize files on your laptop into "College", "Projects", "Photos" folders — packages organize Java classes the same way.</p>
+    <p>Just like you create folders like "College," "Projects," and "Photos" on your laptop to organize files — packages organize Java classes the same way.</p>
   </div>
 </div>
 
@@ -2206,30 +2203,31 @@ java Main</code></pre>
 
 <div class="hinglish reveal">
   <div class="lbl">💬 Real Project Tip</div>
-  <p>Real projects mein package naam reverse domain style mein hote hain, jaise <code>com.company.project</code> — isse global naming conflicts avoid hote hain.</p>
+  <p>In real projects, package names follow the reverse-domain style, like <code>com.company.project</code> — this avoids global naming conflicts.</p>
 </div>
 </template>
+
 <!-- ============ UNIT 4 TEMPLATES ============ -->
 <template id="tpl-u4-t1">
 <div class="topic-eyebrow">Unit 4 · Topic 1</div>
 <h1 class="topic-title">Error vs Exception</h1>
-<p class="topic-hook">When something goes wrong in a program — what is it called, and how many kinds are there?</p>
+<p class="topic-hook">When something goes wrong in a program — what do we call it, and what types are there?</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>An exception is an <b>unwanted/unexpected event</b> that disrupts a program's normal flow (like dividing by zero, or accessing an invalid array index).</p>
+  <p>An exception is an <b>unwanted/unexpected event</b> that stops the program's normal flow (like dividing by 0, or accessing an invalid array index).</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Imagine you're driving and suddenly get a flat tire — that's an "exception." You can stop, put on a spare tire, and continue (handle it) — no need to cancel the whole trip.</p>
+    <p>Imagine you're driving and suddenly get a flat tire — that's an "exception." You can stop, put on the spare tire, and continue (handle it) — there's no need to cancel the whole trip.</p>
   </div>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Aspect</th><th>Error</th><th>Exception</th></tr>
-  <tr><td>Meaning</td><td>Serious problem, generally CANNOT be handled</td><td>Problem that CAN be caught and handled</td></tr>
+  <tr><td>Meaning</td><td>A serious problem, generally can't be handled</td><td>A problem that CAN be caught and handled</td></tr>
   <tr><td>Cause</td><td>System-level (JVM/hardware)</td><td>Program-level (logic/input issue)</td></tr>
   <tr><td>Example</td><td>OutOfMemoryError, StackOverflowError</td><td>ArithmeticException, NullPointerException</td></tr>
-  <tr><td>Recovery</td><td>Generally not possible</td><td>Can recover using try-catch</td></tr>
+  <tr><td>Recovery</td><td>Generally not possible</td><td>Can be recovered with try-catch</td></tr>
 </table>
 
 <div class="diagram reveal">
@@ -2256,8 +2254,8 @@ java Main</code></pre>
 
 <table class="tbl reveal">
   <tr><th>Aspect</th><th>Checked Exception</th><th>Unchecked Exception</th></tr>
-  <tr><td>When it's caught</td><td>Compile time</td><td>Runtime</td></tr>
-  <tr><td>Must be handled?</td><td>Yes (try-catch or throws)</td><td>Not mandatory (but good practice)</td></tr>
+  <tr><td>When It's Caught</td><td>Compile time</td><td>Runtime</td></tr>
+  <tr><td>Is Handling Required?</td><td>Yes (try-catch or throws)</td><td>Not required (but good practice)</td></tr>
   <tr><td>Example</td><td>IOException, SQLException</td><td>ArithmeticException, NullPointerException</td></tr>
 </table>
 </template>
@@ -2269,7 +2267,7 @@ java Main</code></pre>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p><b>try</b> = "attempt this risky task". <b>catch</b> = "if something goes wrong, catch it here". <b>finally</b> = "whatever happens, this part ALWAYS runs" (for cleanup).</p>
+  <p><b>try</b> = "attempt this risky operation." <b>catch</b> = "if something goes wrong, catch it here." <b>finally</b> = "no matter what happens, this part ALWAYS runs" (for cleanup).</p>
 </div>
 
 <div class="editor reveal">
@@ -2278,7 +2276,7 @@ java Main</code></pre>
     public static void main(String[] args) {
         try {
             int a = 10, b = 0;
-            int result = a / b;             // an exception is thrown here
+            int result = a / b;             // exception gets thrown here
             System.out.println(result);
         } catch (ArithmeticException e) {
             System.out.println("Cannot divide by zero: " + e.getMessage());
@@ -2291,19 +2289,19 @@ java Main</code></pre>
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Line-by-Line</div>
-  <div class="row"><span class="k">a / b</span><span class="v">10 ÷ 0 throws an <code>ArithmeticException</code></span></div>
+  <div class="row"><span class="k">a / b</span><span class="v">Doing 10 ÷ 0 throws an <code>ArithmeticException</code></span></div>
   <div class="row"><span class="k">catch (ArithmeticException e)</span><span class="v">This block "catches" that exception, so the program doesn't crash</span></div>
-  <div class="row"><span class="k">finally</span><span class="v">This line ALWAYS runs, whether an exception occurs or not — perfect for closing files or connections</span></div>
-  <div class="row"><span class="k">"Program continues normally"</span><span class="v">This also prints — meaning the program did NOT crash, the exception was handled</span></div>
+  <div class="row"><span class="k">finally</span><span class="v">This runs EVERY time, exception or not — perfect for closing files or connections</span></div>
+  <div class="row"><span class="k">"Program continues normally"</span><span class="v">This also gets printed — meaning the program did NOT crash, the exception was handled</span></div>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Keyword</th><th>Meaning</th></tr>
-  <tr><td><code>try</code></td><td>Block of risky code</td></tr>
+  <tr><td><code>try</code></td><td>The block of risky code</td></tr>
   <tr><td><code>catch</code></td><td>Handles the exception</td></tr>
   <tr><td><code>finally</code></td><td>ALWAYS runs — for cleanup</td></tr>
-  <tr><td><code>throw</code></td><td>Manually raising an exception</td></tr>
-  <tr><td><code>throws</code></td><td>Declaring in the method signature that an exception could occur</td></tr>
+  <tr><td><code>throw</code></td><td>Manually raises an exception</td></tr>
+  <tr><td><code>throws</code></td><td>Declares in the method signature that an exception might occur</td></tr>
 </table>
 </template>
 
@@ -2314,14 +2312,14 @@ java Main</code></pre>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p><b>throw</b> = "I am throwing an exception right now" (an action, used at one specific place). <b>throws</b> = "this method MIGHT throw an exception, be careful" (a warning, written in the method signature).</p>
+  <p><b>throw</b> = "I am throwing an exception right now" (an action, used at one specific point). <b>throws</b> = "this method MIGHT throw an exception, watch out" (a warning, written in the method signature).</p>
 </div>
 
 <div class="editor reveal">
   <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">ThrowDemo.java</span></div>
   <pre><code data-lang="java">void checkAge(int age) throws Exception {     // throws -> declaring the possibility
     if (age < 18) {
-        throw new Exception("Not eligible to vote");   // throw -> actually raising it
+        throw new Exception("Not eligible to vote");   // throw -> manually raising it
     }
     System.out.println("Eligible to vote");
 }
@@ -2335,8 +2333,8 @@ public static void main(String[] args) {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">throws Exception</span><span class="v">The method is declaring: "whoever calls me should know I might give an exception"</span></div>
-  <div class="row"><span class="k">throw new Exception(...)</span><span class="v">Here we're actually creating and throwing the exception (with a message)</span></div>
+  <div class="row"><span class="k">throws Exception</span><span class="v">The method is declaring: "whoever calls me should know I might throw an exception"</span></div>
+  <div class="row"><span class="k">throw new Exception(...)</span><span class="v">Here an exception is actually being created and thrown (with a message)</span></div>
 </div>
 
 <div class="block reveal">
@@ -2349,14 +2347,14 @@ public static void main(String[] args) {
     System.out.println("Error: " + e.getMessage());
 }</code></pre>
   </div>
-  <p style="font-size:13.8px;color:var(--text-dim);">You can handle multiple exception types in one catch block, separated by <code>|</code> (pipe).</p>
+  <p style="font-size:13.8px;color:var(--text-dim);">You can handle multiple exception types in a single catch block, separated by <code>|</code> (pipe).</p>
 </div>
 </template>
 
 <template id="tpl-u4-t4">
 <div class="topic-eyebrow">Unit 4 · Topic 4</div>
 <h1 class="topic-title">Multiple Catch, Nested Try &amp; Re-throwing</h1>
-<p class="topic-hook">When more than one kind of exception can occur, or a try is nested inside another try.</p>
+<p class="topic-hook">When more than one kind of exception can occur, or when one try sits inside another.</p>
 
 <div class="block reveal">
   <h3><span class="ico">📚</span> Multiple Catch Clauses</h3>
@@ -2369,13 +2367,13 @@ public static void main(String[] args) {
     System.out.println("Arithmetic error: " + e.getMessage());
 } catch (ArrayIndexOutOfBoundsException e) {
     System.out.println("Array error: " + e.getMessage());
-} catch (Exception e) {           // most general, ALWAYS last
+} catch (Exception e) {           // most general, always LAST
     System.out.println("Some other error: " + e.getMessage());
 }</code></pre>
   </div>
   <div class="hinglish">
-    <div class="lbl">💬 Rule to Remember</div>
-    <p>Specific exceptions PEHLE catch karo, general (<code>Exception</code>) hamesha SABSE LAST mein — warna compile error aayega ("unreachable catch block").</p>
+    <div class="lbl">💬 Remember This Rule</div>
+    <p>Catch specific exceptions FIRST, and the general one (<code>Exception</code>) always LAST — otherwise you'll get a compile error ("unreachable catch block").</p>
   </div>
 </div>
 
@@ -2391,7 +2389,7 @@ public static void main(String[] args) {
         System.out.println("Inner catch: " + e.getMessage());
     }
     int[] arr = new int[3];
-    arr[5] = 10;                    // caught by the outer catch
+    arr[5] = 10;                    // gets caught by the outer catch
 } catch (ArrayIndexOutOfBoundsException e) {
     System.out.println("Outer catch: " + e.getMessage());
 }</code></pre>
@@ -2407,22 +2405,22 @@ public static void main(String[] args) {
         int x = 5 / 0;
     } catch (ArithmeticException e) {
         System.out.println("Logging error...");
-        throw e;               // forwarding the same exception
+        throw e;               // passing the same exception along
     }
 }</code></pre>
   </div>
-  <p style="font-size:13.8px;color:var(--text-dim);">Sometimes you want to log/do something locally, but leave the final handling to the calling method — that's when we re-throw.</p>
+  <p style="font-size:13.8px;color:var(--text-dim);">Sometimes you want to log or act on something locally, but leave the final handling to the calling method — that's why we re-throw.</p>
 </div>
 </template>
 
 <template id="tpl-u4-t5">
 <div class="topic-eyebrow">Unit 4 · Topic 5</div>
 <h1 class="topic-title">Custom (User-Defined) Exceptions</h1>
-<p class="topic-hook">Creating your own exception class — when built-in exceptions aren't enough.</p>
+<p class="topic-hook">Building your own exception class — for when the built-in exceptions aren't enough.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Sometimes you need your own specific error message (like "Insufficient Balance"). For this, you can create your own exception by extending the <code>Exception</code> class.</p>
+  <p>Sometimes you need your own specific error message (like "Insufficient Balance"). For this, you can extend the <code>Exception</code> class and create your own exception.</p>
 </div>
 
 <div class="editor reveal">
@@ -2430,7 +2428,7 @@ public static void main(String[] args) {
   <pre><code data-lang="java">// Custom checked exception
 class InsufficientBalanceException extends Exception {
     InsufficientBalanceException(String message) {
-        super(message);      // passing message to the Exception class
+        super(message);      // pass the message to the Exception class
     }
 }
 class BankAccount {
@@ -2456,13 +2454,13 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">extends Exception</span><span class="v">We inherit our class from Java's Exception class, creating a brand-new exception TYPE</span></div>
-  <div class="row"><span class="k">super(message)</span><span class="v">Passing the message to the parent (Exception) constructor, so <code>getMessage()</code> works</span></div>
-  <div class="row"><span class="k">throw new InsufficientBalanceException(...)</span><span class="v">Raising our own custom exception when the condition matches</span></div>
+  <div class="row"><span class="k">extends Exception</span><span class="v">By inheriting from Java's Exception class, we're creating a new exception TYPE</span></div>
+  <div class="row"><span class="k">super(message)</span><span class="v">We're passing the message to the parent (Exception) constructor, so <code>getMessage()</code> works</span></div>
+  <div class="row"><span class="k">throw new InsufficientBalanceException(...)</span><span class="v">We're raising our own custom exception when the condition matches</span></div>
 </div>
 <div class="hinglish reveal">
   <div class="lbl">💬 Tip</div>
-  <p><code>Exception</code> extend karo = Checked exception (compulsory handle karna). <code>RuntimeException</code> extend karo = Unchecked exception (handle karna optional).</p>
+  <p>Extend <code>Exception</code> = Checked exception (must be handled). Extend <code>RuntimeException</code> = Unchecked exception (handling is optional).</p>
 </div>
 
 <div class="mini-quiz reveal" data-quiz>
@@ -2474,6 +2472,7 @@ public class Main {
   <div class="fb"></div>
 </div>
 </template>
+
 <!-- ============ UNIT 5 TEMPLATES ============ -->
 <template id="tpl-u5-t1">
 <div class="topic-eyebrow">Unit 5 · Topic 1</div>
@@ -2484,22 +2483,22 @@ public class Main {
   <h3><span class="ico">🧠</span> ELI5</h3>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p><b>Process</b> = a whole restaurant (its own kitchen, staff, resources — independent). <b>Thread</b> = the workers inside the restaurant (waiter, chef) who SHARE the same kitchen/resources, working on different tasks at once.</p>
+    <p><b>Process</b> = an entire restaurant (its own kitchen, staff, resources — independent). <b>Thread</b> = the workers inside the restaurant (waiter, chef) who SHARE the SAME kitchen/resources, each doing different work at the same time.</p>
   </div>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Aspect</th><th>Process</th><th>Thread</th></tr>
-  <tr><td>Meaning</td><td>Independent running program, its own memory</td><td>Lightweight part of a process, shares memory</td></tr>
+  <tr><td>Meaning</td><td>An independently running program, with its own memory</td><td>A lightweight part of a process, sharing its memory</td></tr>
   <tr><td>Memory</td><td>Separate</td><td>Shared with sibling threads</td></tr>
   <tr><td>Communication</td><td>Slow (needs IPC)</td><td>Fast (shared memory)</td></tr>
   <tr><td>Creation Cost</td><td>Heavy</td><td>Light</td></tr>
-  <tr><td>Example</td><td>Chrome and VS Code = 2 processes</td><td>Chrome downloading a file while rendering a page = 2 threads</td></tr>
+  <tr><td>Example</td><td>Chrome and VS Code = 2 processes</td><td>Chrome downloading a file while also rendering the page = 2 threads</td></tr>
 </table>
 
 <div class="keypoints reveal">
   <div class="lbl">🔑 Why Multithreading?</div>
-  <p style="font-size:14.5px;">It achieves parallelism → better CPU utilization, faster execution of independent tasks (like a game rendering graphics while also processing user input, at the same time).</p>
+  <p style="font-size:14.5px;">It achieves parallelism → better use of the CPU, and independent tasks execute faster (like a game rendering graphics while also processing user input, at the same time).</p>
 </div>
 </template>
 
@@ -2513,7 +2512,7 @@ public class Main {
   <div class="editor">
     <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">MyThread.java</span></div>
     <pre><code data-lang="java">class MyThread extends Thread {
-    public void run() {                 // put the task inside run()
+    public void run() {                 // write the task inside run()
         for (int i = 1; i <= 3; i++) {
             System.out.println("MyThread: " + i);
         }
@@ -2522,7 +2521,7 @@ public class Main {
 public class Main {
     public static void main(String[] args) {
         MyThread t1 = new MyThread();
-        t1.start();          // start() -> creates a new thread, internally calls run()
+        t1.start();          // start() -> creates a new thread, calls run() inside it
     }
 }</code></pre>
   </div>
@@ -2548,7 +2547,7 @@ public class Main {
   </div>
   <div class="hinglish">
     <div class="lbl">💬 Which One Is Better?</div>
-    <p><code>Runnable</code> implement karna better hai, kyunki Java mein ek class sirf EK class extend kar sakti hai. Agar Thread ko extend kar liya, toh koi aur class extend NAHI kar sakte. <code>Runnable</code> se yeh restriction nahi hoti.</p>
+    <p>Implementing <code>Runnable</code> is better, because in Java a class can only extend ONE class. If you extend Thread, you can't extend any other class. <code>Runnable</code> doesn't have this restriction.</p>
   </div>
 </div>
 
@@ -2568,7 +2567,7 @@ public class Main {
   <div class="flow-down">
     <div class="flow-node">NEW (object created, start() not called yet)</div>
     <div class="flow-arrow">⌄ start()</div>
-    <div class="flow-node acc">RUNNABLE (waiting for CPU)</div>
+    <div class="flow-node acc">RUNNABLE (waiting for the CPU)</div>
     <div class="flow-arrow">⌄ scheduler</div>
     <div class="flow-node teal">RUNNING (currently executing)</div>
     <div class="flow-arrow">⌄ run() complete</div>
@@ -2578,10 +2577,10 @@ public class Main {
 
 <table class="tbl reveal">
   <tr><th>State</th><th>Meaning</th></tr>
-  <tr><td>New</td><td>Thread object created, <code>start()</code> hasn't been called yet</td></tr>
+  <tr><td>New</td><td>The thread object has been created, <code>start()</code> hasn't been called yet</td></tr>
   <tr><td>Runnable</td><td>Ready to run, waiting for the CPU</td></tr>
-  <tr><td>Running</td><td>Currently executing on the CPU</td></tr>
-  <tr><td>Blocked/Waiting</td><td>Waiting for a resource/lock, or paused due to <code>wait()</code>/<code>sleep()</code></td></tr>
+  <tr><td>Running</td><td>Currently actually executing on the CPU</td></tr>
+  <tr><td>Blocked/Waiting</td><td>Waiting for a resource/lock, or paused because of <code>wait()</code>/<code>sleep()</code></td></tr>
   <tr><td>Terminated</td><td>The <code>run()</code> method has finished</td></tr>
 </table>
 </template>
@@ -2589,11 +2588,11 @@ public class Main {
 <template id="tpl-u5-t4">
 <div class="topic-eyebrow">Unit 5 · Topic 4</div>
 <h1 class="topic-title">Thread Priority &amp; Interrupt</h1>
-<p class="topic-hook">Giving threads a hint on "who goes first", and stopping them.</p>
+<p class="topic-hook">Giving threads a hint about "who runs first," and stopping them.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🎚️</span> Thread Priority</h3>
-  <p>Every thread has a priority (1 to 10) that gives the scheduler a "hint" — it's NOT a guarantee.</p>
+  <p>Every thread has a priority (1 to 10) that gives the scheduler a "hint" — it's not a GUARANTEE.</p>
   <table class="tbl">
     <tr><th>Constant</th><th>Value</th></tr>
     <tr><td><code>Thread.MIN_PRIORITY</code></td><td>1</td></tr>
@@ -2635,7 +2634,7 @@ public class Main {
   </div>
   <div class="breakdown">
     <div class="lbl">🔍 Breakdown</div>
-    <div class="row"><span class="k">interrupt()</span><span class="v">Sets an "interrupt flag" — if the thread is sleeping/waiting, an <code>InterruptedException</code> is thrown immediately</span></div>
+    <div class="row"><span class="k">interrupt()</span><span class="v">Sets an "interrupt flag" — if the thread is sleeping/waiting, an <code>InterruptedException</code> gets thrown immediately</span></div>
   </div>
 </div>
 </template>
@@ -2643,14 +2642,14 @@ public class Main {
 <template id="tpl-u5-t5">
 <div class="topic-eyebrow">Unit 5 · Topic 5</div>
 <h1 class="topic-title">Synchronizing Threads</h1>
-<p class="topic-hook">When two threads touch the SAME data, how to avoid the resulting confusion (race condition).</p>
+<p class="topic-hook">When two threads touch the SAME data, how do we avoid the resulting confusion (race condition)?</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5 — What's the Problem?</h3>
   <p>When multiple threads access/modify shared data AT THE SAME TIME, the data can become <b>inconsistent (wrong)</b> — this is called a "Race Condition."</p>
   <div class="analogy">
     <div class="lbl">🔦 Real-Life Analogy</div>
-    <p>Imagine two people trying to withdraw money from the same bank account AT THE SAME TIME, both seeing the balance as ₹1000. If both withdraw simultaneously without checking, the balance goes wrong. <code>synchronized</code> puts up a "queue" — only ONE person can transact at a time.</p>
+    <p>Imagine 2 people trying to withdraw money from the same bank account AT THE SAME TIME, and both think the balance is currently ₹1000. If both withdraw simultaneously without checking, the balance ends up wrong. <code>synchronized</code> puts everyone in a "line/queue" — only ONE person can transact at a time.</p>
   </div>
 </div>
 
@@ -2682,12 +2681,12 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">synchronized void increment()</span><span class="v">Puts a "lock" — only one thread can run this method at a time, the other must wait</span></div>
-  <div class="row"><span class="k">t1.join()</span><span class="v">Makes the main thread wait until t1 finishes its work</span></div>
+  <div class="row"><span class="k">synchronized void increment()</span><span class="v">Places a "lock" — only one thread can run this method at a time, the other thread will wait</span></div>
+  <div class="row"><span class="k">t1.join()</span><span class="v">Pauses the main thread until t1 finishes its work</span></div>
 </div>
 <div class="hinglish reveal">
-  <div class="lbl">💬 Bina Synchronized Ke Kya Hota?</div>
-  <p>Bina <code>synchronized</code> ke, dono threads ek hi variable ko simultaneously modify kar sakte hain aur final result <b>galat</b> aa sakta hai (2000 ki jagah 1850 ya kuch bhi random). <code>synchronized</code> ise reliably 2000 rakhta hai.</p>
+  <div class="lbl">💬 What Happens Without Synchronized?</div>
+  <p>Without <code>synchronized</code>, both threads can modify the same variable simultaneously, and the final result can come out <b>wrong</b> (some random number instead of 2000, like 1850). <code>synchronized</code> reliably keeps it at 2000.</p>
 </div>
 </template>
 
@@ -2698,7 +2697,7 @@ public class Main {
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>Java provides <code>wait()</code>, <code>notify()</code>, <code>notifyAll()</code> methods (defined in the Object class) so threads can <b>coordinate</b> with each other — like in a Producer-Consumer problem.</p>
+  <p>Java provides <code>wait()</code>, <code>notify()</code>, and <code>notifyAll()</code> methods (defined in the Object class) so threads can <b>coordinate</b> with each other — like in the Producer-Consumer problem.</p>
 </div>
 
 <div class="editor reveal">
@@ -2706,42 +2705,43 @@ public class Main {
   <pre><code data-lang="java">class SharedResource {
     synchronized void produce() throws InterruptedException {
         System.out.println("Producing...");
-        wait();       // releases lock and waits
+        wait();       // releases the lock and waits
         System.out.println("Resumed after notify");
     }
     synchronized void consume() {
         System.out.println("Consuming and notifying...");
-        notify();     // wakes up a waiting thread
+        notify();     // wakes up one waiting thread
     }
 }</code></pre>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Method</th><th>What It Does</th></tr>
-  <tr><td><code>wait()</code></td><td>The current thread releases the lock and waits</td></tr>
+  <tr><td><code>wait()</code></td><td>The current thread releases its lock and waits</td></tr>
   <tr><td><code>notify()</code></td><td>Wakes up ONE waiting thread</td></tr>
   <tr><td><code>notifyAll()</code></td><td>Wakes up ALL waiting threads</td></tr>
   <tr><td><code>join()</code></td><td>Makes the calling thread wait until the target thread finishes</td></tr>
-  <tr><td><code>sleep(ms)</code></td><td>Pauses the current thread for the given milliseconds</td></tr>
+  <tr><td><code>sleep(ms)</code></td><td>Pauses the current thread for the given number of milliseconds</td></tr>
 </table>
 
 <div class="keypoints reveal">
   <div class="lbl">🔑 Unit 5 Summary</div>
-  <p style="font-size:14.5px;">Create a thread using the Thread class or Runnable interface → use <code>start()</code>, not <code>run()</code> → use <code>synchronized</code> to avoid race conditions → <code>wait()</code>/<code>notify()</code> lets threads communicate.</p>
+  <p style="font-size:14.5px;">Create a thread via the Thread class or the Runnable interface → use <code>start()</code>, not <code>run()</code> → avoid race conditions with <code>synchronized</code> → threads communicate using <code>wait()</code>/<code>notify()</code>.</p>
 </div>
 </template>
+
 <!-- ============ UNIT 6 TEMPLATES ============ -->
 <template id="tpl-u6-t1">
 <div class="topic-eyebrow">Unit 6 · Topic 1</div>
 <h1 class="topic-title">File Streams — Reading &amp; Writing</h1>
-<p class="topic-hook">Writing and reading data between a Java program and a file.</p>
+<p class="topic-hook">Writing data to a file and reading it back, from a Java program.</p>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>A "stream" means a <b>flowing line</b> of data (like a stream of water) — from a file into a program, or from a program into a file.</p>
+  <p>"Stream" means a <b>flowing line</b> of data (like a stream of water) — from a file into a program, or from a program into a file.</p>
   <table class="tbl">
     <tr><th>Aspect</th><th>Byte Stream</th><th>Character Stream</th></tr>
-    <tr><td>Handles</td><td>Raw binary data (image, video, any file)</td><td>Text data</td></tr>
+    <tr><td>Handles</td><td>Raw binary data (images, video, any file)</td><td>Text data</td></tr>
     <tr><td>Base classes</td><td><code>InputStream</code>/<code>OutputStream</code></td><td><code>Reader</code>/<code>Writer</code></td></tr>
     <tr><td>Unit</td><td>1 byte</td><td>1 character (Unicode)</td></tr>
   </table>
@@ -2757,7 +2757,7 @@ public class Main {
         fw.write("Hello Java File Handling!");
         fw.close();
 
-        // Reading (line by line, using BufferedReader — faster)
+        // Reading (line by line, using BufferedReader — it's fast)
         BufferedReader br = new BufferedReader(new FileReader("data.txt"));
         String line;
         while ((line = br.readLine()) != null) {
@@ -2769,16 +2769,16 @@ public class Main {
 </div>
 <div class="breakdown reveal">
   <div class="lbl">🔍 Breakdown</div>
-  <div class="row"><span class="k">FileWriter</span><span class="v">For writing into a text file</span></div>
-  <div class="row"><span class="k">BufferedReader</span><span class="v">For reading line by line, faster than a plain FileReader</span></div>
-  <div class="row"><span class="k">.close()</span><span class="v">Closing the file is important — otherwise a resource leak can happen</span></div>
+  <div class="row"><span class="k">FileWriter</span><span class="v">For writing to a text file</span></div>
+  <div class="row"><span class="k">BufferedReader</span><span class="v">For reading line-by-line — faster than a plain FileReader</span></div>
+  <div class="row"><span class="k">.close()</span><span class="v">Closing the file is essential — otherwise you risk a resource leak</span></div>
 </div>
 </template>
 
 <template id="tpl-u6-t2">
 <div class="topic-eyebrow">Unit 6 · Topic 2</div>
 <h1 class="topic-title">File Class &amp; Random Access</h1>
-<p class="topic-hook">Getting "info" about a file, and jumping to any position to read/write.</p>
+<p class="topic-hook">Getting "info" about a file, and reading/writing at any position within it.</p>
 
 <div class="block reveal">
   <h3><span class="ico">📁</span> File Class</h3>
@@ -2812,7 +2812,7 @@ raf.close();</code></pre>
   </div>
   <div class="breakdown">
     <div class="lbl">🔍 Breakdown</div>
-    <div class="row"><span class="k">seek(5)</span><span class="v">Moves the "cursor" inside the file to exactly position 5 — like jumping with Ctrl+F in a document</span></div>
+    <div class="row"><span class="k">seek(5)</span><span class="v">Moves the "cursor" inside the file to exactly position 5 — like jumping to a spot in a document with Ctrl+F</span></div>
   </div>
 </div>
 </template>
@@ -2824,7 +2824,7 @@ raf.close();</code></pre>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p>A <b>Collection</b> is a group of objects — like a smart, resizable array. The Collections Framework gives us ready-made data structures (List, Set, Queue, Map) that are MORE powerful than plain arrays (auto-resize, built-in sorting, searching).</p>
+  <p>A <b>Collection</b> is a group of objects — like a smart, resizable array. The Collections Framework gives you ready-made data structures (List, Set, Queue, Map) that are MORE powerful than plain arrays (auto-resize, sorting, and searching built in).</p>
 </div>
 
 <div class="diagram reveal">
@@ -2838,18 +2838,18 @@ raf.close();</code></pre>
     <div class="flow-down"><div class="flow-node teal">Set</div><div style="font-size:11px;color:var(--text-faint);margin-top:6px;">no duplicates<br>HashSet, TreeSet</div></div>
     <div class="flow-down"><div class="flow-node teal">Queue</div><div style="font-size:11px;color:var(--text-faint);margin-top:6px;">FIFO order<br>PriorityQueue, ArrayDeque</div></div>
   </div>
-  <p style="margin-top:14px;font-size:13px;color:var(--text-faint);"><b>Map</b> (HashMap, TreeMap) — key-value pairs, technically NOT part of the Collection interface, it's a separate hierarchy, but still part of the framework.</p>
+  <p style="margin-top:14px;font-size:13px;color:var(--text-faint);"><b>Map</b> (HashMap, TreeMap) — key-value pairs. It's technically NOT part of the Collection interface — it has a separate hierarchy — but it is part of the framework.</p>
 </div>
 </template>
 
 <template id="tpl-u6-t4">
 <div class="topic-eyebrow">Unit 6 · Topic 4</div>
 <h1 class="topic-title">List, Set, Queue &amp; Map — With Code</h1>
-<p class="topic-hook">The most commonly used collection classes — when to use which.</p>
+<p class="topic-hook">The most-used collection classes — when to use which one.</p>
 
 <div class="block reveal">
   <h3><span class="ico">📋</span> ArrayList</h3>
-  <p>Resizable array, allows duplicates, maintains insertion order.</p>
+  <p>A resizable array — allows duplicates and maintains insertion order.</p>
   <div class="editor">
     <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">ArrayListDemo.java</span></div>
     <pre><code data-lang="java">import java.util.*;
@@ -2865,8 +2865,8 @@ System.out.println(list.get(0));   // Aman</code></pre>
   <div class="editor">
     <div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname">SetDemo.java</span></div>
     <pre><code data-lang="java">HashSet<String> set = new HashSet<>();
-set.add("A"); set.add("B"); set.add("A");   // duplicate IGNORED
-System.out.println(set);      // order not guaranteed, e.g. [A, B]
+set.add("A"); set.add("B"); set.add("A");   // the duplicate gets IGNORED
+System.out.println(set);      // order isn't guaranteed, e.g. [A, B]
 
 TreeSet<Integer> ts = new TreeSet<>();
 ts.add(30); ts.add(10); ts.add(20);
@@ -2895,8 +2895,8 @@ System.out.println(map.get(1));       // Aman</code></pre>
 </table>
 
 <div class="hinglish reveal">
-  <div class="lbl">💬 Easy Way To Remember</div>
-  <p><b>List</b> = order matters, duplicates chalte hain (ek task list). <b>Set</b> = duplicates NAHI chahiye (unique roll numbers). <b>Map</b> = key-value pair (roll number → naam, ek dictionary jaisa).</p>
+  <div class="lbl">💬 Simple Way to Remember</div>
+  <p><b>List</b> = order matters, duplicates are fine (like a task list). <b>Set</b> = duplicates are NOT wanted (unique roll numbers). <b>Map</b> = key-value pairs (roll number → name, like a dictionary).</p>
 </div>
 
 <div class="mini-quiz reveal" data-quiz>
@@ -2916,23 +2916,23 @@ System.out.println(map.get(1));       // Aman</code></pre>
 
 <div class="block reveal">
   <h3><span class="ico">🧠</span> ELI5</h3>
-  <p><b>JDBC (Java Database Connectivity)</b> is an API that lets Java programs <b>connect, query, and update</b> a database using SQL.</p>
+  <p><b>JDBC (Java Database Connectivity)</b> is an API that lets Java programs <b>connect to, query, and update</b> a database, using SQL.</p>
 </div>
 
 <div class="diagram reveal">
   <div class="diagram-title">6 Steps to Connect</div>
   <div class="flow-down">
-    <div class="flow-node">1. Load &amp; register the driver</div>
+    <div class="flow-node">1. Load &amp; Register the Driver</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node">2. Establish a connection</div>
+    <div class="flow-node">2. Create a Connection</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node">3. Create a statement</div>
+    <div class="flow-node">3. Create a Statement</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node acc">4. Execute the query</div>
+    <div class="flow-node acc">4. Execute the Query</div>
     <div class="flow-arrow">⌄</div>
     <div class="flow-node">5. Process the ResultSet</div>
     <div class="flow-arrow">⌄</div>
-    <div class="flow-node teal">6. Close the connection</div>
+    <div class="flow-node teal">6. Close the Connection</div>
   </div>
 </div>
 
@@ -2977,14 +2977,14 @@ ps.executeUpdate();</code></pre>
   </div>
   <div class="hinglish">
     <div class="lbl">💬 Why Is It Better?</div>
-    <p><code>Statement</code> mein manually query string banate ho — SQL Injection ka risk hota hai. <code>PreparedStatement</code> mein <code>?</code> placeholders safely values set karte hain. Real projects mein HAMESHA <code>PreparedStatement</code> use karo.</p>
+    <p>With <code>Statement</code> you build the query string manually — this carries a SQL Injection risk. With <code>PreparedStatement</code>, <code>?</code> placeholders let you set values safely. In real projects, ALWAYS use <code>PreparedStatement</code>.</p>
   </div>
 </div>
 
 <table class="tbl reveal">
   <tr><th>Method</th><th>Used For</th><th>Return</th></tr>
   <tr><td><code>executeQuery()</code></td><td><code>SELECT</code></td><td><code>ResultSet</code></td></tr>
-  <tr><td><code>executeUpdate()</code></td><td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td><td><code>int</code> (rows affected)</td></tr>
+  <tr><td><code>executeUpdate()</code></td><td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td><td><code>int</code> (how many rows were affected)</td></tr>
 </table>
 </template>
 <script>
@@ -3051,36 +3051,37 @@ const UNITS = [
 ];
 
 const TOTAL_TOPICS = UNITS.reduce((s,u)=>s+u.topics.length,0);
+const STORAGE_KEY = 'oopJavaCourse_progress_105303';
 
-/* ---------- PERSISTENCE (localStorage) ----------
-   Saves which topics you've completed and where you left off, right in
-   your browser, so reopening this file later remembers your progress.
-   Falls back to in-memory only if storage is unavailable (e.g. some
-   restricted preview contexts) — the course still works either way. */
-const STORAGE_KEY = 'oopJavaCourse_progress_v1';
-const LAST_TOPIC_KEY = 'oopJavaCourse_lastTopic_v1';
-let storageOK = true;
+/* ---------- PERSISTENCE (progress saved in this browser) ---------- */
 function loadProgress(){
   try{
     const raw = localStorage.getItem(STORAGE_KEY);
-    return new Set(raw ? JSON.parse(raw) : []);
-  }catch(e){ storageOK = false; return new Set(); }
+    if(!raw) return new Set();
+    const arr = JSON.parse(raw);
+    if(Array.isArray(arr)) return new Set(arr);
+    return new Set();
+  }catch(e){
+    return new Set();
+  }
 }
 function saveProgress(){
-  if(!storageOK) return;
-  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify([...doneSet])); }catch(e){ storageOK=false; }
-}
-function saveLastTopic(unitId, topicId){
-  if(!storageOK) return;
-  try{ localStorage.setItem(LAST_TOPIC_KEY, unitId+'|'+topicId); }catch(e){}
-}
-function getLastTopic(){
   try{
-    const raw = localStorage.getItem(LAST_TOPIC_KEY);
-    if(!raw) return null;
-    const [u,t] = raw.split('|');
-    return {unit:u, topic:t};
-  }catch(e){ return null; }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(doneSet)));
+    flashSaveStatus();
+  }catch(e){
+    const t = document.getElementById('saveStatusText');
+    if(t) t.textContent = "Couldn't save (private browsing?)";
+  }
+}
+function flashSaveStatus(){
+  const el = document.getElementById('saveStatus');
+  const t = document.getElementById('saveStatusText');
+  if(!el || !t) return;
+  t.textContent = 'Saved just now';
+  el.classList.add('flash');
+  clearTimeout(flashSaveStatus._timer);
+  flashSaveStatus._timer = setTimeout(()=>{ t.textContent = 'Progress saved on this device'; el.classList.remove('flash'); }, 1600);
 }
 
 const doneSet = loadProgress();
@@ -3093,8 +3094,10 @@ const bootLines = [
   "> initializing JavaOOP_Handbook.exe",
   "> loading syllabus [105303] ......... OK",
   "> importing Unit 1 - Unit 6 ......... OK",
-  "> compiling notes into simple English  OK",
-  "> BUILD SUCCESSFUL — welcome, Keshav "
+  "> translating notes into English ..... OK",
+  doneSet.size > 0
+    ? `> restoring saved progress (${doneSet.size}/${TOTAL_TOPICS}) . OK`
+    : "> BUILD SUCCESSFUL — welcome, Keshav "
 ];
 const bootEl = document.getElementById('boot-lines');
 bootLines.forEach((line,i)=>{
@@ -3107,7 +3110,6 @@ bootLines.forEach((line,i)=>{
 const cursor = document.createElement('span');
 cursor.className='boot-cursor';
 bootEl.appendChild(cursor);
-requestAnimationFrame(()=>{ const bf=document.getElementById('bootFill'); if(bf) bf.style.width='100%'; });
 setTimeout(()=>{
   document.getElementById('boot').classList.add('hide');
   document.getElementById('app').classList.add('ready');
@@ -3136,9 +3138,11 @@ function buildSidebar(){
       const link = document.createElement('div');
       link.className='topic-link';
       link.dataset.unit=u.id; link.dataset.topic=t.id;
-      const isDone = doneSet.has(u.id+'-'+t.id);
-      link.innerHTML = `<span class="check">${isDone?'✓':''}</span><span>${t.title}</span>`;
-      if(isDone) link.classList.add('done');
+      link.innerHTML = `<span class="check"></span><span>${t.title}</span>`;
+      if(doneSet.has(u.id+'-'+t.id)){
+        link.classList.add('done');
+        link.querySelector('.check').textContent='✓';
+      }
       link.addEventListener('click',()=>{ loadTopic(u.id,t.id); if(window.innerWidth<=900) closeSidebar(); });
       tlist.appendChild(link);
     });
@@ -3148,13 +3152,11 @@ function buildSidebar(){
   updateXP();
 }
 
-function updateXP(pulse){
+function updateXP(){
   const pct = Math.round((doneSet.size/TOTAL_TOPICS)*100);
-  const fill = document.getElementById('xpFill');
-  fill.style.width = pct+'%';
+  document.getElementById('xpFill').style.width = pct+'%';
   document.getElementById('xpLabel').textContent = `${doneSet.size} / ${TOTAL_TOPICS} topics done`;
   document.getElementById('progress-bar').style.width = pct+'%';
-  if(pulse){ fill.classList.remove('pulse'); void fill.offsetWidth; fill.classList.add('pulse'); }
 }
 
 /* ---------- HOME ---------- */
@@ -3165,36 +3167,14 @@ function showHome(){
   const tpl = document.getElementById('tpl-home');
   body.innerHTML='';
   body.appendChild(tpl.content.cloneNode(true));
-
-  // "Continue where you left off" — only shows if progress was saved before
-  const last = getLastTopic();
-  if(last){
-    const lu = UNITS.find(u=>u.id===last.unit);
-    const lt = lu?.topics.find(t=>t.id===last.topic);
-    if(lu && lt){
-      const cc = document.createElement('div');
-      cc.className = 'continue-card reveal';
-      cc.innerHTML = `<div><div class="cc-label">Continue where you left off</div><div class="cc-title">${lu.name} → ${lt.title}</div></div><div class="cc-arrow">→</div>`;
-      cc.addEventListener('click',(e)=>{
-        spawnRipple(cc,e);
-        loadTopic(last.unit,last.topic);
-        document.querySelectorAll('.unit-block').forEach(b=>b.classList.remove('open'));
-        document.querySelector(`.unit-block[data-unit="${last.unit}"]`)?.classList.add('open');
-      });
-      body.insertBefore(cc, body.querySelector('.unit-cards'));
-    }
-  }
-
   const cardsWrap = document.getElementById('homeCards');
   UNITS.forEach((u,idx)=>{
+    const doneInUnit = u.topics.filter(t=>doneSet.has(u.id+'-'+t.id)).length;
     const card = document.createElement('div');
     card.className='unit-card';
-    const doneInUnit = u.topics.filter(t=>doneSet.has(u.id+'-'+t.id)).length;
-    card.innerHTML = `<div class="n">UNIT ${idx+1} · ${u.hrs}</div><div class="t">${u.name}</div><div class="d">${u.topics.length} topics inside${doneInUnit?` · ${doneInUnit} done`:''}</div>`;
-    card.addEventListener('mousemove',(e)=>tiltCard(card,e));
-    card.addEventListener('mouseleave',()=>{ card.style.setProperty('--rx','0deg'); card.style.setProperty('--ry','0deg'); });
-    card.addEventListener('click',(e)=>{
-      spawnRipple(card,e);
+    const doneNote = doneInUnit>0 ? ` · ${doneInUnit}/${u.topics.length} done` : '';
+    card.innerHTML = `<div class="n">UNIT ${idx+1} · ${u.hrs}</div><div class="t">${u.name}</div><div class="d">${u.topics.length} topics inside${doneNote}</div>`;
+    card.addEventListener('click',()=>{
       loadTopic(u.id, u.topics[0].id);
       document.querySelectorAll('.unit-block').forEach(b=>b.classList.remove('open'));
       document.querySelector(`.unit-block[data-unit="${u.id}"]`).classList.add('open');
@@ -3203,26 +3183,6 @@ function showHome(){
   });
   requestAnimationFrame(()=>{ body.classList.add('show'); triggerReveal(); });
   document.querySelectorAll('.topic-link').forEach(l=>l.classList.remove('active'));
-}
-
-/* ---------- micro-interactions: ripple + tilt ---------- */
-function spawnRipple(el, evt){
-  const rect = el.getBoundingClientRect();
-  const r = document.createElement('span');
-  r.className='ripple';
-  const size = Math.max(rect.width, rect.height) * 1.2;
-  r.style.width = r.style.height = size+'px';
-  r.style.left = ((evt?.clientX ?? rect.left+rect.width/2) - rect.left - size/2)+'px';
-  r.style.top = ((evt?.clientY ?? rect.top+rect.height/2) - rect.top - size/2)+'px';
-  el.appendChild(r);
-  setTimeout(()=>r.remove(), 650);
-}
-function tiltCard(card, e){
-  const rect = card.getBoundingClientRect();
-  const px = (e.clientX - rect.left) / rect.width - 0.5;
-  const py = (e.clientY - rect.top) / rect.height - 0.5;
-  card.style.setProperty('--rx', (px*6)+'deg');
-  card.style.setProperty('--ry', (py*-6)+'deg');
 }
 
 /* ---------- LOAD TOPIC ---------- */
@@ -3238,6 +3198,7 @@ function loadTopic(unitId, topicId){
     body.innerHTML='';
     body.appendChild(tpl.content.cloneNode(true));
     highlightAll(body);
+    wrapTables(body);
     wireQuizzes(body);
     buildTopicNav(body);
     requestAnimationFrame(()=>{ body.classList.add('show'); triggerReveal(); });
@@ -3249,23 +3210,15 @@ function loadTopic(unitId, topicId){
   const uIdx = UNITS.indexOf(u)+1;
   document.getElementById('crumb').innerHTML = `<span class="u">UNIT ${uIdx}</span> / ${t.title}`;
 
-  // sidebar active state + mark done
+  // sidebar active state + mark done (persisted to this browser)
   document.querySelectorAll('.topic-link').forEach(l=>l.classList.remove('active'));
   const activeLink = document.querySelector(`.topic-link[data-unit="${unitId}"][data-topic="${topicId}"]`);
-  const wasAlreadyDone = doneSet.has(unitId+'-'+topicId);
-  if(activeLink){
-    activeLink.classList.add('active');
-    if(!activeLink.classList.contains('done')){
-      activeLink.classList.add('done');
-      const chk = activeLink.querySelector('.check');
-      chk.textContent='✓';
-      chk.classList.add('pop');
-    }
-  }
-  doneSet.add(unitId+'-'+topicId);
-  updateXP(!wasAlreadyDone);
-  saveProgress();
-  saveLastTopic(unitId, topicId);
+  if(activeLink){ activeLink.classList.add('active'); activeLink.classList.add('done'); activeLink.querySelector('.check').textContent='✓'; }
+  const key = unitId+'-'+topicId;
+  const wasNew = !doneSet.has(key);
+  doneSet.add(key);
+  updateXP();
+  if(wasNew) saveProgress();
 
   window.scrollTo({top:0,behavior:'smooth'});
   document.querySelector('.content-wrap')?.scrollTo?.(0,0);
@@ -3284,14 +3237,14 @@ function buildTopicNav(body){
   if(prev){
     const pu=UNITS.find(u=>u.id===prev.unit), pt=pu.topics.find(t=>t.id===prev.topic);
     prevBtn.innerHTML = `<div class="dir">← Previous</div><div class="ttl">${pt.title}</div>`;
-    prevBtn.addEventListener('click',(e)=>{ spawnRipple(prevBtn,e); loadTopic(prev.unit,prev.topic); });
+    prevBtn.addEventListener('click',()=>loadTopic(prev.unit,prev.topic));
   }
   const nextBtn = document.createElement('div');
   nextBtn.className='nav-btn next'+(next?'':' disabled');
   if(next){
     const nu=UNITS.find(u=>u.id===next.unit), nt=nu.topics.find(t=>t.id===next.topic);
     nextBtn.innerHTML = `<div class="dir">Next →</div><div class="ttl">${nt.title}</div>`;
-    nextBtn.addEventListener('click',(e)=>{ spawnRipple(nextBtn,e); loadTopic(next.unit,next.topic); });
+    nextBtn.addEventListener('click',()=>loadTopic(next.unit,next.topic));
   }
   nav.appendChild(prevBtn); nav.appendChild(nextBtn);
   body.appendChild(nav);
@@ -3354,22 +3307,32 @@ function highlightAll(root){
   });
 }
 
+/* ---------- RESPONSIVE TABLES ---------- */
+function wrapTables(root){
+  root.querySelectorAll('table.tbl').forEach(table=>{
+    if(table.parentElement && table.parentElement.classList.contains('table-scroll')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'table-scroll';
+    table.parentNode.insertBefore(wrap, table);
+    wrap.appendChild(table);
+  });
+}
+
 /* ---------- MINI QUIZ ---------- */
 function wireQuizzes(root){
   root.querySelectorAll('[data-quiz]').forEach(q=>{
     const opts = q.querySelectorAll('.opt');
     const fb = q.querySelector('.fb');
     opts.forEach(opt=>{
-      opt.addEventListener('click',(e)=>{
+      opt.addEventListener('click',()=>{
         if(opt.dataset.answered) return;
-        spawnRipple(opt,e);
         opts.forEach(o=>o.dataset.answered='1');
         const correct = opt.dataset.correct === 'true';
         opts.forEach(o=>{
           if(o.dataset.correct==='true') o.classList.add('correct');
           else if(o===opt) o.classList.add('wrong');
         });
-        fb.textContent = correct ? "✅ Correct! Well done." : "❌ Not quite — the right answer is highlighted above.";
+        fb.textContent = correct ? "✅ Correct! Nicely done." : "❌ Not quite — the right answer is highlighted above.";
         fb.classList.add('show');
       });
     });
@@ -3392,6 +3355,18 @@ document.getElementById('search').addEventListener('input', (e)=>{
   });
 });
 
+/* ---------- RESET PROGRESS ---------- */
+document.getElementById('resetBtn')?.addEventListener('click', ()=>{
+  if(!confirm('Reset your saved progress for this course? This clears every topic marked as done on this device.')) return;
+  doneSet.clear();
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  document.querySelectorAll('.topic-link').forEach(l=>{ l.classList.remove('done','active'); const c=l.querySelector('.check'); if(c) c.textContent=''; });
+  updateXP();
+  const t = document.getElementById('saveStatusText');
+  if(t) t.textContent = 'Progress reset';
+  if(!currentUnit) showHome();
+});
+
 /* ---------- MOBILE SIDEBAR ---------- */
 function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 document.getElementById('menuBtn')?.addEventListener('click', ()=>{
@@ -3405,16 +3380,6 @@ document.addEventListener('keydown',(e)=>{
   if(!currentUnit) return;
   if(e.key==='ArrowRight'){ const idx=flatOrder.findIndex(f=>f.unit===currentUnit&&f.topic===currentTopic); const n=flatOrder[idx+1]; if(n) loadTopic(n.unit,n.topic); }
   if(e.key==='ArrowLeft'){ const idx=flatOrder.findIndex(f=>f.unit===currentUnit&&f.topic===currentTopic); const p=flatOrder[idx-1]; if(p) loadTopic(p.unit,p.topic); }
-});
-
-/* ---------- RESET PROGRESS ---------- */
-document.getElementById('resetProgress')?.addEventListener('click', ()=>{
-  if(!confirm('Clear all saved progress on this device? This cannot be undone.')) return;
-  doneSet.clear();
-  try{ localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(LAST_TOPIC_KEY); }catch(e){}
-  document.querySelectorAll('.topic-link.done').forEach(l=>{ l.classList.remove('done'); l.querySelector('.check').textContent=''; });
-  updateXP(true);
-  if(!currentUnit) showHome();
 });
 </script>
 </body></html>
