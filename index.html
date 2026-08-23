@@ -33,7 +33,7 @@
   --hairline-top:inset 0 1px 0 rgba(255,255,255,.14);
   --hairline-bottom:inset 0 -1px 0 rgba(0,0,0,.22);
 }
-*{box-sizing:border-box;margin:0;padding:0;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:rgba(143,166,255,.25);}
 html{scroll-behavior:smooth;}
 body{
   background:
@@ -184,6 +184,8 @@ body::after{
   border-left:2px solid transparent;
 }
 .topic-link:hover{background:rgba(255,255,255,.06);color:var(--text);}
+.topic-link:active{background:rgba(143,166,255,.18);}
+.unit-toggle:active{background:rgba(255,255,255,.1);}
 .topic-link.active{background:rgba(143,166,255,.12);color:var(--accent);border-left-color:var(--accent);font-weight:600;}
 .topic-link .check{
   width:14px;height:14px;border-radius:50%;border:1.5px solid var(--text-faint);flex-shrink:0;
@@ -408,20 +410,70 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 
 /* mobile */
 .menu-btn{display:none;}
+.sidebar-close{display:none;}
 @media(max-width:900px){
-  #sidebar{position:fixed;left:0;top:0;z-index:400;transform:translateX(-100%);transition:transform .35s cubic-bezier(.2,.7,.3,1);box-shadow:0 0 60px rgba(0,0,0,.5);}
+  #sidebar{
+    position:fixed;left:0;top:0;z-index:400;width:min(320px,84vw);
+    transform:translateX(-100%);transition:transform .35s cubic-bezier(.2,.7,.3,1);
+    background:rgba(8,10,22,.97);
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    box-shadow:0 0 60px rgba(0,0,0,.6), 1px 0 0 rgba(255,255,255,.08);
+    border-right:none;
+  }
   #sidebar.open{transform:translateX(0);}
   #mobile-bar{
     display:flex;align-items:center;gap:12px;padding:14px 18px;
-    background:rgba(255,255,255,.05);backdrop-filter:blur(var(--glass-blur));
+    background:rgba(8,10,22,.94);backdrop-filter:none;-webkit-backdrop-filter:none;
     border-bottom:1px solid var(--border-soft);position:sticky;top:0;z-index:100;
   }
   .menu-btn{display:flex;background:rgba(255,255,255,.06);border:1px solid var(--border);color:var(--text);width:36px;height:36px;border-radius:10px;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
   .content-wrap{padding:32px 20px 90px;}
-  #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);z-index:390;}
+  #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:none;-webkit-backdrop-filter:none;z-index:390;}
   #overlay.show{display:block;}
   .bg-orb{display:none;}
+  body::after{display:none;}
+
+  /* Kill every remaining backdrop-filter on mobile — stacking many large
+     blur layers at once is what caused the smeared/hazy look on phone
+     WebViews. Swap in solid-enough dark panels instead: still reads as
+     a card, but crisp and cheap to render. */
+  .unit-card, .analogy, .hinglish, .keypoints, .breakdown, .diagram,
+  .mini-quiz, .nav-btn, .reallife, .editor, .boot-box, .contribute-link {
+    backdrop-filter:none !important;
+    -webkit-backdrop-filter:none !important;
+    background:rgba(15,17,32,.94) !important;
+  }
+  .editor{ background:rgba(3,5,14,.94) !important; }
+  .boot-box{ background:rgba(15,17,32,.97) !important; }
+  .analogy{ background:linear-gradient(135deg,rgba(30,34,60,.94),rgba(15,30,40,.94)) !important; }
+  .mini-quiz{ background:linear-gradient(135deg,rgba(15,35,45,.94),rgba(25,28,48,.94)) !important; }
+
+  /* Reveal-on-scroll used filter:blur() as part of its entrance effect —
+     drop that on mobile so nothing can ever look "stuck blurred". */
+  .reveal{filter:none;transform:translateY(14px) scale(1);transition:opacity .4s ease,transform .4s ease;}
+
+  /* Sidebar navigation was hard to read/tap on phone — brighten inactive
+     topic text and give every row a bigger, more obvious touch target. */
+  .topic-link{
+    color:#B9C2E6;font-size:14.5px;padding:12px 12px 12px 36px;
+    touch-action:manipulation;
+  }
+  .topic-link .check{width:17px;height:17px;}
+  .unit-toggle{padding:13px 10px;touch-action:manipulation;}
+  .unit-toggle .name{font-size:14.5px;}
+  .unit-toggle .num{width:28px;height:28px;}
+  #sidebar{padding-bottom:env(safe-area-inset-bottom,0);}
+  .sidebar-head{position:relative;padding-right:52px;}
+  .sidebar-close{
+    display:flex;position:absolute;top:20px;right:16px;
+    width:34px;height:34px;border-radius:10px;align-items:center;justify-content:center;
+    background:rgba(255,255,255,.08);border:1px solid var(--border);color:var(--text);
+    font-size:18px;line-height:1;cursor:pointer;touch-action:manipulation;
+  }
+  .sidebar-close:active{background:rgba(255,255,255,.16);}
 }
+
 @media (prefers-reduced-motion: reduce){
   .bg-orb, .xp-fill, #progress-bar, .boot-line, .boot-cursor{animation:none !important;}
   .reveal{transition:opacity .3s ease;filter:none;transform:none;}
@@ -463,11 +515,12 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 </div>
 
 <div id="progress-bar"></div>
-<div id="overlay"></div>
 
 <div id="app">
+  <div id="overlay"></div>
   <aside id="sidebar">
     <div class="sidebar-head">
+      <button class="sidebar-close" id="sidebarCloseBtn" type="button" aria-label="Close menu">✕</button>
       <div class="tag">// course 105303</div>
       <h1>OOP in Java</h1>
       <div class="sub">Zero to Exam-Ready, chapter by chapter</div>
@@ -3143,7 +3196,7 @@ function buildSidebar(){
         link.classList.add('done');
         link.querySelector('.check').textContent='✓';
       }
-      link.addEventListener('click',()=>{ loadTopic(u.id,t.id); if(window.innerWidth<=900) closeSidebar(); });
+      link.addEventListener('click',()=>{ loadTopic(u.id,t.id); if(document.getElementById('sidebar').classList.contains('open')) closeSidebar(); });
       tlist.appendChild(link);
     });
     block.appendChild(tlist);
@@ -3255,7 +3308,15 @@ const observer = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); } });
 },{threshold:0.1});
 function triggerReveal(){
-  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>observer.observe(el));
+  const targets = document.querySelectorAll('.reveal:not(.visible)');
+  targets.forEach(el=>observer.observe(el));
+  // Safety net: some embedded WebViews / preview iframes never fire
+  // IntersectionObserver correctly, which would leave content stuck at
+  // opacity:0 (looking like a permanent haze). Force it visible shortly
+  // after render no matter what.
+  setTimeout(()=>{
+    document.querySelectorAll('.reveal:not(.visible)').forEach(el=>el.classList.add('visible'));
+  }, 700);
 }
 
 /* ---------- CODE HIGHLIGHTER ---------- */
@@ -3374,6 +3435,7 @@ document.getElementById('menuBtn')?.addEventListener('click', ()=>{
   document.getElementById('overlay').classList.add('show');
 });
 document.getElementById('overlay').addEventListener('click', closeSidebar);
+document.getElementById('sidebarCloseBtn')?.addEventListener('click', closeSidebar);
 
 /* ---------- KEYBOARD NAV ---------- */
 document.addEventListener('keydown',(e)=>{
