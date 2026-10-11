@@ -3,9 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OOP in Java — The Complete Course </title>
+<title>OOP in Java: The Complete Course </title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+/* apply saved theme before first paint (no flash) */
+(function(){try{var t=localStorage.getItem('oopJavaCourse_theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();
+</script>
 <style>
 :root{
   --bg:#060714;
@@ -25,6 +29,11 @@
   --green:#9CF0A8;
   --red:#FF8398;
   --radius:18px;
+  --neu-bg:#13162a;
+  --neu-light:rgba(255,255,255,.065);
+  --neu-dark:rgba(0,0,0,.6);
+  --neu-light-strong:rgba(255,255,255,.1);
+  --neu-dark-strong:rgba(0,0,0,.75);
   --font-display:'Space Grotesk',-apple-system,BlinkMacSystemFont,sans-serif;
   --font-body:-apple-system,BlinkMacSystemFont,'Inter',sans-serif;
   --font-code:'JetBrains Mono',ui-monospace,'SF Mono',monospace;
@@ -221,7 +230,7 @@ body::after{
 /* ---------- Main ---------- */
 #main{flex:1;min-width:0;position:relative;z-index:1;}
 #mobile-bar{display:none;}
-.content-wrap{max-width:880px;margin:0 auto;padding:56px 48px 120px;}
+.content-wrap{max-width:880px;margin:0 auto;padding:56px 48px 48px;}
 .crumb{font-family:var(--font-code);font-size:12px;color:var(--text-faint);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .crumb .u{color:var(--accent);}
 
@@ -391,22 +400,156 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 .hero h1{font-family:var(--font-display);font-size:clamp(34px,5.2vw,56px);font-weight:700;line-height:1.08;margin-bottom:20px;}
 .hero h1 span{background:linear-gradient(120deg,var(--accent),var(--teal));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .hero p.lead{font-size:17px;color:var(--text-dim);max-width:600px;margin-bottom:34px;}
-.unit-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-top:20px;}
+.unit-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px;margin-top:24px;}
 .unit-card{
-  background:rgba(255,255,255,.05);
-  backdrop-filter:blur(var(--glass-blur)) saturate(180%);
-  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
-  border:1px solid var(--border);border-radius:16px;padding:20px;
-  box-shadow:var(--hairline-top);
-  cursor:pointer;transition:transform .4s var(--spring),border-color .4s var(--spring),box-shadow .4s var(--spring);position:relative;overflow:hidden;
+  background:var(--neu-bg);
+  border:none;border-radius:22px;padding:22px;
+  box-shadow: -7px -7px 16px var(--neu-light), 7px 7px 18px var(--neu-dark);
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:transform .35s var(--spring), box-shadow .35s var(--spring);
 }
-.unit-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 20px 45px rgba(0,0,0,.35),0 0 0 1px rgba(143,166,255,.2),var(--hairline-top);}
-.unit-card:active{transform:translateY(-2px) scale(.99);}
-.unit-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--teal),var(--pink));transform:scaleX(0);transform-origin:left;transition:transform .35s;}
-.unit-card:hover::before{transform:scaleX(1);}
-.unit-card .n{font-family:var(--font-code);color:var(--accent);font-size:12px;margin-bottom:8px;}
-.unit-card .t{font-family:var(--font-display);font-size:17px;font-weight:600;margin-bottom:6px;}
+.unit-card:hover{
+  transform:translateY(-4px);
+  box-shadow: -9px -9px 20px var(--neu-light-strong), 9px 9px 24px var(--neu-dark-strong), 0 0 0 1px rgba(143,166,255,.18);
+}
+.unit-card:active{
+  transform:translateY(0);
+  box-shadow: inset -5px -5px 12px var(--neu-light), inset 5px 5px 14px var(--neu-dark);
+}
+.unit-card .n{display:none;}
+.unit-card .badge{
+  width:44px;height:44px;border-radius:14px;margin-bottom:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-code);font-weight:700;font-size:16px;color:var(--accent);
+  background:var(--neu-bg);
+  box-shadow: inset -4px -4px 8px var(--neu-light), inset 4px 4px 10px var(--neu-dark);
+}
+.unit-card .hrsbadge{
+  display:inline-block;margin-bottom:14px;padding:5px 12px;border-radius:20px;
+  font-family:var(--font-code);font-size:10.5px;color:var(--teal);
+  background:var(--neu-bg);
+  box-shadow: inset -3px -3px 6px var(--neu-light), inset 3px 3px 8px var(--neu-dark);
+}
+.unit-card .t{font-family:var(--font-display);font-size:17px;font-weight:600;margin-bottom:6px;color:var(--text);}
 .unit-card .d{font-size:12.5px;color:var(--text-faint);}
+
+/* Neumorphic progress pill on the home hero */
+.neu-pill{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--neu-bg);border-radius:30px;padding:10px 20px;margin-bottom:28px;
+  box-shadow: -6px -6px 14px var(--neu-light), 6px 6px 16px var(--neu-dark);
+  font-family:var(--font-code);font-size:12.5px;color:var(--text-dim);
+}
+.neu-pill .dot{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);}
+
+/* Neumorphic buttons (used by the Practice Compiler trigger etc.) */
+.neu-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--neu-bg);color:var(--text);border:none;border-radius:16px;
+  padding:12px 22px;font-family:var(--font-body);font-weight:600;font-size:14px;cursor:pointer;
+  box-shadow: -6px -6px 14px var(--neu-light), 6px 6px 16px var(--neu-dark);
+  transition:transform .3s var(--spring), box-shadow .3s var(--spring), color .3s;
+}
+.neu-btn:hover{color:var(--accent); box-shadow: -8px -8px 18px var(--neu-light-strong), 8px 8px 20px var(--neu-dark-strong);}
+.neu-btn:active{box-shadow: inset -4px -4px 10px var(--neu-light), inset 4px 4px 12px var(--neu-dark); transform:scale(.98);}
+
+
+
+.neu-stats{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 26px;}
+.neu-stat{min-width:104px;padding:14px 18px;border-radius:18px;text-align:center;background:var(--neu-bg);
+  box-shadow:inset -4px -4px 9px var(--neu-light), inset 4px 4px 11px var(--neu-dark);}
+.neu-stat b{display:block;font-family:var(--font-display);font-size:26px;color:var(--accent);line-height:1.1;}
+.neu-stat span{font-size:11.5px;color:var(--text-dim);font-family:var(--font-code);}
+.neu-search{width:100%;max-width:420px;padding:13px 20px;border:none;border-radius:30px;background:var(--neu-bg);color:var(--text);font-size:14px;margin-bottom:26px;outline:none;
+  box-shadow:inset -4px -4px 9px var(--neu-light), inset 4px 4px 11px var(--neu-dark);}
+
+/* ============ EXPLAINED SIMPLY ============ */
+.detail{margin-top:40px;padding:22px;border-radius:22px;background:var(--neu-bg);
+  box-shadow:-7px -7px 16px var(--neu-light), 7px 7px 18px var(--neu-dark);}
+.detail h3{font-family:var(--font-display);font-size:20px;margin-bottom:14px;}
+.drow{padding:13px 16px;margin-bottom:12px;border-radius:16px;background:var(--neu-bg);
+  box-shadow:inset -4px -4px 9px var(--neu-light), inset 4px 4px 11px var(--neu-dark);}
+.drow:last-child{margin-bottom:0;}
+.dlbl{font-family:var(--font-code);font-size:11px;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;font-weight:700;}
+.dlbl.a{color:var(--accent);} .dlbl.b{color:var(--teal);} .dlbl.c{color:var(--red);} .dlbl.d{color:#FFD28A;}
+.dtxt{font-size:14.5px;line-height:1.65;color:var(--text);}
+
+/* ============ PRACTICE QUESTIONS ============ */
+.practice{margin-top:44px;padding:22px;border-radius:22px;background:var(--neu-bg);
+  box-shadow:-7px -7px 16px var(--neu-light), 7px 7px 18px var(--neu-dark);}
+.practice h3{font-family:var(--font-display);font-size:20px;margin-bottom:4px;}
+.practice .sub{font-size:13px;color:var(--text-dim);margin-bottom:18px;}
+.pq{padding:14px 16px;margin-bottom:14px;border-radius:16px;background:var(--neu-bg);
+  box-shadow:inset -4px -4px 9px var(--neu-light), inset 4px 4px 11px var(--neu-dark);}
+.pq-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.diff{font-family:var(--font-code);font-size:10.5px;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+.diff.easy{color:var(--green);background:rgba(156,240,168,.12);}
+.diff.medium{color:#FFD28A;background:rgba(255,210,138,.12);}
+.diff.hard{color:var(--red);background:rgba(255,131,152,.12);}
+.pq-q{font-size:14.5px;line-height:1.6;color:var(--text);}
+.pq-hint{font-size:12.5px;color:var(--text-dim);margin-top:8px;display:none;}
+.pq-hint.show{display:block;}
+.pq-actions{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.pq-actions .neu-btn{padding:7px 14px;font-size:12px;border-radius:12px;}
+
+
+/* ============ RADIAL SHARE BUTTON (adapted from Uiverse by csozidev) ============ */
+.share-wrap{position:relative;width:56px;height:56px;margin:84px auto 74px;}
+.share-wrap:hover::after,.share-wrap.open::after{content:"";position:absolute;left:50%;top:50%;width:230px;height:230px;margin:-115px 0 0 -115px;border-radius:50%;z-index:0;}
+.share-main{position:absolute;inset:0;border:none;border-radius:50%;background:var(--neu-bg);color:var(--accent);
+  display:grid;place-items:center;cursor:pointer;z-index:100;transition:.25s;
+  box-shadow:-5px -5px 12px var(--neu-light),5px 5px 12px var(--neu-dark);}
+.share-main:hover{color:var(--teal);}
+.share-wrap:hover .share-main,.share-wrap.open .share-main{box-shadow:inset -4px -4px 9px var(--neu-light),inset 4px 4px 10px var(--neu-dark);transform:rotate(90deg);}
+.share-main svg{width:22px;height:22px;}
+.sbtn{position:absolute;left:8px;top:8px;width:40px;height:40px;border:none;border-radius:50%;background:var(--neu-bg);
+  color:var(--text-dim);font-family:var(--font-code);font-weight:700;font-size:13px;display:grid;place-items:center;cursor:pointer;
+  opacity:0;pointer-events:none;z-index:1;transition:transform .3s var(--spring),box-shadow .3s,background .2s,color .2s,opacity .25s;
+  box-shadow:0 0 0 var(--neu-dark);}
+.share-wrap:hover .sbtn,.share-wrap.open .sbtn{opacity:1;pointer-events:auto;box-shadow:-4px -4px 10px var(--neu-light),4px 4px 11px var(--neu-dark);}
+.share-wrap:hover .sbtn:nth-child(2),.share-wrap.open .sbtn:nth-child(2){transform:translate(72px,0);}
+.share-wrap:hover .sbtn:nth-child(3),.share-wrap.open .sbtn:nth-child(3){transform:translate(51px,-51px);}
+.share-wrap:hover .sbtn:nth-child(4),.share-wrap.open .sbtn:nth-child(4){transform:translate(0,-72px);}
+.share-wrap:hover .sbtn:nth-child(5),.share-wrap.open .sbtn:nth-child(5){transform:translate(-51px,-51px);}
+.share-wrap:hover .sbtn:nth-child(6),.share-wrap.open .sbtn:nth-child(6){transform:translate(-72px,0);}
+.share-wrap:hover .sbtn:nth-child(7),.share-wrap.open .sbtn:nth-child(7){transform:translate(-51px,51px);}
+.share-wrap:hover .sbtn:nth-child(8),.share-wrap.open .sbtn:nth-child(8){transform:translate(0,72px);}
+.share-wrap:hover .sbtn:nth-child(9),.share-wrap.open .sbtn:nth-child(9){transform:translate(51px,51px);}
+.sbtn:hover{color:#fff;}
+.sbtn.wa:hover{background:#25D366;} .sbtn.tg:hover{background:#229ED9;} .sbtn.tw:hover{background:#111;box-shadow:0 0 0 1px #444;}
+.sbtn.fb:hover{background:#1877F2;} .sbtn.li:hover{background:#0A66C2;} .sbtn.rd:hover{background:#FF4500;}
+.sbtn.ml:hover{background:#EA4335;} .sbtn.cp:hover{background:#8FA6FF;color:#060714;}
+.share-label{position:absolute;left:72px;top:50%;transform:translateY(-50%);white-space:nowrap;font-family:var(--font-code);font-size:12px;color:var(--text-faint);transition:opacity .2s;}
+.share-wrap:hover .share-label,.share-wrap.open .share-label{opacity:0;}
+.share-toast{position:absolute;left:50%;top:-34px;transform:translateX(-50%);padding:5px 12px;border-radius:12px;background:var(--neu-bg);
+  color:var(--teal);font-size:12px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .25s;z-index:200;
+  box-shadow:-3px -3px 8px var(--neu-light),3px 3px 9px var(--neu-dark);}
+.share-toast.show{opacity:1;}
+
+/* ===== SHARE BUTTON: FIXED TOP-RIGHT (options open downward) ===== */
+.share-wrap{position:fixed;top:16px;right:16px;margin:0;width:48px;height:48px;z-index:350;}
+.share-main svg{width:20px;height:20px;}
+.sbtn{left:4px;top:4px;}
+.share-wrap:hover::after,.share-wrap.open::after{width:96px;height:440px;left:-24px;top:0;margin:0;border-radius:0;}
+.share-wrap:hover .sbtn:nth-child(2),.share-wrap.open .sbtn:nth-child(2){transform:translate(0,52px);}
+.share-wrap:hover .sbtn:nth-child(3),.share-wrap.open .sbtn:nth-child(3){transform:translate(0,98px);}
+.share-wrap:hover .sbtn:nth-child(4),.share-wrap.open .sbtn:nth-child(4){transform:translate(0,144px);}
+.share-wrap:hover .sbtn:nth-child(5),.share-wrap.open .sbtn:nth-child(5){transform:translate(0,190px);}
+.share-wrap:hover .sbtn:nth-child(6),.share-wrap.open .sbtn:nth-child(6){transform:translate(0,236px);}
+.share-wrap:hover .sbtn:nth-child(7),.share-wrap.open .sbtn:nth-child(7){transform:translate(0,282px);}
+.share-wrap:hover .sbtn:nth-child(8),.share-wrap.open .sbtn:nth-child(8){transform:translate(0,328px);}
+.share-wrap:hover .sbtn:nth-child(9),.share-wrap.open .sbtn:nth-child(9){transform:translate(0,374px);}
+.share-toast{top:12px;left:auto;right:60px;transform:none;}
+
+
+/* ============ SITE FOOTER ============ */
+.site-foot{margin-top:10px;padding:24px 0 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;}
+.foot-note{font-size:13.5px;color:var(--text-dim);max-width:420px;line-height:1.6;}
+.foot-note a{color:var(--accent);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--accent-dim);}
+.foot-note a:hover{border-bottom-style:solid;}
+.site-foot .neu-btn{text-decoration:none;padding:14px 26px;font-size:15px;}
+.site-foot .neu-btn svg{width:19px;height:19px;}
+@media(max-width:600px){.site-foot{padding:20px 0 4px;}.share-wrap{top:10px;right:10px;}}
 
 /* mobile */
 .menu-btn{display:none;}
@@ -498,6 +641,172 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
   .nav-btn.next{text-align:left;}
   .contribute-link{font-size:11px;}
 }
+
+/* =====================================================================
+   THEME (DARK / LIGHT) + NEUMORPHISM ON EVERY COMPONENT
+   ===================================================================== */
+:root{
+  --sh-out:-6px -6px 14px var(--neu-light), 6px 6px 16px var(--neu-dark);
+  --sh-sm:-3px -3px 7px var(--neu-light), 3px 3px 8px var(--neu-dark);
+  --sh-in:inset -4px -4px 9px var(--neu-light), inset 4px 4px 10px var(--neu-dark);
+}
+html[data-theme="light"]{
+  color-scheme:light;
+  --bg:#e3e8f2; --bg-2:#dde3ef;
+  --surface:rgba(0,0,0,.03); --surface-2:rgba(0,0,0,.05);
+  --border:rgba(60,70,110,.14); --border-soft:rgba(60,70,110,.09);
+  --text:#252c4a; --text-dim:#4f5a82; --text-faint:#7a84a6;
+  --accent:#4a5fe0; --accent-dim:rgba(74,95,224,.35);
+  --teal:#0b9a84; --pink:#cf3c98; --blue:#0b7bb0; --green:#1b8f45; --red:#d2415a;
+  --neu-bg:#e3e8f2;
+  --neu-light:rgba(255,255,255,.95); --neu-dark:rgba(150,165,195,.55);
+  --neu-light-strong:rgba(255,255,255,1); --neu-dark-strong:rgba(150,165,195,.78);
+  --hairline-top:inset 0 1px 0 rgba(255,255,255,.7); --hairline-bottom:inset 0 -1px 0 rgba(0,0,0,.04);
+}
+body{background:var(--neu-bg);transition:background-color .35s ease,color .35s ease;}
+.bg-orb{opacity:.16;}
+html[data-theme="light"] .bg-orb{display:none;}
+html[data-theme="light"] body::after{opacity:.02;}
+html[data-theme="light"] ::-webkit-scrollbar-thumb{background:rgba(60,70,110,.2);}
+html[data-theme="light"] .dlbl.d,html[data-theme="light"] .diff.medium{color:#a8691a;}
+
+/* boot screen always stays dark */
+#boot{--green:#9CF0A8;--accent:#8FA6FF;--red:#FF8398;--teal:#5FE8D0;--border:rgba(255,255,255,.13);--border-soft:rgba(255,255,255,.08);--text:#EDF1FF;}
+
+/* ---------- Sidebar ---------- */
+#sidebar{z-index:2;background:var(--neu-bg);backdrop-filter:none;-webkit-backdrop-filter:none;border-right:none;box-shadow:8px 0 22px var(--neu-dark);}
+.xp-track{background:var(--neu-bg);border:none;height:9px;box-shadow:var(--sh-in);}
+#search{background:var(--neu-bg);border:none;border-radius:30px;padding:11px 18px;box-shadow:var(--sh-in);}
+#search:focus{background:var(--neu-bg);box-shadow:var(--sh-in),0 0 0 2px var(--accent-dim);}
+.unit-toggle:hover{background:var(--neu-bg);box-shadow:var(--sh-sm);}
+.unit-toggle:active{background:var(--neu-bg);box-shadow:var(--sh-in);}
+.unit-toggle .num{background:var(--neu-bg);border:none;box-shadow:inset -2px -2px 5px var(--neu-light),inset 2px 2px 6px var(--neu-dark);}
+.topic-link:hover{background:var(--neu-bg);box-shadow:var(--sh-sm);}
+.topic-link:active{background:var(--neu-bg);box-shadow:var(--sh-in);}
+.topic-link.active{background:var(--neu-bg);box-shadow:var(--sh-in);border-left-color:transparent;}
+.contribute-link{background:var(--neu-bg);border:none;box-shadow:var(--sh-sm);}
+.contribute-link:hover{background:var(--neu-bg);box-shadow:var(--sh-out);}
+.contribute-link:active{box-shadow:var(--sh-in);}
+.reset-btn{background:var(--neu-bg);border:none;box-shadow:var(--sh-sm);}
+.reset-btn:hover{background:var(--neu-bg);}
+.reset-btn:active{box-shadow:var(--sh-in);}
+.menu-btn,.sidebar-close{background:var(--neu-bg);border:none;box-shadow:var(--sh-sm);}
+
+/* ---------- Content cards (raised) ---------- */
+.analogy,.hinglish,.keypoints,.breakdown,.diagram,.reallife,.mini-quiz,.nav-btn{
+  background:var(--neu-bg);backdrop-filter:none;-webkit-backdrop-filter:none;
+  border:none;border-radius:20px;box-shadow:var(--sh-out);
+}
+.analogy{border-left:4px solid var(--accent);}
+.hinglish{border-left:4px solid var(--pink);}
+.nav-btn:hover{background:var(--neu-bg);box-shadow:-8px -8px 18px var(--neu-light-strong),8px 8px 20px var(--neu-dark-strong);}
+.nav-btn:active{box-shadow:var(--sh-in);}
+
+/* quiz options */
+.mini-quiz .opt{background:var(--neu-bg);border:none;border-radius:14px;box-shadow:var(--sh-sm);}
+.mini-quiz .opt:hover{background:var(--neu-bg);}
+.mini-quiz .opt:active{box-shadow:var(--sh-in);}
+.mini-quiz .opt.correct{background:var(--neu-bg);box-shadow:var(--sh-in),0 0 0 1.5px var(--teal);}
+.mini-quiz .opt.wrong{background:var(--neu-bg);box-shadow:var(--sh-in),0 0 0 1.5px var(--red);}
+
+/* code window stays dark in both themes */
+.editor{background:#0d1023;border:none;border-radius:20px;box-shadow:var(--sh-out);backdrop-filter:none;-webkit-backdrop-filter:none;}
+html[data-theme="light"] .editor{
+  --text:#EDF1FF;--text-dim:#A6B0D6;--text-faint:#8a93b8;--accent:#8FA6FF;--teal:#5FE8D0;--pink:#FF8FD4;--blue:#7DD3FC;--green:#9CF0A8;--red:#FF8398;
+  --border:rgba(255,255,255,.13);--border-soft:rgba(255,255,255,.08);color:#EDF1FF;
+}
+
+/* tables */
+.table-scroll{background:var(--neu-bg);box-shadow:var(--sh-out);border-radius:20px;padding:4px;margin:18px 4px;}
+.diagram .table-scroll{box-shadow:var(--sh-in);margin:14px 0;}
+table.tbl{border-radius:16px;}
+table.tbl th{background:transparent;}
+table.tbl td{background:transparent;}
+
+/* diagram nodes */
+.flow-node{background:var(--neu-bg);border:1px solid transparent;border-radius:14px;box-shadow:var(--sh-sm);}
+.flow-node.acc{border-color:var(--accent);box-shadow:var(--sh-sm),0 0 14px rgba(143,166,255,.2);}
+.flow-node.teal{border-color:var(--teal);box-shadow:var(--sh-sm),0 0 14px rgba(95,232,208,.18);}
+.breakdown .k{background:var(--neu-bg);box-shadow:inset -2px -2px 4px var(--neu-light),inset 2px 2px 5px var(--neu-dark);border-radius:8px;}
+
+/* ---------- THEME TOGGLE (neumorphic sun / moon switch) ---------- */
+.theme-toggle{
+  position:fixed;top:18px;right:76px;z-index:350;
+  width:78px;height:44px;padding:0;border:none;border-radius:30px;cursor:pointer;
+  background:var(--neu-bg);box-shadow:var(--sh-in);
+  -webkit-tap-highlight-color:transparent;
+}
+.theme-toggle .knob{
+  position:absolute;top:5px;left:5px;width:34px;height:34px;border-radius:50%;
+  background:var(--neu-bg);display:grid;place-items:center;color:var(--accent);
+  box-shadow:-3px -3px 7px var(--neu-light),3px 3px 8px var(--neu-dark);
+  transition:transform .4s var(--spring),color .3s;
+}
+.theme-toggle .knob svg{width:18px;height:18px;grid-area:1/1;transition:opacity .25s,transform .4s var(--spring);}
+.theme-toggle .ico-sun{opacity:0;transform:rotate(-90deg) scale(.5);color:#e0902a;}
+.theme-toggle .ico-moon{opacity:1;}
+html:not([data-theme="light"]) .theme-toggle .knob{transform:translateX(34px);}
+html[data-theme="light"] .theme-toggle .knob{transform:translateX(0);}
+html[data-theme="light"] .theme-toggle .ico-sun{opacity:1;transform:none;}
+html[data-theme="light"] .theme-toggle .ico-moon{opacity:0;transform:rotate(90deg) scale(.5);}
+.theme-toggle:active .knob{box-shadow:-2px -2px 5px var(--neu-light),2px 2px 6px var(--neu-dark);}
+.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+
+@media(max-width:900px){
+  #sidebar{background:var(--neu-bg);}
+  #sidebar:not(.open){box-shadow:none;}
+  #mobile-bar{background:var(--neu-bg);border-bottom:none;box-shadow:0 6px 16px var(--neu-dark);}
+  .topic-link{color:var(--text-dim);}
+  .topic-link.active{color:var(--accent);}
+  .unit-card,.analogy,.hinglish,.keypoints,.breakdown,.diagram,.mini-quiz,.nav-btn,.reallife,.contribute-link{
+    background:var(--neu-bg) !important;
+  }
+  .editor{background:#0d1023 !important;}
+  .boot-box{background:rgba(15,17,32,.97) !important;}
+  .theme-toggle{top:12px;right:66px;}
+}
+
+/* ---------- NAV BUTTONS + COMPLETE BUTTON ---------- */
+.topic-nav-wrap{margin-top:50px;padding-top:26px;border-top:1px solid var(--border-soft);display:flex;flex-direction:column;gap:18px;}
+.topic-nav-wrap .topic-nav{margin-top:0;padding-top:0;border-top:0;}
+.complete-btn{align-self:center;display:inline-flex;align-items:center;gap:10px;padding:13px 26px;border:0;border-radius:999px;cursor:pointer;font:600 14px var(--font-body,inherit);color:var(--text);background:var(--neu-bg);box-shadow:var(--sh-out);transition:transform .25s,box-shadow .25s,color .25s,background .25s;}
+.complete-btn:hover{transform:translateY(-2px);}
+.complete-btn:active{box-shadow:var(--sh-in);transform:none;}
+.complete-btn .cb-ico{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;box-shadow:var(--sh-in);color:transparent;transition:all .3s;}
+.complete-btn.is-done{color:var(--teal);box-shadow:var(--sh-in);}
+.complete-btn.is-done .cb-ico{background:var(--teal);color:#060714;box-shadow:0 0 12px var(--teal);}
+.pn-btn{flex:1;display:flex;align-items:center;gap:14px;padding:14px 20px;border:0;border-radius:999px;cursor:pointer;color:#fff;font-family:inherit;text-align:left;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s,filter .3s;}
+.pn-btn .pn-txt{display:flex;flex-direction:column;min-width:0;flex:1;}
+.pn-btn .dir{font-family:var(--font-code);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;opacity:.75;}
+.pn-btn .ttl{font-size:14px;font-weight:700;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pn-arrow{flex:none;transition:transform .3s cubic-bezier(.34,1.56,.64,1);}
+.pn-next{background:linear-gradient(145deg,#2a2d3e,#14161f);box-shadow:6px 6px 14px rgba(0,0,0,.45),-4px -4px 12px rgba(255,255,255,.05),inset 0 0 0 1px rgba(143,166,255,.35);justify-content:flex-end;text-align:right;}
+.pn-next:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(0,0,0,.5),0 0 18px rgba(143,166,255,.35),inset 0 0 0 1px var(--accent);}
+.pn-next:hover .pn-arrow{transform:translateX(6px);}
+.pn-prev{background:linear-gradient(145deg,#ff9a3c,#e8641a);box-shadow:6px 6px 14px rgba(0,0,0,.35),-4px -4px 12px rgba(255,255,255,.06),inset 0 1px 0 rgba(255,255,255,.35);}
+.pn-prev:hover{transform:translateY(-3px);filter:brightness(1.08);box-shadow:0 10px 24px rgba(232,100,26,.45);}
+.pn-prev:hover .pn-arrow{transform:translateX(-6px) scaleX(-1);}
+.pn-prev .pn-arrow{transform:scaleX(-1);}
+.pn-btn:active{transform:scale(.97);}
+.pn-btn.disabled{opacity:.3;pointer-events:none;}
+html[data-theme="light"] .pn-next{background:linear-gradient(145deg,#3b4060,#1f2236);}
+@media(max-width:900px){.pn-btn .ttl{white-space:normal;}.topic-nav-wrap .topic-nav{flex-direction:column;}.pn-next{justify-content:space-between;}}
+
+/* ---------- GITHUB CUBE BUTTON ---------- */
+.button-icon{display:flex;border:3px solid var(--bi-fg,#fff);width:fit-content;height:fit-content;cursor:pointer;text-decoration:none;transition:border-color .4s;}
+.button-icon .icon{background:var(--bi-fg,#fff);color:#222229;padding:10px 10px 5px 10px;}
+.button-icon .icon svg{width:25px;height:25px;}
+.button-icon .cube{transition:all .4s;transform-style:preserve-3d;width:220px;height:20px;}
+.button-icon:hover{border-color:var(--accent);}
+.button-icon:hover .cube{transform:rotateX(90deg);}
+.button-icon .side{position:absolute;height:47px;width:220px;display:flex;font-size:.8em;justify-content:center;align-items:center;text-transform:uppercase;letter-spacing:.5px;font-weight:bold;font-family:var(--font-code);}
+.button-icon .top{background:var(--accent);color:#060714;transform:rotateX(-90deg) translate3d(0,13.5px,2em);}
+.button-icon .front{background:#222229;color:#fff;transform:translate3d(0,0,1em);}
+html[data-theme="light"] .button-icon{--bi-fg:#222229;}
+html[data-theme="light"] .button-icon .icon{color:#fff;}
+.site-foot{padding-bottom:20px;margin-top:44px;}
+.button-icon{zoom:.8;}
+html[data-theme="light"] .button-icon .top{color:#fff;}
 </style>
 </head>
 <body>
@@ -515,6 +824,30 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
 </div>
 
 <div id="progress-bar"></div>
+
+<!-- SHARE BUTTON (fixed top-right) -->
+<div class="share-wrap" id="shareWrap">
+  <button class="share-main" type="button" aria-label="Share this course" title="Share" onclick="toggleShare(event)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>
+  </button>
+  <button class="sbtn wa" type="button" title="WhatsApp" aria-label="Share on WhatsApp" onclick="doShare('wa')">WA</button>
+  <button class="sbtn tg" type="button" title="Telegram" aria-label="Share on Telegram" onclick="doShare('tg')">TG</button>
+  <button class="sbtn tw" type="button" title="X / Twitter" aria-label="Share on X" onclick="doShare('tw')">X</button>
+  <button class="sbtn fb" type="button" title="Facebook" aria-label="Share on Facebook" onclick="doShare('fb')">f</button>
+  <button class="sbtn li" type="button" title="LinkedIn" aria-label="Share on LinkedIn" onclick="doShare('li')">in</button>
+  <button class="sbtn rd" type="button" title="Reddit" aria-label="Share on Reddit" onclick="doShare('rd')">R</button>
+  <button class="sbtn ml" type="button" title="Email" aria-label="Share by email" onclick="doShare('ml')">@</button>
+  <button class="sbtn cp" type="button" title="Copy link" aria-label="Copy link" onclick="doShare('cp')">&#128279;</button>
+  <span class="share-toast" id="shareToast">Link copied!</span>
+</div>
+
+<!-- DARK / LIGHT MODE TOGGLE (left of share button) -->
+<button class="theme-toggle" id="themeToggle" type="button" role="switch" aria-checked="true" aria-label="Toggle dark and light mode" title="Switch to light mode">
+  <span class="knob">
+    <svg class="ico-moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+  </span>
+</button>
 
 <div id="app">
   <div id="overlay"></div>
@@ -551,6 +884,15 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
     <div class="content-wrap">
       <div class="crumb" id="crumb"></div>
       <div id="topic-body"></div>
+    <footer class="site-foot">
+      <a class="button-icon" href="https://github.com/k4hav" target="_blank" rel="noopener noreferrer" aria-label="Check out my other projects on GitHub">
+        <div class="icon"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></div>
+        <div class="cube">
+          <span class="side front">github.com/k4hav</span>
+          <span class="side top">Check my other projects</span>
+        </div>
+      </a>
+    </footer>
     </div>
   </main>
 </div>
@@ -559,7 +901,10 @@ table.tbl td:first-child{color:var(--text);font-weight:500;}
   <div class="hero reveal">
     <div class="hero-eyebrow">// welcome</div>
     <h1>Learn OOP in JAVA<br></h1>
-    <p class="lead">The whole syllabus, in one place — every class, object, and keyword explained in plain English, with code and a real-life example for each. Click any topic in the sidebar and start learning.</p>
+    <p class="lead">The whole syllabus, in one place. Every topic is explained in simple  with a real-life example, followed by practice questions from easy to hard.</p>
+    <div class="neu-pill"><span class="dot"></span><span id="heroProgress">0 / 47 topics done</span></div>
+    <div class="neu-stats" id="heroStats"></div>
+    <button class="neu-btn" type="button" onclick="loadTopic('u1','t1')">&#9654; Start Learning</button>
   </div>
   <div class="unit-cards reveal" id="homeCards"></div>
 </template>
@@ -3040,6 +3385,7 @@ ps.executeUpdate();</code></pre>
   <tr><td><code>executeUpdate()</code></td><td><code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code></td><td><code>int</code> (how many rows were affected)</td></tr>
 </table>
 </template>
+
 <script>
 const UNITS = [
   { id:'u1', name:'OOP Concepts & Java Basics', hrs:'5 hrs', topics:[
@@ -3103,6 +3449,839 @@ const UNITS = [
   ]},
 ];
 
+const PRACTICE = {};
+Object.assign(PRACTICE, {
+'u1-t1': [
+ ['easy','Write a program that prints: "Java was born in 1995 and my brain was born in confusion." (Yes, the second part is optional, but honesty helps.)','Use System.out.println() two times.'],
+ ['easy','Print the 12 Java buzzwords, one per line, using a single String array and a for-each loop.','String[] words = {"Simple","Secure",...}; for(String w : words) ...'],
+ ['medium','Make a program that stores the year Java was created (1995) and the year Oracle bought Sun (2010), then prints how many years later it happened.','int a = 1995, b = 2010; print b - a.'],
+ ['hard','Take a buzzword name as input (like "Secure") and print its meaning. Use a switch statement for at least 5 buzzwords. Like a tiny dictionary, but only for Java gossip.','Use Scanner + switch on a String.']
+],
+'u1-t2': [
+ ['easy','Procedural way: write a method that adds two numbers and prints the result from main(). Just one function, no classes (apart from Main).','static int add(int a,int b){...}'],
+ ['easy','OOP way: create a class Calculator with a method add(). Create an object and call it. Notice how the data and the work now live together, like a married couple.','Calculator c = new Calculator();'],
+ ['medium','Create a class Pizza with fields size and toppings, plus a method show(). Make 3 pizza objects. Real life: you do not order "functions", you order pizzas!','Three objects, three show() calls.'],
+ ['hard','Write the same "Student marks" program twice: once with plain variables and functions, once with a Student class. Compare which one is easier to extend when you add a new field "branch".','Count how many places you needed to change.']
+],
+'u1-t3': [
+ ['easy','Print your Java version using System.getProperty("java.version"). It is like asking your phone for its age.','System.out.println(System.getProperty("java.version"));'],
+ ['easy','Print the operating system name using System.getProperty("os.name"). Proof that the JVM knows where it is living.','Property key: os.name'],
+ ['medium','Print the free memory and total memory of the JVM using Runtime.getRuntime(). Real life: checking how much space your fridge has left before shopping.','Runtime r = Runtime.getRuntime(); r.freeMemory(), r.totalMemory()'],
+ ['hard','Write a program that prints the number of processors available to the JVM, and the max memory it may use, in MB. Format the output nicely like a mini system report.','r.availableProcessors(); r.maxMemory()/(1024*1024)']
+],
+'u1-t4': [
+ ['easy','Declare one variable of each primitive type and print them. Give them funny names like int cupsOfChai = 5.','byte, short, int, long, float, double, char, boolean'],
+ ['easy','Swap two numbers using a third variable. Real life: swapping your seat with a friend needs a temporary empty chair.','temp = a; a = b; b = temp;'],
+ ['medium','Take radius from the user and print the area of a circle using double. Use Math.PI. Pizza lovers will understand why this matters.','area = Math.PI * r * r'],
+ ['hard','Convert a temperature from Celsius to Fahrenheit and Kelvin, taking input from the user. Print with exactly 2 decimal places using printf.','F = C*9/5+32; K = C+273.15; System.out.printf("%.2f")']
+],
+'u1-t5': [
+ ['easy','Take two numbers and print their sum, difference, product, quotient and remainder. A calculator, but you built it yourself, so it has feelings.','Use + - * / %'],
+ ['easy','Check if a number is even or odd using the % operator and the ternary operator in one line.','String r = (n % 2 == 0) ? "Even" : "Odd";'],
+ ['medium','Predict the output first, then run: int a = 5; System.out.println(a++ + ++a); Why is the answer 12? Explain it in a comment.','a++ uses 5 then becomes 6; ++a makes 7 first. 5 + 7 = 12.'],
+ ['hard','Take marks of 3 subjects, and use logical operators to print "Pass" only if every subject is 33 or more AND the total is 100 or more.','if (m1>=33 && m2>=33 && m3>=33 && total>=100)']
+],
+'u1-t6': [
+ ['easy','Print the multiplication table of any number using a for loop. Your school teacher would be proud (or suspicious).','for(int i=1;i<=10;i++)'],
+ ['easy','Print numbers 1 to 20 but skip multiples of 3. Like skipping the boring chapters, but legally.','Use continue.'],
+ ['medium','Print the sum of digits of a number using a while loop. Example: 1234 gives 10.','while(n>0){ sum += n%10; n/=10; }'],
+ ['hard','Print a right-angled triangle of stars with N rows (N from user). Then print the reverse triangle. Real life: your crush scores vs your exam scores, both are triangles.','Nested for loops: outer rows, inner stars.']
+],
+'u1-t7': [
+ ['easy','Write the classic Hello World, but print your own name and college instead. Compile it, run it, feel like a hacker.','public static void main(String[] args)'],
+ ['easy','Print a 3-line "visiting card" with name, branch, and city. Use \\n or three println calls.','System.out.println() x 3'],
+ ['medium','Take two command line arguments (args[0], args[1]) and print their sum. Run: java Main 10 20. Remember: arguments arrive as Strings!','Integer.parseInt(args[0])'],
+ ['hard','Deliberately make 3 different errors (missing semicolon, wrong class name, missing quotes), compile, and note down each compiler message. Debugging is 80% of real life programming.','Read the error line number carefully.']
+],
+'u2-t1': [
+ ['easy','Create a class Book with title, author and price. Print one book object. Real life: a library card for one book.','class Book { String title; ... }'],
+ ['easy','Create a class Mobile with brand and battery fields. Make an object and set battery to 100. Then lower it to 7 and enjoy the panic.','m.battery = 7;'],
+ ['medium','Create a class Rectangle with length, breadth and methods area() and perimeter(). Test with 3 different objects.','return length*breadth;'],
+ ['hard','Design a class BankAccount with holderName, balance, deposit() and withdraw(). withdraw() must refuse if balance is not enough. Print messages like a polite but firm bank manager.','if (amount > balance) print "Insufficient balance"']
+],
+'u2-t2': [
+ ['easy','Create 3 objects of class Student and give them different names and roll numbers. Print all three.','Student s1 = new Student();'],
+ ['easy','Create two references pointing to the same object (Student a = new Student(); Student b = a;). Change a.name and print b.name. Surprise: it changed! Explain why.','Both references hold the same address.'],
+ ['medium','Make an object, set it to null, and try to print one of its fields. Read the NullPointerException and explain it in one funny sentence.','Real life: calling a phone number that does not exist.'],
+ ['hard','Write a class Car with speed and a method accelerate(int by). Make 2 cars, accelerate them differently, and print which one is faster using an if statement.','Compare c1.speed and c2.speed.']
+],
+'u2-t3': [
+ ['easy','Write a method greet(String name) that prints "Hello, name! Chai?". Call it for 3 names.','void greet(String name)'],
+ ['easy','Write a method that returns the square of an int. Call it from main and print the result.','int square(int n){ return n*n; }'],
+ ['medium','Write a method isPrime(int n) that returns boolean. Use it to print all primes below 50.','Loop from 2 to sqrt(n).'],
+ ['hard','Write a method factorial(int n) using a loop, and another using recursion. Compare both for n = 10. Which one is more like a Russian doll?','Recursion: n * factorial(n-1) with base case 1.']
+],
+'u2-t4': [
+ ['easy','Create an array of 3 Student objects, fill them using a loop, and print each name.','Student[] arr = new Student[3];'],
+ ['easy','Create an array of 5 Product objects (name, price) and print the total price. Like billing at a supermarket.','double total = 0; total += arr[i].price;'],
+ ['medium','From an array of Student objects, print the student with the highest marks. The class topper, found by code, not by teacher favouritism.','Keep a variable "best" and compare.'],
+ ['hard','Sort an array of Student objects by marks (highest first) using bubble sort. Print the rank list.','Swap whole objects, not just marks.']
+],
+'u2-t5': [
+ ['easy','Create a class Dog with a constructor that sets the name. Create a dog called "Bruno" and print its name.','Dog(String name){ this.name = name; }'],
+ ['easy','Create a class with a default constructor that prints "Object born!" every time an object is created. Make 3 objects.','Constructor runs automatically.'],
+ ['medium','Create a class Employee with two constructors: one with only name, another with name and salary (default salary 10000). Use constructor overloading.','Employee(String n){ this(n, 10000); }'],
+ ['hard','Create a copy constructor for class Student that copies another Student. Change the original and show that the copy does not change. Real life: photocopy vs original.','Student(Student s){ this.name = s.name; ... }']
+],
+'u2-t6': [
+ ['easy','Create a class Printer with two methods named print(): one takes an int, one takes a String. Call both. Same name, different jobs, like two people named Rahul in one class.','Method overloading.'],
+ ['easy','Write overloaded add() methods for (int,int) and (double,double). Which one gets called for add(2,3)?','Compiler picks the closest type.'],
+ ['medium','Create a Parent with show() and a Child that overrides show(). Create Parent p = new Child(); p.show(); and explain which one runs and why.','Dynamic binding: object type decides.'],
+ ['hard','Predict the output: Parent has static method hello(), Child has static method hello(). Parent p = new Child(); p.hello(); Run it and explain why static methods are not overridden.','Static binding uses reference type.']
+],
+'u2-t7': [
+ ['easy','Create a class with a static counter that increases every time an object is created. Create 5 objects and print the counter.','static int count; count++ in constructor.'],
+ ['easy','Create a static method square(int) inside a class and call it without creating an object.','ClassName.square(5)'],
+ ['medium','Create a class College with a static variable collegeName. Create 3 Student objects and show that changing collegeName once changes it for all students.','One shared copy.'],
+ ['hard','Write a static block that prints "Class loaded" and show that it runs before main() and only once, even after creating many objects.','static { ... }']
+],
+'u2-t8': [
+ ['easy','Create a class with a private variable and public getter and setter. Set a value and print it using the getter.','private int age; getAge(), setAge()'],
+ ['easy','Try to access a private variable directly from another class and read the compiler error. Frame it as "the compiler said no".','Error: has private access'],
+ ['medium','Make a class Account with private balance. The setter must reject negative values. Real life: nobody can deposit minus 500 rupees.','if (b >= 0) balance = b;'],
+ ['hard','Create all four access levels (private, default, protected, public) in one class and write a table in comments showing which can be accessed from another class in the same package.','Test each field from a second class.']
+],
+'u2-t9': [
+ ['easy','Write a constructor where the parameter has the same name as the field, and use this to fix it. Without this, the variable will assign itself to itself, like talking to a mirror.','this.name = name;'],
+ ['easy','Create a method that returns this to allow method chaining: obj.setA(1).setB(2).','return this;'],
+ ['medium','Use this() to call one constructor from another and avoid repeating code.','this(name, 0);'],
+ ['hard','Pass this as an argument to another method (for example register(this)) and print the object details inside that method.','Real life: giving your own ID card to the guard.']
+],
+'u2-t10': [
+ ['easy','Create an object, make its reference null, and call System.gc(). Explain in a comment why the object became "garbage".','No reference left, so GC can clean.'],
+ ['easy','Create 1000 objects in a loop without storing them. Explain why Java does not run out of memory (usually).','Objects become unreachable immediately.'],
+ ['medium','Override finalize() to print "Cleaning up". Call System.gc() and observe. Note that finalize() is deprecated and unreliable, like a friend who may or may not show up.','Output may not appear every time.'],
+ ['hard','Print used memory before and after creating a big array of objects and after setting the reference to null plus gc(). Show the difference.','Runtime.totalMemory() - freeMemory()']
+],
+'u2-t11': [
+ ['easy','Create an outer class Car with an inner class Engine that has a method start(). Create the Engine object and call start().','Car.Engine e = car.new Engine();'],
+ ['easy','Create a static nested class inside a class and create its object without an outer object.','new Outer.Nested()'],
+ ['medium','From an inner class, access a private variable of the outer class and print it. Real life: the engine can use the car fuel because they live together.','Inner classes can see outer private members.'],
+ ['hard','Create an anonymous inner class that implements Runnable and prints "Running". Start it in a Thread.','new Runnable(){ public void run(){...} }']
+],
+'u2-t12': [
+ ['easy','Take a String and print its length, first character, and last character.','length(), charAt(0), charAt(len-1)'],
+ ['easy','Check if two strings are equal using == and equals(). Make one with new String("hi"). Explain the different results.','== compares address, equals compares content.'],
+ ['medium','Reverse a String without using StringBuilder.reverse(). Use a loop from the end.','Build a new String char by char.'],
+ ['hard','Check whether a string is a palindrome ("madam", "level") ignoring case. Real life: words that look the same from both sides, like some politicians promises.','Compare with reversed, use equalsIgnoreCase.']
+],
+});
+
+Object.assign(PRACTICE, {
+'u3-t1': [
+ ['easy','Create class Animal with eat() and class Dog that extends Animal with bark(). Make a Dog and call both methods.','class Dog extends Animal'],
+ ['easy','Create Person (name, age) and Student extends Person (rollNo). Print all three using one Student object. Real life: you inherit your surname without filling a form.','Student inherits name and age.'],
+ ['medium','Create Vehicle with a wheels field, and Bike and Car as children. Print the wheels for both without redefining the field.','Fields are inherited.'],
+ ['hard','Create a 3-class chain: Employee, Manager extends Employee, Director extends Manager. Each adds one field. Print all fields from a Director object.','Multilevel inheritance.']
+],
+'u3-t2': [
+ ['easy','Write a single inheritance example with Parent and Child and call methods from both.','Single inheritance.'],
+ ['easy','Write a hierarchical example: Shape with Circle and Square as children, each with area().','One parent, many children.'],
+ ['medium','Write a multilevel example: GrandFather, Father, Son. Each has one method. Call all three from a Son object.','Chain of extends.'],
+ ['hard','Try to write class C extends A, B and read the compiler error. Then fix the design using interfaces. Explain the Diamond Problem like two bosses giving you opposite orders.','Use interface A, interface B.']
+],
+'u3-t3': [
+ ['easy','Parent and Child both have a variable named x. Print both using super.x and this.x.','super.x'],
+ ['easy','Override a method in the Child and call the Parent version using super.method() inside it.','super.show();'],
+ ['medium','Make a Parent constructor that prints "Parent ready" and a Child constructor that prints "Child ready". Create a Child and observe the order.','super() is called automatically first.'],
+ ['hard','Parent has constructor Parent(String name). Child must call it using super(name). What happens if you forget? Read the error and fix it.','Parent has no default constructor.']
+],
+'u3-t4': [
+ ['easy','Create a final variable PI = 3.14 and try to change it. Read the error.','final cannot be reassigned.'],
+ ['easy','Create a final method and try to override it in a child class. Read the error.','final methods cannot be overridden.'],
+ ['medium','Create a final class and try to extend it. Which real Java class is final? (Hint: it starts with S and is used everywhere.)','String is final.'],
+ ['hard','Explain in comments when you would make a class final in a real project (security, immutability) and create an immutable class Point with final fields and no setters.','Immutable = cannot change after creation.']
+],
+'u3-t5': [
+ ['easy','Create a class Calculator with add(int,int) and add(int,int,int). Call both.','Different number of parameters.'],
+ ['easy','Create add(int,int) and add(double,double) and test with add(2,3) and add(2.5,3.5).','Different types.'],
+ ['medium','Create method show(int) and show(String) and call show(null)... wait, what happens? Test and explain.','Null with overloads can be ambiguous.'],
+ ['hard','Create three overloaded print() methods and test with a char, an int, and a long. Predict which one is chosen for each, then run.','Widening conversion decides.']
+],
+'u3-t6': [
+ ['easy','Create Animal with sound() and Dog, Cat overriding it. Call sound() on each.','@Override'],
+ ['easy','Use a parent reference: Animal a = new Dog(); a.sound(); Explain which sound() runs.','Runtime polymorphism.'],
+ ['medium','Create an array of Animal containing Dog, Cat, Cow objects and loop through calling sound(). One loop, many behaviours.','Animal[] arr = {new Dog(), ...};'],
+ ['hard','Create a Shape class with area() and 3 children (Circle, Rectangle, Triangle) overriding it. Calculate the total area of an array of shapes.','Loop and add area().']
+],
+'u3-t7': [
+ ['easy','Create an abstract class Shape with abstract area(). Create Circle that implements it.','abstract double area();'],
+ ['easy','Try to create an object of an abstract class and read the error.','Abstract classes cannot be instantiated.'],
+ ['medium','Create an abstract class Employee with abstract salary() and a normal method showName(). Create Developer and Tester children.','Mix of abstract and concrete methods.'],
+ ['hard','Create an abstract class Game with abstract methods start() and end(), and a final method play() that calls start() then end(). Create Cricket and Chess children. (This is the Template Method pattern.)','Parent controls the order, children fill the steps.']
+],
+'u3-t8': [
+ ['easy','Create an interface Vehicle with start() and a class Car that implements it.','implements Vehicle'],
+ ['easy','Create an interface with a constant and print it from an implementing class.','Interface variables are public static final.'],
+ ['medium','Make a class implement two interfaces Flyable and Swimmable (like a duck). Call both methods.','Multiple inheritance via interfaces.'],
+ ['hard','Create an interface with a default method and override it in one class but not in another. Show both outputs.','default void info(){...}']
+],
+'u3-t9': [
+ ['easy','Write 3 differences between an interface and an abstract class as comments in a program, then create one of each.','Fields, constructors, multiple inheritance.'],
+ ['easy','Create an abstract class with a constructor and show that it runs when a child is created. Interfaces cannot do that.','Abstract classes can have constructors.'],
+ ['medium','Decide: "Bird can fly" should be an interface or an abstract class? Implement your choice for Sparrow and Penguin (who cannot fly!).','Penguin may throw an exception or not implement Flyable.'],
+ ['hard','Design a Payment system: interface Payable with pay(), abstract class BankPayment with common bank logic, and classes UPI and CreditCard. Explain why you used each type.','Interface for the contract, abstract for shared code.']
+],
+'u3-t10': [
+ ['easy','Create class Engine and class Car that HAS-A Engine as a field. Call car.engine.start().','Composition.'],
+ ['easy','Create Dog IS-A Animal using inheritance. Write one sentence in a comment about why Dog IS-A Animal but Car does not IS-A Engine.','IS-A is for types, HAS-A is for parts.'],
+ ['medium','Create Library HAS-A list of Book objects. Add 3 books and print them.','ArrayList<Book>'],
+ ['hard','Refactor a bad design where Stack extends ArrayList into a good design where Stack HAS-A ArrayList. Explain why this is safer.','Composition hides unwanted methods.']
+],
+'u3-t11': [
+ ['easy','Create a class with private fields and public getters and setters for name and age.','Encapsulation basics.'],
+ ['easy','Make the age setter reject values below 0 or above 120. Real life: no one is minus 5 years old (unless in a philosophy class).','Validation in the setter.'],
+ ['medium','Create a read-only class (only getters) such as Student with final rollNo. Try to change it from outside.','No setter means read-only.'],
+ ['hard','Create a class Password that stores a private password, has a method check(String input) returning boolean, and never exposes the password itself.','Hide data, expose behaviour.']
+],
+'u3-t12': [
+ ['easy','Create a package mypack with a class Hello. Compile it with javac -d . Hello.java.','package mypack;'],
+ ['easy','Import and use that class from another file in a different folder.','import mypack.Hello;'],
+ ['medium','Create two classes in two different packages with the same class name. Use fully qualified names to use both.','a.Test t1 = new a.Test();'],
+ ['hard','Set the CLASSPATH or use -cp to run a class from a different folder, and explain the command in a comment.','java -cp . mypack.Hello']
+],
+'u4-t1': [
+ ['easy','Divide a number by zero and read the ArithmeticException message.','/ by zero'],
+ ['easy','Access array index 10 of an array of size 5 and read the exception name.','ArrayIndexOutOfBoundsException'],
+ ['medium','Make a program that creates a StackOverflowError using infinite recursion, and write in a comment why this is an Error, not an Exception.','Errors are serious JVM problems.'],
+ ['hard','List 3 checked and 3 unchecked exceptions in comments, and write a tiny program that triggers one unchecked exception on purpose.','NullPointerException is unchecked.']
+],
+'u4-t2': [
+ ['easy','Wrap a division in try-catch and print "Cannot divide by zero" instead of crashing.','catch (ArithmeticException e)'],
+ ['easy','Use finally to print "Done" no matter what happens.','finally always runs.'],
+ ['medium','Take two numbers from the user and handle both ArithmeticException and InputMismatchException (when user types letters).','Two catch blocks.'],
+ ['hard','Predict the output: a method with try { return 1; } finally { System.out.println("finally"); }. Does finally run before the return?','Yes, finally runs first.']
+],
+'u4-t3': [
+ ['easy','Write a method that throws new Exception("Too young") if age < 18. Catch it in main.','throw new Exception(...)'],
+ ['easy','Write a method that declares throws IOException. Call it with try-catch.','throws in method signature.'],
+ ['medium','Write a method withdraw(double amt) that throws an exception if amt is more than balance.','Real life: ATM says no.'],
+ ['hard','Write a note in comments: 3 differences between throw and throws. Then write a program using both.','throw is an action, throws is a warning.']
+],
+'u4-t4': [
+ ['easy','Write one try with two catch blocks: ArithmeticException then Exception.','Specific first, general last.'],
+ ['easy','Put the general Exception catch before the specific one and read the compiler error.','Unreachable catch block.'],
+ ['medium','Write a nested try: inner handles division by zero, outer handles array index issues.','try inside try.'],
+ ['hard','Catch an exception, print a log message, and re-throw it with throw e. Catch it again in main.','Re-throwing.']
+],
+'u4-t5': [
+ ['easy','Create a custom exception AgeException that extends Exception.','class AgeException extends Exception'],
+ ['easy','Throw AgeException when age is less than 18 and catch it, printing its message.','super(message)'],
+ ['medium','Create InsufficientBalanceException and use it in a BankAccount.withdraw() method. Check balance below 1000 as per the lab experiment.','Matches Exp. 8.ii.'],
+ ['hard','Create an unchecked custom exception by extending RuntimeException and show you do not need throws or try-catch for it.','RuntimeException needs no handling.']
+],
+'u5-t1': [
+ ['easy','Print the name of the current thread using Thread.currentThread().getName(). It is "main", the hero of every program.','getName()'],
+ ['easy','Write down in comments 3 differences between a process and a thread with a real-life example (restaurant and cooks).','Process = restaurant, thread = cooks.'],
+ ['medium','Run two loops one after another and time them. Then think how threads could run them together.','System.currentTimeMillis()'],
+ ['hard','Print the thread name inside a Runnable and inside main to show they differ.','Thread-0 vs main.']
+],
+'u5-t2': [
+ ['easy','Create a thread by extending Thread class and print numbers 1 to 5 inside run().','start(), not run().'],
+ ['easy','Create a thread using the Runnable interface and print "Hello from thread".','new Thread(new MyTask()).start();'],
+ ['medium','Create two threads that print numbers 1 to 10 at the same time (Exp. 9.iii). Observe the mixed output.','Output order is not fixed.'],
+ ['hard','Call run() instead of start() and show that no new thread was created (print thread name).','run() runs in main thread.']
+],
+'u5-t3': [
+ ['easy','Create a thread and print its state with getState() before start (NEW) and after it finishes (TERMINATED).','Thread.State'],
+ ['easy','Use Thread.sleep(1000) inside a thread and print its state from main while sleeping (TIMED_WAITING).','Real life: the thread is taking a nap.'],
+ ['medium','Use join() to make main wait for a thread to finish, then print "All done".','t.join();'],
+ ['hard','Write a program that shows all of: NEW, RUNNABLE, TIMED_WAITING, TERMINATED (Exp. 9.iv).','Print getState() at each stage.']
+],
+'u5-t4': [
+ ['easy','Print the default priority of the main thread (it is 5).','getPriority()'],
+ ['easy','Set a thread priority to MAX_PRIORITY and print it.','setPriority(10)'],
+ ['medium','Create 3 threads with different priorities and observe. Remember priority is only a hint, not a command, like your mom asking you to study.','No guarantee.'],
+ ['hard','Interrupt a sleeping thread and handle InterruptedException gracefully.','t.interrupt();']
+],
+'u5-t5': [
+ ['easy','Create a counter shared by two threads, each adding 1000 times. Run it without synchronized and see the wrong total.','Race condition.'],
+ ['easy','Fix it using a synchronized method. Now it is always 2000.','synchronized void increment()'],
+ ['medium','Simulate two people withdrawing from the same bank account at the same time. Use synchronized to protect it.','Real life: joint account chaos.'],
+ ['hard','Use a synchronized block instead of a synchronized method and explain the difference.','synchronized(this){...}']
+],
+'u5-t6': [
+ ['easy','Write a producer thread and a consumer thread sharing one value using wait() and notify().','Both inside synchronized.'],
+ ['easy','Explain in comments why wait() must be called inside a synchronized block.','Thread must own the lock.'],
+ ['medium','Make the producer produce numbers 1 to 5 and the consumer print them in the same order.','Use a boolean flag.'],
+ ['hard','Use notifyAll() with 3 waiting threads and observe how all wake up. Compare with notify().','notify wakes one only.']
+],
+'u6-t1': [
+ ['easy','Write a program that writes "Hello File" into a text file using FileWriter.','new FileWriter("a.txt")'],
+ ['easy','Read the same file back using FileReader and print it.','Read char by char.'],
+ ['medium','Copy one file into another using a byte stream (FileInputStream and FileOutputStream) as in Exp. 10.ii.','Read bytes in a loop.'],
+ ['hard','Use BufferedReader to read a file line by line and count the number of lines and words.','readLine() until null.']
+],
+'u6-t2': [
+ ['easy','Use the File class to check whether a file exists and print its size.','file.exists(), file.length()'],
+ ['easy','Create a new folder and a new file inside it using File.','mkdir(), createNewFile()'],
+ ['medium','List all files of a folder using file.list().','Loop over the array.'],
+ ['hard','Use RandomAccessFile to write 3 numbers and then jump directly to the second one with seek().','Each int takes 4 bytes.']
+],
+'u6-t3': [
+ ['easy','Draw the Collection hierarchy in comments: Collection, List, Set, Queue, and Map separately.','Map is not part of Collection.'],
+ ['easy','Create an ArrayList of Strings, add 3 names, and print it.','list.add()'],
+ ['medium','Store 5 numbers in an ArrayList and print the sum and the maximum using a loop.','No sorting needed.'],
+ ['hard','Explain in comments when to use ArrayList vs LinkedList with a real-life example (array of lockers vs a chain of friends).','Index access vs frequent insert/delete.']
+],
+'u6-t4': [
+ ['easy','Add duplicate names to an ArrayList and to a HashSet. Print both and notice the difference.','Set ignores duplicates.'],
+ ['easy','Create a HashMap of roll number to name and print one name by its roll number.','map.get(1)'],
+ ['medium','Count how many times each word appears in a sentence using a HashMap.','map.put(w, map.getOrDefault(w,0)+1)'],
+ ['hard','Use a TreeSet to store numbers and print them automatically sorted, then use a PriorityQueue to print the smallest first.','Both keep order, in different ways.']
+],
+'u6-t5': [
+ ['easy','List the 6 JDBC steps in comments, in order.','Driver, Connection, Statement, Execute, Result, Close.'],
+ ['easy','Write the connection URL for a MySQL database named college_db on localhost.','jdbc:mysql://localhost:3306/college_db'],
+ ['medium','Write the code (you can only compile it, a database may not be installed) to insert a student using PreparedStatement.','Use ? placeholders.'],
+ ['hard','Explain SQL Injection with a simple example and show why PreparedStatement protects you from it.','Never join user input into SQL strings.']
+],
+});
+
+
+/* ---------- PRACTICE QUESTIONS + COMPILER ---------- */
+function copyText(text, btn){
+  const done=()=>{ const o=btn.textContent; btn.textContent='Copied!'; setTimeout(()=>btn.textContent=o,1200); };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done).catch(done); }
+  else { const t=document.createElement('textarea'); t.value=text; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} t.remove(); done(); }
+}
+const DETAIL = {
+'u1-t1':['Java was built by James Gosling and his team at Sun Microsystems in 1995. It was first called Oak, then renamed Java. Oracle owns it since 2010.','Think of a startup that changes its boring name after launch. Oak sounded like a tree, Java sounded like coffee, and programmers run on coffee. Good rebrand.','Saying Sun still owns Java. It does not, Oracle bought Sun in 2010.','Remember WORA: Write Once, Run Anywhere. If the exam asks one Java feature, write this.'],
+'u1-t2':['Procedural code is a list of steps (functions). OOP packs data and the functions that use that data inside objects.','Procedural is a street food stall: one open kitchen, everybody grabs everything. OOP is a restaurant: kitchen, billing and storage each have their own staff and rules.','Thinking OOP is only "using classes". The real point is bundling data with behaviour and hiding it.','Procedural = functions first. OOP = objects first.'],
+'u1-t3':['JVM runs bytecode. JRE = JVM + libraries, so you can run programs. JDK = JRE + compiler and tools, so you can also write programs.','You want to bake and eat a cake. JVM is your mouth and stomach. JRE adds plate and spoon. JDK adds the whole kitchen. Do not try to eat the kitchen.','Installing only JRE and wondering why javac is not found. javac lives in the JDK.','JDK contains JRE, JRE contains JVM. Draw three boxes inside each other.'],
+'u1-t4':['A variable is a named box in memory. Its data type tells Java what kind of thing may live in the box: whole number, decimal, letter, true/false, or text.','Your kitchen has a small jar for spices (int), a big tin for flour (double) and a sticky note for yes/no (boolean). Putting flour in the sticky note will not end well.','Writing float f = 5.5; without the f. Decimals are double by default, so Java complains.','8 primitive types. String is NOT primitive, it is a class.'],
+'u1-t5':['Operators are symbols that do work on values: + - * / % for maths, == != > < for comparing, && || ! for combining conditions.','The % operator is like sharing 10 samosas among 3 friends. Everyone gets 3 and 1 samosa is left over. That leftover is the remainder, and fights usually start there.','Using = (assign) instead of == (compare) inside an if.','a++ uses the value first, ++a changes first and then uses it.'],
+'u1-t6':['Control structures decide what runs and how many times. if/else and switch choose a path. for, while, do-while repeat work.','if-else: if it rains take an umbrella, else take sunglasses. Loop: keep eating until the plate is empty (or until mom says stop).','Infinite loops, like forgetting i++ inside while. Your laptop fan will tell you about it.','for = known count, while = unknown count, do-while = run at least once.'],
+'u1-t7':['You write .java source code, javac converts it to .class bytecode, and the JVM runs the bytecode. main() is the starting gate.','Like writing a letter in Hindi (source), a translator converts it to a neutral language (bytecode), and every country has a local reader (JVM) who understands that neutral language.','File name not matching the public class name. HelloWorld.java must hold public class HelloWorld.','javac to compile, java to run. Two steps, always.'],
+'u2-t1':['A class is a blueprint that describes what an object will have (fields) and do (methods). It takes no memory by itself.','A class is the architect drawing of a house. Nobody can live in a drawing. Objects are the real houses built from it.','Thinking writing a class creates something in memory. Only new creates an object.','Class = design. Object = real thing.'],
+'u2-t2':['An object is a real instance of a class. new creates it in heap memory and gives you a reference to find it again.','The class is the iPhone design. Your phone, your friend phone and the shop phone are objects. Each has its own battery percentage (mostly yours at 4%).','Believing Student b = a creates a new student. It only creates a second remote control for the same TV.','Reference = remote control, object = TV.'],
+'u2-t3':['A method is a named block of code that does one job. It can take inputs (parameters) and give back a result (return).','A method is a button on the TV remote. Volume up only raises volume. It does one job, and you do not need to know the wiring inside.','Forgetting return in a method that promises to return something, or putting code after return.','void means "I return nothing".'],
+'u2-t4':['An array of objects holds many objects of one class, like Student[]. The array only has empty slots at first, each is null.','A class of 30 students needs 30 chairs. new Student[30] only brings 30 empty chairs, not 30 students. You must still make each student sit.','Using arr[0].name before creating arr[0] with new. Hello NullPointerException.','Create the array first, then create each object.'],
+'u2-t5':['A constructor has the same name as the class, no return type, and runs automatically when an object is created. It sets the starting values.','Creating an Instagram account: the app asks name, email, password at the very start. That setup moment is the constructor.','Writing a return type, which makes it a normal method and not a constructor.','If you write no constructor, Java gives a free default one. If you write any, the free one disappears.'],
+'u2-t6':['Overloading is same method name, different parameters, decided at compile time. Overriding is a child redefining a parent method, decided at runtime.','Overloading: a waiter saying "chai" and "chai with ginger" are two different orders under one name. Overriding: the son doing his father task but in his own way.','Trying to overload by changing only the return type. Java does not allow that.','Compile time = overloading, run time = overriding.'],
+'u2-t7':['static means it belongs to the class, not to any single object. There is one shared copy for everyone.','The college name is the same for every student, so it is static. Roll number differs per student, so it is not static.','Using a non-static variable inside a static method without an object.','Access static members with the class name: Counter.count.'],
+'u2-t8':['Access modifiers control who may see a member: private (only own class), default (same package), protected (package + children), public (everyone).','private is your diary, default is the family WhatsApp group, protected is the family plus relatives who moved abroad, public is your Instagram post.','Making every field public "because it is easier". That removes protection.','Order from strict to open: private, default, protected, public.'],
+'u2-t9':['this means "the current object". It fixes the name clash between a field and a parameter, and can call another constructor or return the object.','When you say "I am hungry", the "I" is this. Without it, the computer does not know which hungry person you mean.','Writing name = name; in a constructor. It assigns the parameter to itself and the field stays empty.','this.name = name; means field = parameter.'],
+'u2-t10':['Java cleans memory automatically. When no reference points to an object, the Garbage Collector may delete it.','Like a robot vacuum that picks up stuff nobody is using. It decides when to run, so you cannot shout "clean now" and expect obedience.','Trusting System.gc() to run immediately, or relying on finalize(), which is deprecated.','No reference = eligible for garbage collection.'],
+'u2-t11':['A nested class is a class inside another class. A static nested class needs no outer object. An inner class needs an outer object and can use even private members of the outer class.','A car (outer) has an engine (inner). The engine cannot work without its car, and it can use the car fuel without asking.','Creating an inner class object like a normal class. It needs outer.new Inner().','Static nested = independent. Inner = tightly attached.'],
+'u2-t12':['String is a class, and Strings are immutable: they never change. Every change makes a new String.','A printed wedding card cannot be edited. If the date changes, you print a new card. Same with Strings.','Comparing Strings with ==. It compares addresses. Use equals() to compare content.','Many changes in a loop? Use StringBuilder.'],
+'u3-t1':['Inheritance lets a child class reuse the fields and methods of a parent class using extends. It models an IS-A relationship.','You inherit your surname and maybe your dad nose without doing any work. The child class gets parent features for free and can add its own.','Thinking private members are inherited for direct use. They exist, but the child cannot touch them directly.','Dog IS-A Animal. Use extends.'],
+'u3-t2':['Single: one parent, one child. Multilevel: a chain, grandparent to parent to child. Hierarchical: one parent, many children. Multiple (via classes) is not allowed in Java. Hybrid is a mix.','Single is father and son. Multilevel is grandfather, father, son. Hierarchical is one dad with three kids fighting over the remote.','Writing class C extends A, B. Java refuses it because of the Diamond Problem.','Multiple inheritance in Java = only through interfaces.'],
+'u3-t3':['super points to the parent. super.x uses the parent variable, super.method() calls the parent method, super(...) calls the parent constructor.','When a child says "my dad also does this in his own way", that is super. The child can still call dad for the original version.','Putting super(...) anywhere except the very first line of the constructor.','Parent constructor always runs before the child constructor.'],
+'u3-t4':['final stops change. A final variable becomes a constant, a final method cannot be overridden, a final class cannot be extended.','final is like a "Do Not Disturb" sign on a hotel room door. Nothing can enter or change it.','Trying to change a final variable after giving it a value.','String is a final class. That is why Strings are safe to share.'],
+'u3-t5':['Polymorphism means one name, many forms. Overloading is the compile-time form: same method name, different parameter lists.','A printer command "print" works differently for a photo and a document, but you still just say print.','Calling an overloaded method with a value that matches two versions, causing confusion or ambiguity.','Overloading = same class, same name, different parameters.'],
+'u3-t6':['Overriding means the child gives its own version of a parent method with the same signature. At runtime Java checks the real object, not the reference type.','Animal a = new Dog(); a.sound(); prints Dog barks. The label says Animal, but the creature inside is a Dog, and the dog speaks.','Forgetting @Override and mistyping the method name, which silently creates a new method.','Object type decides at runtime, reference type decides what you may call.'],
+'u3-t7':['An abstract class cannot be instantiated. It can hold abstract methods (no body) that children must implement, and normal methods too.','"Vehicle" is abstract. Nobody buys just "a vehicle", they buy a car or a bike. The parent only describes what every vehicle must be able to do.','Trying new Shape(). It will not compile.','Abstract method = promise. Child must keep the promise.'],
+'u3-t8':['An interface is a contract: it lists methods a class must provide. A class uses implements, and can implement many interfaces.','A job contract says "show up and finish the work". How you do it is your problem. An interface says what, not how.','Forgetting that methods implemented from an interface must be public.','Interface = what to do. Class = how to do it.'],
+'u3-t9':['Both give abstraction. Abstract class: can have state, constructors and normal methods, but single inheritance. Interface: a pure contract, with multiple inheritance.','Abstract class is a parent with some property to leave behind. Interface is a skills certificate: one person can hold many.','Using an abstract class when you only need a contract, which blocks other inheritance.','Need shared code and state? Abstract class. Need only a contract? Interface.'],
+'u3-t10':['IS-A uses inheritance (Dog IS-A Animal). HAS-A uses composition (Car HAS-A Engine), where one class holds another as a field.','A student IS-A person, but a student HAS-A bag. Nobody inherits a bag from their parents (hopefully).','Using inheritance just to reuse code, even when IS-A is false.','Prefer HAS-A when unsure. It is more flexible.'],
+'u3-t11':['Encapsulation bundles data and methods in one class and hides data using private plus public getters and setters.','A medicine capsule: you take it as one unit, and you do not mix the powder inside yourself.','Making fields public and calling it encapsulation.','Private fields + public getters/setters + validation.'],
+'u3-t12':['A package is a folder that groups related classes and avoids name clashes. import brings classes from other packages. CLASSPATH tells Java where to find .class files.','Packages are folders on your laptop: College, Projects, Photos. Two files can have the same name if they live in different folders.','Forgetting the package line at the very top, or running a class from the wrong folder.','Reverse-domain naming: com.company.project.'],
+'u4-t1':['An exception is an unexpected event during execution that breaks the normal flow, like dividing by zero. Errors are serious JVM problems you cannot really fix.','Exception: flat tyre, you can fix it and continue. Error: the road collapsed, you cannot fix that with a spare wheel.','Catching Error types as if they were normal exceptions.','Checked = compiler forces you to handle. Unchecked = runtime surprise.'],
+'u4-t2':['try holds risky code, catch handles a problem, finally runs always, whether there was a problem or not.','try: attempt to cook. catch: the milk spills, you clean. finally: wash the dishes regardless. No one escapes the dishes.','Writing an empty catch block, which hides bugs silently.','finally = cleanup, runs almost always.'],
+'u4-t3':['throw actually creates and throws an exception right now. throws is a warning in the method signature that the method might throw one.','throws is the warning board "Slippery floor". throw is you pouring the water yourself.','Mixing the two words. throw = one object, throws = list of types.','throw is a statement, throws is a declaration.'],
+'u4-t4':['One try can have many catch blocks, from specific to general. Try blocks can be nested, and a caught exception can be re-thrown to the caller.','Many catch blocks are like airport security lanes: specific lanes first (liquids), the general lane (everything else) last.','Putting catch (Exception e) first. The specific ones become unreachable.','Specific first, general last.'],
+'u4-t5':['You can create your own exception class by extending Exception (checked) or RuntimeException (unchecked) to show a message that fits your problem.','Like a custom ATM message: "Insufficient balance, maybe skip the biryani this week" instead of "Error 77".','Forgetting to call super(message) so the message disappears.','Extend Exception = must handle. Extend RuntimeException = optional.'],
+'u5-t1':['A process is a running program with its own memory. A thread is a small worker inside a process that shares its memory.','A process is a restaurant. Threads are the cooks and waiters inside it, sharing one kitchen and, sadly, one fridge.','Thinking threads are separate programs. They are parts of one program.','Threads are cheaper than processes and share memory.'],
+'u5-t2':['You create a thread by extending Thread or implementing Runnable, and then calling start(). Runnable is preferred because Java allows only one parent class.','Hiring a worker: either make them your direct employee (extends Thread) or give them a task paper (Runnable) and let anyone do it.','Calling run() instead of start(). That is a normal method call, with no new thread.','start() creates a thread, run() does not.'],
+'u5-t3':['A thread goes through states: NEW, RUNNABLE, RUNNING, WAITING/BLOCKED, TERMINATED.','New = a person born. Runnable = standing in the queue. Running = at the counter. Waiting = told to come after lunch. Terminated = went home.','Starting the same thread twice. A finished thread cannot restart.','start() moves NEW to RUNNABLE.'],
+'u5-t4':['Priority (1 to 10) hints the scheduler which thread is more important. interrupt() asks a sleeping or waiting thread to wake up and stop.','Priority is VIP queue stickers. Interrupt is a friend shaking your shoulder in class: "Wake up!".','Believing a high priority guarantees running first. It is only a hint.','Default priority is 5.'],
+'u5-t5':['When many threads change the same data at the same time, results go wrong (race condition). synchronized lets only one thread in at a time.','Two people withdrawing from one joint account together. synchronized is a queue at the bank counter: one at a time.','Synchronizing too much, which makes everything slow.','synchronized = one thread at a time, using a lock.'],
+'u5-t6':['wait(), notify() and notifyAll() let threads talk. wait releases the lock and sleeps, notify wakes one waiting thread.','Producer cook and consumer waiter: the waiter waits until the cook rings the bell (notify).','Calling wait() outside a synchronized block, which throws an exception.','Always use wait/notify inside synchronized code.'],
+'u6-t1':['Streams move data in and out. Byte streams handle any file. Character streams handle text. Always close the file after use.','A stream is a water pipe: data flows from a file into your program or back out. Forgetting to close it is like leaving the tap running.','Forgetting to close a file, causing resource leaks.','Byte = InputStream/OutputStream, Character = Reader/Writer.'],
+'u6-t2':['The File class tells you about files and folders (exists, size, delete). RandomAccessFile lets you jump to any position and read or write there.','File is the file label on the shelf. RandomAccessFile is a book where you open any page directly instead of reading from page 1.','Thinking File reads content. It does not, it only describes the file.','seek(n) jumps to byte position n.'],
+'u6-t3':['The Collections Framework gives ready data structures: List, Set, Queue and Map, which grow automatically, unlike arrays.','An array is a fixed tiffin box. A collection is a magic tiffin box that grows when your mom packs extra.','Thinking Map is a Collection. It has a separate hierarchy.','List = order, Set = unique, Queue = line, Map = key-value.'],
+'u6-t4':['ArrayList keeps order and allows duplicates. HashSet keeps only unique items. TreeSet keeps them sorted. HashMap stores key to value pairs.','List is your to-do list, Set is a guest list with no repeated names, Map is your phone contacts (name to number).','Using ArrayList.contains() on huge data repeatedly. Use a HashSet instead.','TreeSet = automatically sorted.'],
+'u6-t5':['JDBC lets Java talk to a database using SQL. Steps: load driver, connect, create statement, execute, process result, close.','JDBC is a translator between your Java program and the database, like a Hindi-English friend in a foreign shop.','Building SQL by joining user input, which allows SQL injection. Use PreparedStatement.','6 steps, and PreparedStatement is the safe way.']
+};
+
+/* ---------- IN-DETAIL NOTES (definition, explanation, uses, pros, cons) ---------- */
+/* d = definition, a = explained in detail, u = where/why used, p = advantages, c = limitations + common mistakes, x = optional code example */
+const DEEP = {
+'u1-t1':{
+ d:"Java is a high-level, class-based, object-oriented programming language created by James Gosling and his team at Sun Microsystems and released in 1995. It is designed so that the same program can run on any device that has a Java Virtual Machine (JVM).",
+ a:["It began in 1991 as the Green Project, which targeted smart consumer devices. The first name of the language was Oak, and it was renamed Java in 1995.","Java 1.0 came out in 1995 with the slogan Write Once, Run Anywhere (WORA), because compiled code (bytecode) is not tied to one operating system.","Oracle bought Sun Microsystems in 2010, so Oracle now maintains Java. OpenJDK is the open-source reference implementation.","New versions arrive regularly. LTS (Long Term Support) versions such as 8, 11, 17 and 21 are the ones most companies stay on.","The Java Buzzwords are the standard list of Java qualities: Simple, Object-Oriented, Platform Independent, Secure, Robust, Multithreaded, Architecture Neutral, Portable, High Performance, Distributed, Dynamic and Interpreted."],
+ u:["Android apps and enterprise back-end systems","Banking, insurance and e-commerce software","Web servers and microservices (for example with Spring Boot)","Big-data tools, desktop apps and embedded systems"],
+ p:["Platform independence through bytecode and the JVM","Automatic memory management with garbage collection","Very large standard library and a huge community","Strong security: no explicit pointers, bytecode verification, class loader"],
+ c:["Slower start-up and higher memory use than native languages like C or C++","Code is more verbose than in languages like Python","Common mistake: saying Java is only interpreted. It is first compiled to bytecode, then the JVM runs it","Common mistake: saying Sun still owns Java. Oracle does since 2010"]
+},
+'u1-t2':{
+ d:"Procedural programming organises a program as a sequence of procedures (functions) that work on shared data. Object-Oriented Programming (OOP) organises a program as a set of objects that bundle data (fields) and behaviour (methods) together.",
+ a:["In procedural languages like C, the program is a list of functions. Data usually sits in global or passed-around variables, so any function can change it.","In OOP, the problem is split into objects such as Student, Account or Car. Each object keeps its own data private and exposes methods to work with it.","Procedural design is top-down (start from the main task and break it into functions). OOP design is bottom-up (build small objects first and combine them).","The four pillars of OOP are Encapsulation, Abstraction, Inheritance and Polymorphism. They are covered in detail in Units 2 and 3.","Other OOP ideas you will meet: Association, Aggregation (has-a, weak) and Composition (has-a, strong)."],
+ x:{f:"ProceduralVsOOP.java",c:`// Procedural style: data and the function are separate
+static double area(double r) { return 3.14 * r * r; }
+
+// OOP style: data and behaviour live together inside an object
+class Circle {
+    private double r;
+    Circle(double r) { this.r = r; }
+    double area() { return 3.14 * r * r; }
+}`},
+ u:["Procedural: small scripts, simple utilities, system-level code","OOP: large applications such as banking systems, games, GUIs and web back-ends"],
+ p:["Reusability through classes and inheritance","Easier to maintain and extend large programs","Data protection through encapsulation","Models real-world things naturally"],
+ c:["Steeper learning curve for beginners","Extra classes and structure make very small programs heavier than needed","Careful design is required for class hierarchies","Common mistake: thinking OOP just means writing classes. The real idea is bundling and protecting data with behaviour"]
+},
+'u1-t3':{
+ d:"The JVM (Java Virtual Machine) runs Java bytecode. The JRE (Java Runtime Environment) is the JVM plus the standard class libraries needed to run programs. The JDK (Java Development Kit) is the JRE plus development tools such as the compiler javac and the debugger.",
+ a:["JVM loads classes (class loader), checks bytecode (verifier) and executes it using an interpreter and the JIT compiler. It also runs the garbage collector.","JVM memory areas: Heap (objects), Stack (method calls and local variables), Method Area (class data and static members), PC register and Native Method Stack.","JRE = JVM + core libraries (java.lang, java.util, java.io and others). It can run programs but cannot compile them.","JDK = JRE + javac, java, jar, javadoc, jdb and other tools. This is what a developer installs. In modern Java (11 and later) you normally just install the JDK.","Every operating system has its own JVM, but all JVMs understand the same bytecode. That is how Java achieves platform independence."],
+ u:["End users need a runtime to run Java applications","Developers need the JDK to write, compile, package and debug code","Servers run the JVM to host Java back-end applications"],
+ p:["The same bytecode runs on Windows, Linux and macOS","JIT compilation gives good speed","Built-in security checks and automatic memory management"],
+ c:["Installing only a runtime and then wondering why javac is not found","Saying the JVM is platform independent. The bytecode is platform independent, the JVM itself is platform specific","JVM start-up time and memory overhead for very small programs"]
+},
+'u1-t4':{
+ d:"A variable is a named memory location that stores a value. A data type defines what kind of value the variable can hold (whole number, decimal, character, true/false, text) and how much memory it uses.",
+ a:["Java is statically typed: you must declare the type of a variable before using it, and the compiler checks types at compile time.","There are 8 primitive types: byte (1 byte), short (2), int (4), long (8), float (4), double (8), char (2) and boolean. They store the actual value.","Non-primitive (reference) types such as String, arrays and objects store the memory address of the object, not the object itself.","Default values: numeric types 0, boolean false, char the null character, references null. Local variables have NO default value and must be initialised before use.","Type casting: widening (int to double) is automatic, narrowing (double to int) must be written explicitly, like (int) 5.9, and loses the decimal part.","Naming rules: start with a letter, _ or $, no spaces, no keywords. By convention use camelCase for variables."],
+ u:["Storing user input, calculation results and object state","Choosing the right type saves memory (for example byte or short for small values) and avoids overflow"],
+ p:["Type checking catches many errors at compile time","Primitives are fast and memory efficient","Clear, predictable sizes on every platform"],
+ c:["Writing float f = 5.5; without the letter f. Decimals are double by default, so this fails","Integer overflow: an int that goes past its maximum silently wraps around","Using a local variable without initialising it","Forgetting that String is a class (reference type), not a primitive"]
+},
+'u1-t5':{
+ d:"An operator is a symbol that performs an operation on one or more values (operands) and produces a result.",
+ a:["Arithmetic: + - * / %. Integer division drops the decimal part (7 / 2 is 3). The % operator gives the remainder.","Relational: == != > < >= <= always give a boolean result.","Logical: && (AND), || (OR), ! (NOT). && and || are short-circuit: the right side is skipped if the result is already known.","Assignment: = and the compound forms += -= *= /= %=.","Unary: ++ and -- . a++ (post) uses the value first and then increases it, ++a (pre) increases first and then uses it.","Ternary: condition ? valueIfTrue : valueIfFalse, a one-line if-else.","Bitwise operators (& | ^ ~ << >>) work on the individual bits of integers.","Precedence decides which operator runs first (for example * before +). Use brackets when unsure."],
+ u:["Calculations, comparisons and decision making in every program","Combining conditions in if statements and loops","Bit operations in low-level code, flags and encryption"],
+ p:["Short, readable expressions","Short-circuit operators avoid unnecessary work and some errors (for example checking x != null before using x)"],
+ c:["Using = instead of == inside a condition","Integer division surprises: 5 / 2 is 2, not 2.5","Confusing a++ and ++a","Using == to compare Strings instead of equals()"]
+},
+'u1-t6':{
+ d:"Control structures decide the order in which statements run. Selection statements choose a path (if, if-else, switch), and loops repeat a block of code (for, while, do-while).",
+ a:["if / if-else / else-if ladder: run a block only when a condition is true.","switch: choose one of many cases based on the value of an int, char, String or enum. Use break to stop fall-through.","for loop: best when you know how many times to repeat. It has initialisation, condition and update in one line.","while loop: checks the condition first and may run zero times. do-while: runs once first, then checks the condition.","for-each loop: for (Type x : collection) visits every element of an array or collection without an index.","break exits a loop or switch. continue skips the rest of the current iteration and goes to the next one."],
+ u:["Validating input and handling different cases","Processing lists, arrays, files and database rows","Menus, games and any repeated task"],
+ p:["Make programs flexible and powerful","Remove the need to write the same code many times"],
+ c:["Infinite loops caused by forgetting the update (i++)","Forgetting break in switch, so execution falls into the next case","Off-by-one errors: using <= instead of < in loops over arrays","Putting a semicolon right after the for or if line"]
+},
+'u1-t7':{
+ d:"The compilation flow describes how Java source code becomes a running program: the compiler (javac) translates a .java file into platform-independent bytecode (.class), and the JVM then executes that bytecode.",
+ a:["Step 1: write source code in a .java file. The public class name must match the file name exactly.","Step 2: javac HelloWorld.java compiles it and produces HelloWorld.class containing bytecode.","Step 3: java HelloWorld starts the JVM, which loads the class and looks for the main method.","public static void main(String[] args) is the entry point: public (JVM can call it from anywhere), static (no object needed), void (returns nothing), String[] args (command-line arguments).","System.out.println prints text and moves to a new line. System is a class, out is a static PrintStream object, println is a method.","Compile-time errors (syntax) are found by javac. Runtime errors (like dividing by zero) happen while the program runs."],
+ u:["Every Java program, from a Hello World to a large application, goes through this flow","Build tools such as Maven and Gradle automate these steps"],
+ p:["Bytecode is portable across operating systems","Many errors are caught early at compile time"],
+ c:["File name not matching the public class name","Writing java HelloWorld.class instead of java HelloWorld","Wrong main method signature, so the JVM cannot find the entry point","Forgetting that Java is case-sensitive (system vs System)"]
+},
+'u2-t1':{
+ d:"A class is a user-defined blueprint or template that describes the data (fields) and behaviour (methods) that its objects will have.",
+ a:["A class is a logical entity. Writing a class does not create anything in memory; memory is used only when an object is created.","A class can contain fields (variables), methods, constructors, static blocks, initialiser blocks and even other classes (nested classes).","A class is a new data type. Student s; declares a variable of type Student.","Example: Car is a class, BMW, Audi and Mercedes are objects created from it.","A Java file can have many classes but only one public class, and its name must match the file name."],
+ u:["Modelling real-world entities such as Student, Account, Product","Grouping related data and the methods that work on it","Creating many objects from one design"],
+ p:["Reusability: write once, create many objects","Organised, modular code","Supports encapsulation, inheritance and polymorphism"],
+ c:["Thinking a class occupies memory by itself","Putting everything in one giant class instead of splitting responsibilities","Naming mistakes: class names should start with a capital letter (Student)"]
+},
+'u2-t2':{
+ d:"An object is an instance of a class. It is a real entity in memory that has its own state (data), behaviour (methods) and identity.",
+ a:["State: the current values of the fields. Behaviour: what the object can do through its methods. Identity: each object is unique in memory, even if two objects hold the same data.","Created with the new keyword: Student s = new Student(); new allocates memory on the heap, calls the constructor and returns a reference.","The variable s is a reference (like a remote control). It is not the object itself, it points to it.","Two references can point to the same object. Changing data through one reference is visible through the other.","If no reference points to an object any more, it becomes eligible for garbage collection.","An object whose reference is null cannot be used. Calling a method on it causes a NullPointerException."],
+ u:["Representing every real-world item in your program","Passing data around as a single unit"],
+ p:["Each object has its own copy of the data","Objects interact only through methods, which keeps code organised"],
+ c:["Confusing the reference with the object (Student b = a does not create a new student)","NullPointerException from using an object that was never created","Creating objects in loops without need, which wastes memory"]
+},
+'u2-t3':{
+ d:"A method is a named block of code inside a class that performs a specific task. It defines the behaviour of an object and can take input (parameters) and return a result.",
+ a:["Syntax: accessModifier returnType name(parameters) { body }.","Return type: the type of value returned, or void if nothing is returned. return sends the value back to the caller.","Parameters are the variables in the method definition. Arguments are the actual values passed when calling it.","Java passes arguments by value. For objects, the value copied is the reference, so the method can change the object but cannot make the caller's variable point somewhere else.","Instance methods need an object. Static methods belong to the class and are called with the class name.","Methods can be overloaded (same name, different parameters) and overridden in subclasses."],
+ u:["Breaking a big problem into small, reusable pieces","Performing actions such as calculating, printing, validating and saving data"],
+ p:["Reusability: write once, call many times","Easier testing and debugging","Hides implementation details"],
+ c:["Forgetting return in a method with a non-void return type","Writing code after a return statement (unreachable code error)","Confusing parameters with arguments","Expecting a method to change a primitive argument of the caller (it cannot)"]
+},
+'u2-t4':{
+ d:"An array of objects is an array whose elements are references to objects of a class, for example Student[] students = new Student[30];",
+ a:["new Student[3] creates only 3 empty slots. Each slot holds null until you assign an object to it.","Each element must be created separately: students[0] = new Student(...);","Elements are accessed using an index starting from 0. The length is available as students.length (no brackets).","You can loop with a normal for loop or a for-each loop.","Arrays have a fixed size. If the size can change, use an ArrayList instead (Unit 6)."],
+ u:["Storing a group of similar entities such as students, products or employees","Searching, sorting and finding the maximum or minimum of objects"],
+ p:["Easy and fast access by index","Simple way to handle many objects with one name"],
+ c:["NullPointerException from using an element that was never created","ArrayIndexOutOfBoundsException when the index is outside 0 to length-1","Fixed size: you cannot add more elements than the array was created with"]
+},
+'u2-t5':{
+ d:"A constructor is a special method with the same name as its class and no return type. It runs automatically when an object is created and is used to initialise the object.",
+ a:["Types: default (no parameters), parameterized (takes values) and copy constructor (creates an object from another object of the same class). A private constructor stops outside code from creating objects, which is used in the Singleton pattern.","If you write no constructor, the compiler adds a default constructor. If you write any constructor, the free default one is not added.","Constructor overloading: a class can have several constructors with different parameters.","this(...) calls another constructor of the same class. super(...) calls the parent constructor. Either must be the first statement.","A constructor cannot be static, final, abstract or inherited."],
+ u:["Giving objects their starting values","Making sure an object is always created in a valid state","Singleton and factory style designs"],
+ p:["Initialisation happens automatically","Overloading gives flexible ways to create objects","Reduces repeated setup code"],
+ c:["Adding a return type (even void) turns it into a normal method","Forgetting that the default constructor disappears once you write your own","Using the parameter name and the field name without this, so the field stays unset"]
+},
+'u2-t6':{
+ d:"Method binding is the process of linking a method call to the actual method body. Static (early) binding happens at compile time. Dynamic (late) binding happens at run time.",
+ a:["Static binding applies to static, private and final methods and to overloaded methods. The compiler decides using the reference type.","Dynamic binding applies to overridden methods. The JVM decides at run time using the actual object type.","Example: Animal a = new Dog(); a.sound(); runs Dog's sound() because binding is dynamic.","Variables are never dynamically bound. a.name uses the reference type (Animal), not the object type.","Dynamic binding is the technical reason behind runtime polymorphism."],
+ u:["Runtime polymorphism in frameworks, plug-in style designs and collections of mixed objects","Understanding exam questions on output of overridden methods"],
+ p:["Static binding is faster","Dynamic binding makes code flexible and extensible"],
+ c:["Expecting static methods to be overridden. They are only hidden","Expecting fields to behave polymorphically like methods","Dynamic binding adds a very small run-time cost"]
+},
+'u2-t7':{
+ d:"The static keyword makes a member belong to the class itself instead of to individual objects. There is only one shared copy.",
+ a:["Static variable: one copy shared by all objects (for example a counter). It is created when the class is loaded.","Static method: called with ClassName.method(), needs no object, and can directly use only other static members.","Static block: runs once when the class is loaded, before main. Used to initialise static data.","Static nested class: a class inside another class that does not need an outer object.","this and super cannot be used inside a static method, because there is no current object."],
+ u:["Counters, constants (static final) and shared configuration","Utility methods such as Math.sqrt()","The main method itself is static so the JVM can call it without creating an object"],
+ p:["Saves memory by sharing one copy","Easy access without creating objects"],
+ c:["Using non-static members directly inside a static method","Overusing static, which makes code harder to test","Shared static data can cause bugs in multithreaded programs without synchronization"]
+},
+'u2-t8':{
+ d:"Access modifiers define which parts of a program can see and use a class, variable, method or constructor.",
+ a:["private: visible only inside the same class.","default (no keyword): visible inside the same package.","protected: visible inside the same package and in subclasses, even in other packages.","public: visible everywhere.","Top-level classes can only be public or default. Members can use all four.","The usual rule: keep fields private, expose only what is needed through public methods."],
+ u:["Implementing encapsulation and data hiding","Designing a clean public API for a class or library"],
+ p:["Protects data from accidental changes","Lets you change internal code without breaking other classes"],
+ c:["Making every field public for convenience","Forgetting that default access works only inside the same package","Mixing up protected with private"]
+},
+'u2-t9':{
+ d:"this is a reference to the current object, the object whose method or constructor is being executed.",
+ a:["this.field refers to the instance variable when a parameter has the same name.","this(...) calls another constructor of the same class (constructor chaining) and must be the first line.","this can be passed as an argument to another method or returned from a method to allow method chaining.","this cannot be used in a static context.","Every non-static method receives this automatically, even if you do not write it."],
+ u:["Removing confusion between parameters and fields in constructors and setters","Constructor chaining to avoid repeated code","Fluent APIs such as obj.setA(1).setB(2)"],
+ p:["Clear, readable code","Less code duplication"],
+ c:["Writing name = name; so the parameter is assigned to itself","Using this inside a static method","Calling this(...) after other statements"]
+},
+'u2-t10':{
+ d:"Garbage Collection (GC) is the automatic process by which the JVM finds objects that can no longer be reached and frees their memory.",
+ a:["An object is eligible for GC when no live reference points to it (for example after obj = null or when a method ends).","GC runs on its own thread. You can suggest it with System.gc(), but the JVM may ignore the request.","The heap is divided into generations (young and old). Most objects die young, so the young generation is cleaned often and cheaply.","finalize() was called before an object was destroyed, but it is deprecated and should not be used. Use try-with-resources or explicit close() instead.","GC cleans memory only. It does not close files, sockets or database connections for you."],
+ u:["Automatic memory management in every Java program","Avoiding manual free() calls and many memory leaks"],
+ p:["Fewer memory leaks and dangling-pointer bugs","Developer does not manage memory manually"],
+ c:["You cannot control exactly when GC runs","GC pauses can affect performance in large applications","Memory leaks are still possible if you keep unnecessary references (for example in a static list)","Relying on finalize() for cleanup"]
+},
+'u2-t11':{
+ d:"A nested class is a class defined inside another class. A non-static nested class is called an inner class. Nested classes help group classes that are used in only one place.",
+ a:["Static nested class: declared with static, does not need an outer object, can access only the static members of the outer class.","Member inner class: needs an outer object (outer.new Inner()) and can access all members of the outer class, even private ones.","Local inner class: declared inside a method and visible only there.","Anonymous inner class: a class without a name, declared and created in one expression, usually to implement an interface quickly.","Each inner class compiles into its own .class file such as Outer$Inner.class."],
+ u:["Event listeners and callbacks","Helper classes used by only one outer class (Node inside LinkedList)","Better encapsulation: hide a class from the rest of the package"],
+ p:["Logical grouping of classes","Inner class can use outer class private members","Less clutter in the package"],
+ c:["Creating an inner class object without an outer object","Inner classes hold a hidden reference to the outer object, which can cause memory leaks","Deeply nested classes are hard to read"]
+},
+'u2-t12':{
+ d:"String is a class in java.lang that represents a sequence of characters. String objects are immutable, which means their content can never be changed after creation.",
+ a:["String literals such as String s = \"hello\"; are stored in the String Constant Pool and reused. new String(\"hello\") always creates a new object on the heap.","Because of immutability, every change (concat, replace, toUpperCase) returns a NEW String. The original stays the same.","== compares references (addresses). equals() compares content. equalsIgnoreCase() ignores case.","Common methods: length(), charAt(), substring(), indexOf(), contains(), replace(), split(), trim(), toUpperCase(), toLowerCase(), compareTo().","StringBuilder is mutable and not thread-safe (fast). StringBuffer is mutable and thread-safe (slower). Use them for many modifications.","intern() returns the pooled version of a String."],
+ u:["Handling all text: names, messages, file contents, JSON, user input","Using Strings as keys in HashMap (safe because they are immutable)"],
+ p:["Immutability makes Strings thread-safe and safe to share","String pool saves memory","Rich set of built-in methods"],
+ c:["Comparing Strings with == instead of equals()","Concatenating inside big loops with +, which creates many temporary objects. Use StringBuilder","Forgetting to assign the result: s.toUpperCase(); alone does nothing to s"]
+},
+'u3-t1':{
+ d:"Inheritance is an OOP feature that lets a new class (subclass or child) acquire the fields and methods of an existing class (superclass or parent) using the extends keyword. It represents an IS-A relationship.",
+ a:["Dog extends Animal means Dog IS-A Animal. Dog gets Animal's accessible members and can add its own.","Private members exist in the object but are not directly accessible in the child. Constructors are never inherited.","The parent constructor always runs first when a child object is created.","Every class in Java extends the Object class, directly or indirectly.","A class can extend only one class. Multiple inheritance of classes is not allowed.","Inherited methods can be used as they are or overridden to change behaviour."],
+ u:["Reusing common code in a parent class","Building class hierarchies such as Animal, Dog, Cat or Employee, Manager","Enabling runtime polymorphism"],
+ p:["Code reusability","Less duplication, easier maintenance","Natural way to model is-a relationships"],
+ c:["Tight coupling between parent and child","Changes in the parent can break children","Using inheritance when a has-a (composition) relationship fits better","Deep hierarchies become hard to understand"]
+},
+'u3-t2':{
+ d:"Types of inheritance describe how classes are related in a hierarchy. Java supports single, multilevel and hierarchical inheritance with classes, and multiple and hybrid inheritance only through interfaces.",
+ a:["Single: one child extends one parent (A to B).","Multilevel: a chain of inheritance (A to B to C). C gets members of both B and A.","Hierarchical: several children extend the same parent (A to B and A to D).","Multiple: one class inheriting from two classes. Not allowed with classes in Java, because of the Diamond Problem (ambiguity when both parents have the same method). It is possible with interfaces.","Hybrid: a mix of the above. In Java it works only when multiple inheritance is done through interfaces."],
+ x:{f:"InheritanceTypes.java",c:`class A { void a() { System.out.println("A"); } }
+class B extends A { void b() { System.out.println("B"); } }   // Single: A -> B
+class C extends B { void c() { System.out.println("C"); } }   // Multilevel: A -> B -> C
+class D extends A { void d() { System.out.println("D"); } }   // Hierarchical: A -> B and A -> D`},
+ u:["Choosing the right class design for a problem","Answering exam questions on which type of inheritance Java allows"],
+ p:["Each type fits a different design need","Interfaces give the benefits of multiple inheritance safely"],
+ c:["Writing class C extends A, B (compile error)","Mixing up multilevel and hierarchical","Long multilevel chains make code hard to follow"]
+},
+'u3-t3':{
+ d:"super is a reference to the immediate parent class. It is used to access the parent's variables, methods and constructors from the child class.",
+ a:["super.variable: access a parent field hidden by a child field with the same name.","super.method(): call the parent's version of an overridden method.","super(...): call a parent constructor. It must be the first statement in the child constructor.","If you do not write super(...), the compiler inserts super() automatically. If the parent has no no-argument constructor, you must call a matching super(...) yourself or the code will not compile.","Member access: public and protected members are inherited, default only within the same package, private are not accessible, constructors are not inherited."],
+ u:["Reusing parent initialisation code in the child constructor","Extending, instead of completely replacing, a parent method"],
+ p:["Avoids code duplication","Gives clear control over parent and child behaviour"],
+ c:["Putting super(...) anywhere except the first line","Parent has only a parameterized constructor and the child forgets to call it","Using super in a static method"]
+},
+'u3-t4':{
+ d:"The final keyword restricts change. A final variable is a constant, a final method cannot be overridden and a final class cannot be extended.",
+ a:["final variable: can be assigned only once. By convention constants are written in capital letters, like MAX_SIZE.","final reference variable: the reference cannot change, but the object's content can still change.","final method: stops subclasses from changing important behaviour.","final class: cannot be inherited. String, Integer and other wrapper classes are final.","final parameters cannot be reassigned inside the method.","Do not confuse with finally (exception handling) and finalize() (garbage collection)."],
+ u:["Constants and configuration values","Creating immutable classes","Protecting security-critical behaviour from being overridden"],
+ p:["Safety and predictability","Helps create immutable, thread-safe objects","Allows some compiler optimisations"],
+ c:["Trying to reassign a final variable","Believing a final object cannot change inside (only the reference is fixed)","Making classes final without need, which blocks useful extension"]
+},
+'u3-t5':{
+ d:"Method overloading means having multiple methods with the same name but different parameter lists in the same class. It is compile-time (static) polymorphism.",
+ a:["Parameter lists must differ in number, type or order of parameters. Changing only the return type is NOT overloading.","The compiler picks the method at compile time by matching the argument types. If no exact match exists, it tries widening (int to long to double), then boxing, then varargs.","Constructors can be overloaded in the same way.","Access modifiers and exceptions can differ, but they do not count for overloading.","Example: System.out.println() is overloaded for int, double, String, char and more."],
+ u:["Giving one clear name to similar operations (add, print, display)","Offering different ways to create or call something, such as constructors with optional values"],
+ p:["Readable and consistent method names","Flexible, convenient APIs"],
+ c:["Trying to overload by changing only the return type","Ambiguous calls, for example when passing null to overloaded methods","Too many overloads confuse users"]
+},
+'u3-t6':{
+ d:"Method overriding means a subclass provides its own implementation of a method that already exists in its superclass, with the same name, parameters and a compatible return type. It is runtime (dynamic) polymorphism.",
+ a:["Needs inheritance. The method must have the same signature as in the parent.","The call is resolved at run time using the actual object, so Animal a = new Dog(); a.sound(); runs Dog's version.","The access level cannot be more restrictive than the parent's. The return type can be the same or a subtype (covariant return).","The overriding method cannot throw broader checked exceptions than the parent's method.","private, static and final methods cannot be overridden. A static method with the same signature in the child only hides the parent one.","@Override asks the compiler to check that you really are overriding. Always use it."],
+ u:["Giving each subclass its own behaviour (Shape.area(), Animal.sound())","Frameworks and plug-in designs that work through parent types or interfaces"],
+ p:["Flexible, extensible code","Allows treating different objects through one common type","Core of the open-closed principle"],
+ c:["Misspelling the method name or changing parameters, which creates a new method instead of overriding","Reducing visibility (for example public to protected)","Expecting fields or static methods to be overridden"]
+},
+'u3-t7':{
+ d:"Abstraction is hiding implementation details and showing only the essential features. In Java it is achieved with abstract classes and interfaces. An abstract class is a class declared with the abstract keyword that cannot be instantiated.",
+ a:["An abstract method has no body and ends with a semicolon. Any class with an abstract method must itself be abstract.","An abstract class can also have normal methods, fields, constructors and static members.","A child must implement all inherited abstract methods, or it must be declared abstract too.","You cannot create an object with new AbstractClass(), but you can use it as a reference type: Shape s = new Circle();","Abstract classes give partial abstraction (0 to 100%). Interfaces give full abstraction of behaviour.","abstract cannot be combined with final, private or static for methods, because those prevent overriding."],
+ u:["Defining a common base with shared code and a required contract (Shape, Employee, Vehicle)","Template Method pattern: the parent fixes the steps, children fill them in"],
+ p:["Hides complexity from the user","Shares common code between subclasses","Forces subclasses to follow a standard structure"],
+ c:["Trying to instantiate an abstract class","Forgetting to implement all abstract methods in a concrete child","A class can extend only one abstract class"]
+},
+'u3-t8':{
+ d:"An interface is a reference type that defines a contract: a set of methods (and constants) that a class promises to provide. A class uses implements to follow the contract.",
+ a:["Methods are public and abstract by default. Fields are public, static and final (constants).","A class can implement many interfaces, which is how Java achieves multiple inheritance of type.","An interface can extend one or more other interfaces.","Since Java 8, interfaces can have default methods (with a body) and static methods. Since Java 9, private methods too.","An interface with exactly one abstract method is a functional interface and can be written as a lambda expression.","Interfaces cannot have constructors or instance variables, and cannot be instantiated directly."],
+ u:["Defining capabilities (Runnable, Comparable, Serializable)","Loose coupling: code depends on the interface, not on one concrete class","Writing flexible APIs such as the Collections Framework (List, Set, Map)"],
+ p:["Full abstraction and loose coupling","Multiple inheritance of behaviour","Makes code easy to test and swap implementations"],
+ c:["Forgetting to make the implemented method public","Not implementing all abstract methods (class must then be abstract)","Adding a new abstract method breaks all existing implementers (default methods help here)"]
+},
+'u3-t9':{
+ d:"Both abstract classes and interfaces provide abstraction, but they are used for different purposes: an abstract class shares code and state between related classes, an interface defines a capability that unrelated classes can share.",
+ a:["Methods: abstract class can have abstract and concrete methods. Interface has abstract methods, plus default, static and private methods from Java 8 and 9.","Variables: abstract class can have any kind of variables. Interface variables are always public static final.","Constructors: only abstract classes have them.","Inheritance: a class extends only one abstract class but can implement many interfaces.","Access modifiers: abstract class members can be private, protected or public. Interface methods are public.","Rule of thumb: IS-A with shared code, use an abstract class. CAN-DO ability, use an interface."],
+ u:["Abstract class: base classes such as Shape or Employee with common fields","Interface: abilities like Flyable, Comparable, Runnable"],
+ p:["Choosing correctly gives a clean, flexible design"],
+ c:["Using an abstract class when you only need a contract, which blocks other inheritance","Thinking interfaces cannot have any code (default methods exist since Java 8)"]
+},
+'u3-t10':{
+ d:"IS-A and HAS-A are the two main relationships between classes. IS-A is inheritance (Dog IS-A Animal). HAS-A is composition or aggregation, where one class contains an object of another class as a field (Car HAS-A Engine).",
+ a:["IS-A uses extends or implements. It creates tight coupling between parent and child.","HAS-A uses an object reference inside another class. It is more flexible and loosely coupled.","Association: general relationship between two classes. Aggregation: weak HAS-A, both can exist independently (Company and Employee). Composition: strong HAS-A, the part cannot live without the whole (House and Room).","Test: if you can say 'X is a Y', use inheritance. If you can say 'X has a Y', use composition.","Many design guides say: prefer composition over inheritance."],
+ u:["Designing class relationships in real projects","UML diagrams and design discussions"],
+ p:["Composition is flexible and easy to change","Inheritance gives reuse when the relationship is truly IS-A"],
+ c:["Using inheritance only to reuse code even when IS-A is false (for example Stack extends ArrayList)","Confusing aggregation and composition"]
+},
+'u3-t11':{
+ d:"Encapsulation is wrapping data (fields) and the methods that operate on it into one unit (a class) and restricting direct access to the data. It is also called data hiding.",
+ a:["Make fields private so outside code cannot touch them directly.","Provide public getter methods to read and setter methods to change values.","Setters can validate data (for example age must be between 0 and 120).","A class with only getters is read-only. A class with only setters is write-only.","A fully encapsulated class has all its fields private. JavaBeans follow this pattern."],
+ u:["Protecting sensitive data such as passwords and balances","Keeping the freedom to change internal implementation without breaking other code"],
+ p:["Data security and integrity","Flexibility and easy maintenance","Controlled access with validation","Reusability and testability"],
+ c:["Making fields public and calling it encapsulation","Writing getters and setters for everything without thinking, which exposes internals anyway","Slightly more code than using public fields"]
+},
+'u3-t12':{
+ d:"A package is a namespace that groups related classes and interfaces. CLASSPATH is the setting that tells the JVM and compiler where to find user-defined classes and packages.",
+ a:["The package statement must be the first line of the file. Package names are lowercase and often use reverse-domain style (com.company.project).","The folder structure must match the package name. A class in package mypack must be inside a folder named mypack.","import brings classes into scope. import mypack.*; imports all classes of the package but not sub-packages. java.lang is imported automatically.","javac -d . File.java creates the package folders automatically.","CLASSPATH can be set with the -cp option or the CLASSPATH environment variable.","Built-in packages: java.lang, java.util, java.io, java.sql, java.net and more."],
+ u:["Organising large projects","Avoiding name conflicts (two classes named Test in different packages)","Controlling access with default and protected modifiers"],
+ p:["Better organisation and reuse","No naming conflicts","Access protection at package level"],
+ c:["package line not being the first statement","Folder structure not matching the package name","Forgetting to set CLASSPATH (or use -cp) so the class is not found (ClassNotFoundException)"]
+},
+'u4-t1':{
+ d:"An exception is an unwanted event that disturbs the normal flow of a program at run time. An error is a serious problem, usually related to the JVM or system, that an application should not try to handle.",
+ a:["Everything is a subclass of Throwable. It has two branches: Error and Exception.","Error examples: OutOfMemoryError, StackOverflowError. These are normally not caught.","Checked exceptions are checked by the compiler. You must handle them or declare them with throws (IOException, SQLException, FileNotFoundException).","Unchecked exceptions extend RuntimeException. The compiler does not force you to handle them (NullPointerException, ArithmeticException, ArrayIndexOutOfBoundsException, NumberFormatException).","When an exception is thrown, the JVM creates an exception object and searches for a matching catch block. If none is found, the program terminates and prints a stack trace."],
+ x:{f:"ExceptionTypes.java",c:`int[] arr = new int[3];
+System.out.println(arr[5]);      // ArrayIndexOutOfBoundsException (unchecked)
+String s = null;
+System.out.println(s.length());  // NullPointerException (unchecked)
+// new FileReader("x.txt");      // FileNotFoundException (checked) -> must be handled`},
+ u:["Handling invalid input, missing files, network failures and database errors gracefully","Keeping a program running instead of crashing"],
+ p:["Separates error handling from normal logic","Makes programs robust","Stack trace helps debugging"],
+ c:["Trying to catch Errors as if they were normal exceptions","Confusing checked and unchecked exceptions","Ignoring exceptions silently"]
+},
+'u4-t2':{
+ d:"try, catch and finally are the building blocks of exception handling. try holds risky code, catch handles a specific exception, and finally holds cleanup code that runs whether or not an exception occurred.",
+ a:["A try block must be followed by at least one catch block or a finally block (or be a try-with-resources).","When an exception occurs inside try, the rest of the try block is skipped and control jumps to the matching catch.","finally almost always runs, even if there is a return in try or catch. It does not run if the JVM exits (System.exit) or crashes.","getMessage() gives the error message. printStackTrace() prints the full stack trace.","try-with-resources (Java 7) closes resources such as files automatically, and is the preferred way to handle closeable resources."],
+ u:["Closing files, connections and streams safely","Preventing a program crash on bad input"],
+ p:["Programs keep running after an error","Cleanup is guaranteed with finally"],
+ c:["Writing an empty catch block, which hides bugs","Catching Exception everywhere instead of specific exceptions","Putting code that must always run outside finally"]
+},
+'u4-t3':{
+ d:"throw is a statement used to explicitly throw one exception object. throws is a clause in a method signature that declares which checked exceptions the method might pass to its caller.",
+ a:["throw new IllegalArgumentException(\"message\"); creates and throws the exception right now.","throws IOException, SQLException; in the method header warns callers that they must handle or declare these exceptions.","throw works with one object, throws can list many exception types separated by commas.","A checked exception thrown by a method must be either caught or declared with throws. Unchecked ones need neither.","Multi-catch (Java 7): catch (A | B e) handles several exceptions with the same code."],
+ u:["Validating arguments and rejecting bad data","Passing responsibility for an exception to the calling method"],
+ p:["Clear communication of what can go wrong","Callers are forced to handle checked problems"],
+ c:["Mixing up throw and throws","Declaring throws Exception everywhere, which hides useful information","Throwing a checked exception without handling or declaring it (compile error)"]
+},
+'u4-t4':{
+ d:"Java allows several catch blocks for one try, try blocks inside other try blocks (nested try), and passing an exception on to the caller by throwing it again (re-throwing).",
+ a:["Multiple catch blocks are checked from top to bottom. Only the first matching one runs.","Specific exceptions must come before general ones. Putting catch (Exception e) first makes later catches unreachable (compile error).","Nested try: if the inner try has no matching catch, the exception moves to the outer try.","Re-throwing: catch an exception, do something (like logging), then use throw e; so the caller can handle it too.","Exception chaining: new RuntimeException(\"msg\", cause) keeps the original cause for debugging."],
+ u:["Handling different problems in different ways (file missing vs bad format)","Logging an error locally and still reporting it upward"],
+ p:["Fine-grained handling for each type of failure","Cleaner separation of concerns"],
+ c:["Wrong order of catch blocks","Deeply nested try blocks reduce readability","Swallowing the exception after logging when the caller needed to know"]
+},
+'u4-t5':{
+ d:"A custom (user-defined) exception is your own exception class created by extending Exception (checked) or RuntimeException (unchecked) to represent a problem specific to your application.",
+ a:["Extend Exception to force callers to handle it. Extend RuntimeException to make it optional.","Provide a constructor that calls super(message) so getMessage() returns your text.","Throw it using throw new MyException(\"text\"); and declare it with throws if it is checked.","By convention, the class name ends with Exception (InsufficientBalanceException).","You can add extra fields or methods, for example an error code."],
+ u:["Business rules such as insufficient balance, invalid age or duplicate username","Giving clear, meaningful error messages to the user and to developers"],
+ p:["Clear, readable error handling","Business errors are separated from system errors"],
+ c:["Forgetting super(message) so the message is lost","Creating custom exceptions when a built-in one already fits (IllegalArgumentException)","Using a checked exception when callers cannot do anything useful about it"]
+},
+'u5-t1':{
+ d:"A process is an independent running program with its own memory space. A thread is the smallest unit of execution inside a process, and threads of the same process share its memory.",
+ a:["Multitasking runs several processes. Multithreading runs several threads inside one process.","Threads share heap memory and resources of the process but each has its own stack and program counter.","Creating a thread and switching between threads is cheaper than doing the same for processes.","Every Java program starts with one thread called main. The JVM also runs background threads such as the garbage collector.","Threads can run truly in parallel on multi-core CPUs or be time-sliced on a single core."],
+ u:["Responsive GUIs (UI thread plus background work)","Web servers handling many requests at once","Downloading, rendering and processing at the same time"],
+ p:["Better CPU use and faster execution of independent tasks","Responsive applications","Lightweight compared to processes"],
+ c:["Shared data can be corrupted without synchronization (race conditions)","Deadlocks are possible","Harder to debug because results can change from run to run"]
+},
+'u5-t2':{
+ d:"There are two basic ways to create a thread in Java: extend the Thread class or implement the Runnable interface. The work to be done is written in the run() method, and start() launches the thread.",
+ a:["Extending Thread: override run(), create the object and call start().","Implementing Runnable: write run() in a class, pass an object of it to new Thread(...) and call start().","Runnable is preferred because Java allows only one parent class, and it separates the task from the thread that runs it.","start() creates a new call stack and then calls run(). Calling run() directly runs it like a normal method in the current thread.","A thread cannot be started twice (IllegalThreadStateException).","Modern code often uses lambdas (new Thread(() -> ...)) or the ExecutorService."],
+ u:["Running independent tasks in the background","Handling many clients or jobs at the same time"],
+ p:["Runnable keeps the class free to extend another class","Simple, direct API"],
+ c:["Calling run() instead of start()","Starting the same thread twice","Extending Thread when you also need another parent class"]
+},
+'u5-t3':{
+ d:"The thread life cycle describes the states a thread goes through from creation to termination. In Java these are NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING and TERMINATED.",
+ a:["NEW: the thread object exists but start() has not been called.","RUNNABLE: ready to run or running. The scheduler decides when it gets the CPU.","BLOCKED: waiting to get a lock held by another thread (synchronized).","WAITING: waiting indefinitely, for example after wait() or join().","TIMED_WAITING: waiting for a fixed time, for example sleep(1000) or wait(1000).","TERMINATED: run() has finished or the thread died because of an exception. It cannot be restarted.","getState() returns the current state."],
+ x:{f:"ThreadStates.java",c:`Thread t = new Thread(() -> {
+    try { Thread.sleep(500); } catch (InterruptedException e) { }
+});
+System.out.println(t.getState());   // NEW
+t.start();
+System.out.println(t.getState());   // RUNNABLE (or TIMED_WAITING)
+t.join();                           // main waits (needs: throws InterruptedException)
+System.out.println(t.getState());   // TERMINATED`},
+ u:["Debugging thread problems","Understanding why a thread is not making progress"],
+ p:["Gives a clear model for thread behaviour"],
+ c:["Trying to restart a terminated thread","Confusing BLOCKED (waiting for a lock) with WAITING (waiting for a signal)"]
+},
+'u5-t4':{
+ d:"Thread priority is a number from 1 to 10 that hints to the scheduler how important a thread is. Interrupting is a polite way to ask a thread to stop what it is doing.",
+ a:["MIN_PRIORITY is 1, NORM_PRIORITY is 5 (default), MAX_PRIORITY is 10. A new thread inherits the priority of the thread that created it.","Priority is only a hint. The actual behaviour depends on the operating system and the JVM.","interrupt() sets the interrupt flag of the target thread. If the thread is sleeping or waiting, it throws InterruptedException immediately.","A thread can check the flag with isInterrupted() or Thread.interrupted().","Interruption is cooperative: the thread decides how to react, usually by cleaning up and returning."],
+ u:["Cancelling long-running or background tasks","Stopping a worker thread when the application shuts down"],
+ p:["Gives some control over scheduling","Safe, cooperative way to stop threads"],
+ c:["Expecting a high priority to guarantee the thread runs first","Swallowing InterruptedException without restoring the flag or exiting","Using the old stop() method, which is unsafe and deprecated"]
+},
+'u5-t5':{
+ d:"Synchronization controls access to shared resources so that only one thread at a time can use them. It prevents race conditions, where the result depends on unlucky timing between threads.",
+ a:["Every object has a lock (monitor). A synchronized method or block must acquire that lock before running and releases it when done.","Synchronized method: the whole method is protected. Synchronized block: synchronized(obj) { ... } protects only the critical section.","Static synchronized methods lock the class object.","Other threads that want the same lock go to the BLOCKED state until it is free.","volatile makes changes to a variable visible to all threads but does not give atomicity. java.util.concurrent offers locks and atomic classes such as AtomicInteger.","Deadlock: two threads each wait for a lock held by the other, so neither can move."],
+ u:["Bank accounts, counters, inventory and any shared data","Producer-consumer and cache designs"],
+ p:["Prevents data corruption and inconsistent results","Simple to use with the synchronized keyword"],
+ c:["Slower performance because threads wait for each other","Risk of deadlock","Synchronizing too much code reduces parallelism","Forgetting to synchronize all access to the shared data"]
+},
+'u5-t6':{
+ d:"Inter-thread communication lets threads cooperate using wait(), notify() and notifyAll(), which are methods of the Object class. A thread waits until another thread tells it that something has changed.",
+ a:["wait(): the current thread releases the lock and waits until notified.","notify(): wakes up one waiting thread. notifyAll(): wakes up all waiting threads.","These methods must be called inside a synchronized block or method, otherwise IllegalMonitorStateException is thrown.","Always call wait() inside a loop that checks the condition, because a thread can wake up even though the condition is not true yet (spurious wake-up).","sleep() pauses a thread but keeps the lock. wait() releases the lock. join() waits for another thread to finish.","Classic example: the producer-consumer problem."],
+ u:["Producer-consumer queues","Coordinating the order of work between threads"],
+ p:["Efficient: waiting threads do not use CPU","Allows precise cooperation between threads"],
+ c:["Calling wait or notify outside synchronized code","Using if instead of while around wait()","Missed notifications causing a thread to wait forever"]
+},
+'u6-t1':{
+ d:"A stream is a flow of data between a program and a source or destination such as a file. Byte streams read and write raw bytes, and character streams read and write text.",
+ a:["Byte streams: InputStream and OutputStream (FileInputStream, FileOutputStream). Use them for images, audio, PDFs and any binary data.","Character streams: Reader and Writer (FileReader, FileWriter). Use them for text files; they handle character encoding.","Buffered streams (BufferedReader, BufferedWriter, BufferedInputStream) read and write in chunks, which is much faster. BufferedReader also has readLine().","Always close streams, or better use try-with-resources so they close automatically.","File operations can throw IOException, a checked exception that you must handle.","FileWriter overwrites an existing file by default. Pass true as the second argument (new FileWriter(name, true)) to append."],
+ u:["Saving and loading data, logs and configuration","Copying files and reading text line by line"],
+ p:["Same API for files, network and memory","Buffered streams give good performance"],
+ c:["Forgetting to close the stream (resource leak and unsaved data)","Using a character stream for binary files, which corrupts them","Overwriting a file by accident with FileWriter"]
+},
+'u6-t2':{
+ d:"The File class represents a file or folder path and gives information and operations about it. RandomAccessFile lets you read and write at any position in a file instead of only from start to end.",
+ a:["File methods: exists(), isFile(), isDirectory(), length(), getName(), getPath(), createNewFile(), mkdir(), delete(), list(), renameTo().","The File class does not read or write the contents. For that, use streams.","RandomAccessFile has a file pointer. seek(n) moves it to byte position n, getFilePointer() tells where it is.","Open modes: r (read only) and rw (read and write).","Primitive data can be written with methods like writeInt() (4 bytes) and read back at a calculated position."],
+ u:["Checking whether a file exists before reading it","Directory listing and file management","Updating records in the middle of a large file without rewriting it"],
+ p:["Easy file and folder management","Random access is fast for fixed-size records"],
+ c:["Thinking File reads or writes data","Wrong seek positions when record sizes differ","Forgetting to close RandomAccessFile"]
+},
+'u6-t3':{
+ d:"The Collections Framework is a set of interfaces and classes in java.util that provides ready-made, resizable data structures such as lists, sets, queues and maps, along with algorithms to work with them.",
+ a:["Top of the hierarchy: Iterable, then Collection, which splits into List, Set and Queue. Map is a separate hierarchy that stores key-value pairs.","List: ordered, allows duplicates, access by index (ArrayList, LinkedList, Vector).","Set: no duplicates (HashSet unordered, LinkedHashSet keeps insertion order, TreeSet sorted).","Queue: holds elements for processing, usually first-in first-out (LinkedList, PriorityQueue, ArrayDeque).","Map: key to value, keys are unique (HashMap, LinkedHashMap, TreeMap).","The Collections class provides utility methods such as sort(), reverse(), max() and min().","Collections hold only objects. For primitives, Java uses wrapper classes (int becomes Integer) through autoboxing."],
+ x:{f:"CollectionsOverview.java",c:`List<String> list = new ArrayList<>();      // ordered, duplicates allowed
+Set<String> set = new HashSet<>();          // unique elements
+Queue<Integer> q = new LinkedList<>();      // first in, first out
+Map<Integer, String> map = new HashMap<>(); // key -> value`},
+ u:["Storing and processing groups of data of unknown size","Almost every real Java application"],
+ p:["Dynamic size, unlike arrays","Ready-made, well-tested data structures","Generics give type safety","Consistent API across all collections"],
+ c:["Only objects are allowed, no primitives (autoboxing adds a small cost)","Choosing the wrong collection hurts performance","Most collections are not thread-safe by default"]
+},
+'u6-t4':{
+ d:"List, Set, Queue and Map are the four main kinds of collections. They differ in ordering, duplicates and how elements are accessed.",
+ a:["ArrayList: resizable array, fast access by index, slower to insert or remove in the middle. LinkedList: fast insert and delete, slower index access.","HashSet: fastest lookups, no order. LinkedHashSet: insertion order. TreeSet: sorted order.","PriorityQueue: always gives the smallest (or highest priority) element first. ArrayDeque: fast queue and stack.","HashMap: key to value with fast lookup, one null key allowed, no order. TreeMap: sorted by key. LinkedHashMap: insertion order.","Sets and Map keys rely on equals() and hashCode(). If you use your own class as a key, override both.","Iterate with for-each, an Iterator, or forEach with a lambda."],
+ u:["List: ordered data such as a to-do list or search results","Set: removing duplicates, unique IDs","Queue: task scheduling, print jobs, BFS","Map: lookup tables, counting words, caching"],
+ p:["Choose the best structure for each job","Rich methods such as add, remove, contains, get, put, size"],
+ c:["Modifying a list while looping over it (ConcurrentModificationException)","Using a mutable object as a HashMap key and then changing it","Using ArrayList when you need constant fast insert and delete at the front"]
+},
+'u6-t5':{
+ d:"JDBC (Java Database Connectivity) is a Java API for connecting to relational databases, sending SQL statements and processing the results.",
+ a:["Main parts: Driver (database-specific implementation), Connection, Statement or PreparedStatement, ResultSet.","Steps: load the driver, get a Connection with DriverManager.getConnection(url, user, password), create a statement, execute the query, process the ResultSet and close the connection. With JDBC 4+, loading the driver manually is usually not needed.","executeQuery() is for SELECT and returns a ResultSet. executeUpdate() is for INSERT, UPDATE and DELETE and returns the number of rows affected.","ResultSet is read with rs.next() and getters such as getInt(), getString() by column name or index.","PreparedStatement uses ? placeholders, is precompiled, and protects against SQL injection.","Transactions: setAutoCommit(false), then commit() or rollback()."],
+ u:["Back-end applications that store and read data (students, accounts, orders)","Frameworks such as Hibernate and Spring use JDBC internally"],
+ p:["Standard API that works with many databases","PreparedStatement is secure and fast for repeated queries","Full control with SQL"],
+ c:["Building SQL by joining user input into a string (SQL injection)","Not closing connections (leaks). Use try-with-resources","Hard-coding passwords in source code","A lot of boilerplate code compared to ORM tools"]
+}
+};
+
+function renderDeep(body, unitId, topicId){
+  const d = DEEP[unitId+'-'+topicId];
+  if(!d) return;
+  const wrap=document.createElement('div'); wrap.className='detail deep';
+  const h=document.createElement('h3'); h.textContent='\uD83D\uDCDA In Detail'; wrap.appendChild(h);
+  const row=(label,cls)=>{
+    const r=document.createElement('div'); r.className='drow';
+    const lb=document.createElement('div'); lb.className='dlbl '+cls; lb.textContent=label;
+    const tx=document.createElement('div'); tx.className='dtxt';
+    r.appendChild(lb); r.appendChild(tx); wrap.appendChild(r);
+    return tx;
+  };
+  const fill=(tx,content)=>{
+    if(Array.isArray(content)){
+      const ul=document.createElement('ul');
+      content.forEach(t=>{ const li=document.createElement('li'); li.textContent=t; ul.appendChild(li); });
+      tx.appendChild(ul);
+    } else { tx.textContent=content; }
+  };
+  fill(row('\uD83D\uDCD6 Definition','a'), d.d);
+  fill(row('\uD83D\uDD0E Explained in detail','b'), d.a);
+  if(d.x){
+    const tx=row('\uD83D\uDCBB Example','a');
+    const ed=document.createElement('div'); ed.className='editor';
+    ed.innerHTML='<div class="editor-bar"><div class="dot r"></div><div class="dot y"></div><div class="dot g"></div><span class="fname"></span></div><pre><code data-lang="java"></code></pre>';
+    ed.querySelector('.fname').textContent=d.x.f;
+    ed.querySelector('code').textContent=d.x.c;
+    tx.appendChild(ed);
+  }
+  fill(row('\uD83C\uDFAF Where and why it is used','a'), d.u);
+  fill(row('\u2705 Advantages','b'), d.p);
+  fill(row('\u26A0\uFE0F Limitations and common mistakes','c'), d.c);
+  body.appendChild(wrap);
+}
+
+function renderDetail(body, unitId, topicId){
+  const d = DETAIL[unitId+'-'+topicId];
+  if(!d) return;
+  const wrap=document.createElement('div'); wrap.className='detail';
+  const h=document.createElement('h3'); h.textContent='\uD83E\uDDE9 Explained Simply'; wrap.appendChild(h);
+  const labels=[['\uD83D\uDCD6 In simple words','a'],['\uD83C\uDFAD Real-life example','b'],['\u26A0\uFE0F Common mistake','c'],['\u2B50 Remember this','d']];
+  labels.forEach((l,i)=>{
+    const row=document.createElement('div'); row.className='drow';
+    const lb=document.createElement('div'); lb.className='dlbl '+l[1]; lb.textContent=l[0];
+    const tx=document.createElement('div'); tx.className='dtxt'; tx.textContent=d[i];
+    row.appendChild(lb); row.appendChild(tx); wrap.appendChild(row);
+  });
+  body.appendChild(wrap);
+}
+function renderPractice(body, unitId, topicId){
+  const list = PRACTICE[unitId+'-'+topicId];
+  if(!list) return;
+  const wrap=document.createElement('div');
+  wrap.className='practice';
+  const h=document.createElement('h3'); h.textContent='\uD83C\uDFAF Practice Time';
+  const sub=document.createElement('div'); sub.className='sub';
+  sub.textContent='Start with the easy one, finish with the hard one. Try each one on your own first. Stuck? Hit Copy question and paste it into your favourite AI for the answer.';
+  wrap.appendChild(h); wrap.appendChild(sub);
+  list.forEach((item,i)=>{
+    const [diff,q,hint]=item;
+    const box=document.createElement('div'); box.className='pq';
+    const head=document.createElement('div'); head.className='pq-head';
+    const tag=document.createElement('span'); tag.className='diff '+diff; tag.textContent=diff;
+    const num=document.createElement('span'); num.style.cssText='font-family:var(--font-code);font-size:12px;color:var(--text-faint)'; num.textContent='Q'+(i+1);
+    head.appendChild(num); head.appendChild(tag);
+    const qt=document.createElement('div'); qt.className='pq-q'; qt.textContent=q;
+    const ht=document.createElement('div'); ht.className='pq-hint'; ht.textContent='\uD83D\uDCA1 The admin can’t afford an LLM API or backend hosting right now, so simply copy the question and paste it into your favorite LLM or AI tool until I win some money through gambling💀';
+    const act=document.createElement('div'); act.className='pq-actions';
+    const b1=document.createElement('button'); b1.className='neu-btn'; b1.type='button'; b1.textContent='Show answer';
+    b1.onclick=()=>{ ht.classList.toggle('show'); b1.textContent=ht.classList.contains('show')?'Hide answer':'Show answer'; };
+    const b2=document.createElement('button'); b2.className='neu-btn'; b2.type='button'; b2.textContent='Copy question';
+    b2.onclick=()=>copyText('// '+q,b2);
+    act.appendChild(b1); act.appendChild(b2);
+    box.appendChild(head); box.appendChild(qt); box.appendChild(ht); box.appendChild(act);
+    wrap.appendChild(box);
+  });
+  body.appendChild(wrap);
+}
+
+/* ---------- SHARE BUTTON ---------- */
+function toggleShare(e){ e.stopPropagation(); document.getElementById('shareWrap').classList.toggle('open'); }
+document.addEventListener('click',e=>{ const w=document.getElementById('shareWrap'); if(w && !w.contains(e.target)) w.classList.remove('open'); });
+function doShare(kind){
+  const url = /^https?:/.test(location.href) ? location.href.split('#')[0] : 'https://github.com/01keshav/OOPs';
+  const text = 'Learn OOP in Java the easy way: simple English, real-life examples and practice questions.';
+  const u=encodeURIComponent(url), t=encodeURIComponent(text);
+  const links={
+    wa:'https://wa.me/?text='+t+'%20'+u,
+    tg:'https://t.me/share/url?url='+u+'&text='+t,
+    tw:'https://twitter.com/intent/tweet?text='+t+'&url='+u,
+    fb:'https://www.facebook.com/sharer/sharer.php?u='+u,
+    li:'https://www.linkedin.com/sharing/share-offsite/?url='+u,
+    rd:'https://www.reddit.com/submit?url='+u+'&title='+t,
+    ml:'mailto:?subject='+encodeURIComponent('OOP in Java course')+'&body='+t+'%20'+u
+  };
+  if(kind==='cp'){
+    const toast=document.getElementById('shareToast');
+    const done=()=>{ toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1400); };
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done).catch(done); }
+    else { const ta=document.createElement('textarea'); ta.value=url; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(err){} ta.remove(); done(); }
+    return;
+  }
+  window.open(links[kind],'_blank','noopener');
+}
+
+/* ---------- THEME TOGGLE (dark / light, remembered on this device) ---------- */
+const THEME_KEY = 'oopJavaCourse_theme';
+function currentTheme(){ return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+function syncThemeButton(){
+  const b = document.getElementById('themeToggle');
+  if(!b) return;
+  const dark = currentTheme() === 'dark';
+  b.setAttribute('aria-checked', String(dark));
+  b.title = dark ? 'Switch to light mode' : 'Switch to dark mode';
+}
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t);
+  try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
+  syncThemeButton();
+}
+document.getElementById('themeToggle')?.addEventListener('click', ()=> setTheme(currentTheme()==='dark' ? 'light' : 'dark'));
+syncThemeButton();
+
 const TOTAL_TOPICS = UNITS.reduce((s,u)=>s+u.topics.length,0);
 const STORAGE_KEY = 'oopJavaCourse_progress_105303';
 
@@ -3144,20 +4323,20 @@ UNITS.forEach(u => u.topics.forEach(t => flatOrder.push({unit:u.id, topic:t.id})
 
 /* ---------- BOOT SEQUENCE ---------- */
 const bootLines = [
-  "> Checking Internet Connectin........OK",
-  "> Hacking NASA Server ........OK",
-  "> loading syllabus [105303] ......... OK",
-  "> importing Unit 1 - Unit 6 ......... OK",
+  {t:"> Finding true love ...... FAILED", c:"#ff5f6d"},
+  {t:"> Hacking NASA Server ...... FAILED", c:"#ff5f6d"},
+  {t:"> Loading your Syllabus....... OK", c:"#3ddc97"},
+  {t:"> Analyzing search history... OK", c:"#ffc542"},
   doneSet.size > 0
-    ? `> restoring saved progress (${doneSet.size}/${TOTAL_TOPICS}) . OK`
-    : "> BUILD SUCCESSFUL — welcome, Keshav "
+    ? {t:`> restoring saved progress (${doneSet.size}/${TOTAL_TOPICS}) . OK`, c:"#3ddc97"}
+    : {t:"> BUILD SUCCESSFUL — welcome, Keshav ", c:"#3ddc97"}
 ];
 const bootEl = document.getElementById('boot-lines');
 bootLines.forEach((line,i)=>{
   const d = document.createElement('div');
   d.className='boot-line';
-  d.style.animationDelay = (i*0.58)+'s';
-  d.textContent = line;
+  d.style.animationDelay = (i*0.20)+'s';
+  d.textContent = line.t; d.style.color = line.c;
   bootEl.appendChild(d);
 });
 const cursor = document.createElement('span');
@@ -3196,7 +4375,7 @@ function buildSidebar(){
         link.classList.add('done');
         link.querySelector('.check').textContent='✓';
       }
-      link.addEventListener('click',()=>{ loadTopic(u.id,t.id); if(document.getElementById('sidebar').classList.contains('open')) closeSidebar(); });
+      link.addEventListener('click',()=>{ if(currentUnit===u.id && currentTopic===t.id){ if(doneSet.has(u.id+'-'+t.id)){ setTopicDone(u.id,t.id,false); syncCompleteBtn(); } } else loadTopic(u.id,t.id); if(document.getElementById('sidebar').classList.contains('open')) closeSidebar(); });
       tlist.appendChild(link);
     });
     block.appendChild(tlist);
@@ -3205,11 +4384,24 @@ function buildSidebar(){
   updateXP();
 }
 
+function setTopicDone(unitId, topicId, done){
+  const key = unitId+'-'+topicId;
+  if(done) doneSet.add(key); else doneSet.delete(key);
+  const link = document.querySelector(`.topic-link[data-unit="${unitId}"][data-topic="${topicId}"]`);
+  if(link){
+    link.classList.toggle('done', done);
+    const c = link.querySelector('.check'); if(c) c.textContent = done ? '✓' : '';
+  }
+  updateXP();
+  saveProgress();
+}
+
 function updateXP(){
   const pct = Math.round((doneSet.size/TOTAL_TOPICS)*100);
   document.getElementById('xpFill').style.width = pct+'%';
   document.getElementById('xpLabel').textContent = `${doneSet.size} / ${TOTAL_TOPICS} topics done`;
   document.getElementById('progress-bar').style.width = pct+'%';
+  const hp=document.getElementById('heroProgress'); if(hp) hp.textContent = `${doneSet.size} / ${TOTAL_TOPICS} topics done`;
 }
 
 /* ---------- HOME ---------- */
@@ -3226,7 +4418,7 @@ function showHome(){
     const card = document.createElement('div');
     card.className='unit-card';
     const doneNote = doneInUnit>0 ? ` · ${doneInUnit}/${u.topics.length} done` : '';
-    card.innerHTML = `<div class="n">UNIT ${idx+1} · ${u.hrs}</div><div class="t">${u.name}</div><div class="d">${u.topics.length} topics inside${doneNote}</div>`;
+    card.innerHTML = `<div class="badge">${idx+1}</div><div class="hrsbadge">${u.hrs}</div><div class="t">${u.name}</div><div class="d">${u.topics.length} topics inside${doneNote}</div>`;
     card.addEventListener('click',()=>{
       loadTopic(u.id, u.topics[0].id);
       document.querySelectorAll('.unit-block').forEach(b=>b.classList.remove('open'));
@@ -3236,6 +4428,9 @@ function showHome(){
   });
   requestAnimationFrame(()=>{ body.classList.add('show'); triggerReveal(); });
   document.querySelectorAll('.topic-link').forEach(l=>l.classList.remove('active'));
+  updateXP();
+  const hs=document.getElementById('heroStats');
+  if(hs){ const q=Object.values(PRACTICE).reduce((s,a)=>s+a.length,0); hs.innerHTML=`<div class="neu-stat"><b>${UNITS.length}</b><span>Units</span></div><div class="neu-stat"><b>${TOTAL_TOPICS}</b><span>Topics</span></div><div class="neu-stat"><b>${q}</b><span>Questions</span></div>`; }
 }
 
 /* ---------- LOAD TOPIC ---------- */
@@ -3250,9 +4445,12 @@ function loadTopic(unitId, topicId){
   setTimeout(()=>{
     body.innerHTML='';
     body.appendChild(tpl.content.cloneNode(true));
-    highlightAll(body);
     wrapTables(body);
     wireQuizzes(body);
+    renderDeep(body, unitId, topicId);
+    highlightAll(body);
+    renderDetail(body, unitId, topicId);
+    renderPractice(body, unitId, topicId);
     buildTopicNav(body);
     requestAnimationFrame(()=>{ body.classList.add('show'); triggerReveal(); });
   }, 180);
@@ -3266,12 +4464,8 @@ function loadTopic(unitId, topicId){
   // sidebar active state + mark done (persisted to this browser)
   document.querySelectorAll('.topic-link').forEach(l=>l.classList.remove('active'));
   const activeLink = document.querySelector(`.topic-link[data-unit="${unitId}"][data-topic="${topicId}"]`);
-  if(activeLink){ activeLink.classList.add('active'); activeLink.classList.add('done'); activeLink.querySelector('.check').textContent='✓'; }
-  const key = unitId+'-'+topicId;
-  const wasNew = !doneSet.has(key);
-  doneSet.add(key);
+  if(activeLink) activeLink.classList.add('active');
   updateXP();
-  if(wasNew) saveProgress();
 
   window.scrollTo({top:0,behavior:'smooth'});
   document.querySelector('.content-wrap')?.scrollTo?.(0,0);
@@ -3279,28 +4473,47 @@ function loadTopic(unitId, topicId){
 }
 
 /* ---------- PREV/NEXT NAV ---------- */
+function syncCompleteBtn(){
+  const btn=document.getElementById('completeBtn'); if(!btn) return;
+  const d=doneSet.has(currentUnit+'-'+currentTopic);
+  btn.classList.toggle('is-done',d);
+  btn.querySelector('.cb-txt').textContent = d ? 'tap to undo' : 'Mark as complete';
+  btn.setAttribute('aria-pressed', d?'true':'false');
+}
 function buildTopicNav(body){
   const idx = flatOrder.findIndex(f=>f.unit===currentUnit && f.topic===currentTopic);
   const prev = flatOrder[idx-1];
   const next = flatOrder[idx+1];
+  const wrap = document.createElement('div');
+  wrap.className='topic-nav-wrap reveal';
+
+  const cb = document.createElement('button');
+  cb.type='button'; cb.id='completeBtn'; cb.className='complete-btn';
+  cb.innerHTML='<span class="cb-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span class="cb-txt"></span>';
+  cb.addEventListener('click',()=>{ setTopicDone(currentUnit,currentTopic,!doneSet.has(currentUnit+'-'+currentTopic)); syncCompleteBtn(); });
+  wrap.appendChild(cb);
+
   const nav = document.createElement('div');
-  nav.className='topic-nav reveal';
-  const prevBtn = document.createElement('div');
-  prevBtn.className='nav-btn'+(prev?'':' disabled');
+  nav.className='topic-nav';
+  const arrow='<svg class="pn-arrow" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  const prevBtn = document.createElement('button'); prevBtn.type='button';
+  prevBtn.className='pn-btn pn-prev'+(prev?'':' disabled');
   if(prev){
     const pu=UNITS.find(u=>u.id===prev.unit), pt=pu.topics.find(t=>t.id===prev.topic);
-    prevBtn.innerHTML = `<div class="dir">← Previous</div><div class="ttl">${pt.title}</div>`;
+    prevBtn.innerHTML = `${arrow}<span class="pn-txt"><span class="dir">Previous</span><span class="ttl">${pt.title}</span></span>`;
     prevBtn.addEventListener('click',()=>loadTopic(prev.unit,prev.topic));
   }
-  const nextBtn = document.createElement('div');
-  nextBtn.className='nav-btn next'+(next?'':' disabled');
+  const nextBtn = document.createElement('button'); nextBtn.type='button';
+  nextBtn.className='pn-btn pn-next'+(next?'':' disabled');
   if(next){
     const nu=UNITS.find(u=>u.id===next.unit), nt=nu.topics.find(t=>t.id===next.topic);
-    nextBtn.innerHTML = `<div class="dir">Next →</div><div class="ttl">${nt.title}</div>`;
+    nextBtn.innerHTML = `<span class="pn-txt"><span class="dir">Next</span><span class="ttl">${nt.title}</span></span>${arrow}`;
     nextBtn.addEventListener('click',()=>loadTopic(next.unit,next.topic));
   }
   nav.appendChild(prevBtn); nav.appendChild(nextBtn);
-  body.appendChild(nav);
+  wrap.appendChild(nav);
+  body.appendChild(wrap);
+  syncCompleteBtn();
 }
 
 /* ---------- SCROLL REVEAL ---------- */
