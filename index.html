@@ -4467,7 +4467,7 @@ function renderPractice(body, unitId, topicId){
     const num=document.createElement('span'); num.style.cssText='font-family:var(--font-code);font-size:12px;color:var(--text-faint)'; num.textContent='Q'+(i+1);
     head.appendChild(num); head.appendChild(tag);
     const qt=document.createElement('div'); qt.className='pq-q'; qt.textContent=q;
-    const ht=document.createElement('div'); ht.className='pq-hint'; ht.textContent='\uD83D\uDCA1 The admin can’t afford an LLM API or backend hosting right now, so simply copy the question and paste it into your favorite LLM or AI tool until I win some money through gambling💀';
+    const ht=document.createElement('div'); ht.className='pq-hint'; ht.textContent='\uD83D\uDCA1 Admin can’t afford an LLM API or backend hosting right now, so simply copy the question and paste it into your favorite LLM or AI tool until I win some money through gambling💀';
     const act=document.createElement('div'); act.className='pq-actions';
     const b1=document.createElement('button'); b1.className='neu-btn'; b1.type='button'; b1.textContent='Show answer';
     b1.onclick=()=>{ ht.classList.toggle('show'); b1.textContent=ht.classList.contains('show')?'Hide answer':'Show answer'; };
@@ -4900,4 +4900,5 @@ document.addEventListener('keydown',(e)=>{
   if(e.key==='ArrowLeft'){ const idx=flatOrder.findIndex(f=>f.unit===currentUnit&&f.topic===currentTopic); const p=flatOrder[idx-1]; if(p) loadTopic(p.unit,p.topic); }
 });
 </script>
-</body></html>
+</body>
+</html>
