@@ -1,9 +1,10 @@
-# OOPs and DSA Course
+# OOPs, DSA and OS Course
 
-A free study site for GEC students: **OOP in Java** and **Data Structure and Algorithms** (Java, C++ and C), with simple explanations, animated diagrams, verified code with real output and practice questions.
+A free study site for GEC students: **OOP in Java** **Data Structure and Algorithms** (Java, C++ and C) and **Operating Systems** (C, dark red theme), with simple explanations, animated diagrams, verified code with real output and practice questions.
 
 **Live site:** https://01keshav.github.io/OOPs/
 **DSA:** https://01keshav.github.io/OOPs/dsa.html
+**OS:** https://01keshav.github.io/OOPs/os.html
 
 ---
 
@@ -13,7 +14,7 @@ A free study site for GEC students: **OOP in Java** and **Data Structure and Alg
 |---------|-------------|--------|--------|
 | **OOPs in Java** | 105303 | 48 topics, 6 units | Live |
 | **Data Structure and Algorithms** | 105302 | 39 topics, 6 units | Live (Java, C++, C) |
-| Operating Systems | - | - | Coming soon |
+| **Operating Systems** | 105305 | 37 topics, 6 units | Live (C code, animated diagrams) |
 | Digital Electronics | - | - | Coming soon |
 | Discrete Mathematics | - | - | Coming soon |
 
@@ -89,7 +90,7 @@ No build step and no dependencies.
 ```bash
 git clone https://github.com/01keshav/OOPs.git
 cd OOPs
-# open index.html (OOPs) or dsa.html (DSA) in any browser
+# open index.html (OOPs), dsa.html (DSA) or os.html (OS) in any browser
 ```
 
 ## Project structure
@@ -98,6 +99,7 @@ cd OOPs
 OOPs/
   index.html     OOPs in Java course
   dsa.html       Data Structure and Algorithms course
+  os.html        Operating Systems course
   README.md
   LICENSE
 ```
