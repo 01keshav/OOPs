@@ -1,10 +1,11 @@
-# OOPs, DSA and OS Course
+# OOPs, DSA, OS and Digital Electronics Course
 
 A free study site for GEC students: **OOP in Java** **Data Structure and Algorithms** (Java, C++ and C) and **Operating Systems** (C, dark red theme), with simple explanations, animated diagrams, verified code with real output and practice questions.
 
 **Live site:** https://01keshav.github.io/OOPs/
 **DSA:** https://01keshav.github.io/OOPs/dsa.html
 **OS:** https://01keshav.github.io/OOPs/os.html
+**Digital Electronics:** https://01keshav.github.io/OOPs/de.html
 
 ---
 
@@ -90,7 +91,7 @@ No build step and no dependencies.
 ```bash
 git clone https://github.com/01keshav/OOPs.git
 cd OOPs
-# open index.html (OOPs), dsa.html (DSA) or os.html (OS) in any browser
+# open index.html (OOPs), dsa.html (DSA), os.html (OS) or de.html (Digital Electronics) in any browser
 ```
 
 ## Project structure
@@ -100,6 +101,7 @@ OOPs/
   index.html     OOPs in Java course
   dsa.html       Data Structure and Algorithms course
   os.html        Operating Systems course
+  de.html        Digital Electronics course (6 units, 28 topics, gate-level diagrams)
   README.md
   LICENSE
 ```

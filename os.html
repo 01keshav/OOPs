@@ -1026,7 +1026,7 @@ body:has(#sidebar.open) #subjbar{visibility:hidden;}
   </span>
 </button>
 
-<nav id="subjbar" aria-label="Subjects"><span class="sb-logo">// subjects</span><a href="index.html">OOPs</a><a href="dsa.html">DSA</a><a href="os.html" class="on" aria-current="page">OS</a><button type="button" class="soon" onclick="soonToast('Digital Electronics')">Digital Electronics <i>soon</i></button><button type="button" class="soon" onclick="soonToast('Discrete Mathematics')">Discrete Mathematics <i>soon</i></button></nav><div id="soonToast"></div>
+<nav id="subjbar" aria-label="Subjects"><span class="sb-logo">// subjects</span><a href="index.html">OOPs</a><a href="dsa.html">DSA</a><a href="os.html" class="on" aria-current="page">OS</a><a href="de.html">Digital Electronics</a><button type="button" class="soon" onclick="soonToast('Discrete Mathematics')">Discrete Mathematics <i>soon</i></button></nav><div id="soonToast"></div>
 <script>function soonToast(n){var t=document.getElementById("soonToast");t.textContent=n+": coming soon";t.classList.add("show");clearTimeout(window.__st);window.__st=setTimeout(function(){t.classList.remove("show")},2200);}</script>
 <div id="app">
   <div id="overlay"></div>
@@ -1658,7 +1658,7 @@ const bootLines = [
   {t:"> Analyzing search history... OK", c:"#ffc542"},
   doneSet.size > 0
     ? {t:`> restoring saved progress (${doneSet.size}/${TOTAL_TOPICS}) . OK`, c:"#3ddc97"}
-    : {t:"> BUILD SUCCESSFUL — welcome, Keshav ", c:"#3ddc97"}
+    : {t:"> BUILD SUCCESSFUL — welcome ", c:"#3ddc97"}
 ];
 const bootEl = document.getElementById('boot-lines');
 bootLines.forEach((line,i)=>{
