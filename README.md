@@ -1,6 +1,6 @@
 # OOPs, DSA, OS and Digital Electronics Course
 
-A free study site for GEC students: **OOP in Java** **Data Structure and Algorithms** (Java, C++ and C) and **Operating Systems** (C, dark red theme), with simple explanations, animated diagrams, verified code with real output and practice questions.
+A free study site for GEC students: **OOP in Java** **Data Structure and Algorithms** (Java, C++ and C) **Operating Systems** (C, dark red theme) and **Digital Electronics** (dark green theme), with simple explanations, animated diagrams, verified code with real output and practice questions.
 
 **Live site:** https://01keshav.github.io/OOPs/
 **DSA:** https://01keshav.github.io/OOPs/dsa.html
@@ -16,7 +16,7 @@ A free study site for GEC students: **OOP in Java** **Data Structure and Algorit
 | **OOPs in Java** | 105303 | 48 topics, 6 units | Live |
 | **Data Structure and Algorithms** | 105302 | 39 topics, 6 units | Live (Java, C++, C) |
 | **Operating Systems** | 105305 | 37 topics, 6 units | Live (C code, animated diagrams) |
-| Digital Electronics | - | - | Coming soon |
+| **Digital Electronics** | 105301 | 28 topics, 6 units | Live (gate-level circuits, K-maps, timing waveforms, dark green theme) |
 | Discrete Mathematics | - | - | Coming soon |
 
 A subject bar at the top of every page lets you switch between subjects. Subjects that are not ready yet show a "coming soon" message.
