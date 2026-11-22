@@ -1,11 +1,12 @@
-# OOPs, DSA, OS and Digital Electronics Course
+# OOPs, DSA, OS, Digital Electronics and UHV Course
 
-A free study site for GEC students: **OOP in Java** **Data Structure and Algorithms** (Java, C++ and C) **Operating Systems** (C, dark red theme) and **Digital Electronics** (dark green theme), with simple explanations, animated diagrams, verified code with real output and practice questions.
+A free study site for GEC students: **OOP in Java** **Data Structure and Algorithms** (Java, C++ and C) **Operating Systems** (C, dark red theme), **Digital Electronics** (dark green theme) and **Universal Human Values** (saffron theme), with simple explanations, animated diagrams, verified code with real output and practice questions.
 
 **Live site:** https://01keshav.github.io/OOPs/
 **DSA:** https://01keshav.github.io/OOPs/dsa.html
 **OS:** https://01keshav.github.io/OOPs/os.html
 **Digital Electronics:** https://01keshav.github.io/OOPs/de.html
+**Universal Human Values:** https://01keshav.github.io/OOPs/uhv.html
 
 ---
 
@@ -17,7 +18,7 @@ A free study site for GEC students: **OOP in Java** **Data Structure and Algorit
 | **Data Structure and Algorithms** | 105302 | 39 topics, 6 units | Live (Java, C++, C) |
 | **Operating Systems** | 105305 | 37 topics, 6 units | Live (C code, animated diagrams) |
 | **Digital Electronics** | 105301 | 28 topics, 6 units | Live (gate-level circuits, K-maps, timing waveforms, dark green theme) |
-| Discrete Mathematics | - | - | Coming soon |
+| **Universal Human Values** | 105306 | 28 topics, 6 units | Live (diagrams, case studies, exam-style questions, saffron theme) |
 
 A subject bar at the top of every page lets you switch between subjects. Subjects that are not ready yet show a "coming soon" message.
 
@@ -91,7 +92,7 @@ No build step and no dependencies.
 ```bash
 git clone https://github.com/01keshav/OOPs.git
 cd OOPs
-# open index.html (OOPs), dsa.html (DSA), os.html (OS) or de.html (Digital Electronics) in any browser
+# open index.html (OOPs), dsa.html (DSA), os.html (OS) , de.html (Digital Electronics) or uhv.html (UHV) in any browser
 ```
 
 ## Project structure
@@ -102,6 +103,7 @@ OOPs/
   dsa.html       Data Structure and Algorithms course
   os.html        Operating Systems course
   de.html        Digital Electronics course (6 units, 28 topics, gate-level diagrams)
+  uhv.html       Universal Human Values course (6 units, 28 topics)
   README.md
   LICENSE
 ```
